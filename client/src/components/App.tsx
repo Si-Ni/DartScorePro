@@ -1,31 +1,42 @@
 import { useState } from "react";
 import "../styles/App.css";
+import type { JSX } from "react";
+
+interface PlayerStats {
+  average: number;
+  dartsThrown: number;
+  totalScore: number;
+  turns: number;
+}
 
 function App() {
-  const [currentPlayer, setCurrentPlayer] = useState(1);
-  const [player1Score, setPlayer1Score] = useState(501);
-  const [player2Score, setPlayer2Score] = useState(501);
-  const [throwsRemaining, setThrowsRemaining] = useState(3);
-  const [multiplier, setMultiplier] = useState(1);
-  const [playerStats, setPlayerStats] = useState({
+  const [currentPlayer, setCurrentPlayer] = useState<number>(1);
+  const [player1Score, setPlayer1Score] = useState<number>(501);
+  const [player2Score, setPlayer2Score] = useState<number>(501);
+  const [throwsRemaining, setThrowsRemaining] = useState<number>(3);
+  const [multiplier, setMultiplier] = useState<number>(1);
+  const [playerStats, setPlayerStats] = useState<{
+    1: PlayerStats;
+    2: PlayerStats;
+  }>({
     1: { average: 0, dartsThrown: 0, totalScore: 0, turns: 0 },
     2: { average: 0, dartsThrown: 0, totalScore: 0, turns: 0 },
   });
 
-  const updatePlayerStats = (score, currentPlayerStats) => ({
+  const updatePlayerStats = (score: number, currentPlayerStats: PlayerStats): PlayerStats => ({
     ...currentPlayerStats,
     totalScore: currentPlayerStats.totalScore + score,
     dartsThrown: currentPlayerStats.dartsThrown + 1,
     turns: throwsRemaining === 1 ? currentPlayerStats.turns + 1 : currentPlayerStats.turns,
     average: ((currentPlayerStats.totalScore + score) * 3) / (currentPlayerStats.dartsThrown + 1),
   });
-  console.log(playerStats);
-  const handleScoreChange = (points) => {
+
+  const handleScoreChange = (points: number): void => {
     const adjustedPoints = points * multiplier;
 
     if (multiplier === 3 && points === 25) return;
 
-    const currentPlayerStats = playerStats[currentPlayer];
+    const currentPlayerStats = playerStats[currentPlayer.toString() as "1" | "2"];
     const currentPlayerScore = currentPlayer === 1 ? player1Score : player2Score;
     const updatedScore = currentPlayerScore - adjustedPoints;
 
@@ -54,13 +65,13 @@ function App() {
     setMultiplier(1);
   };
 
-  const handleMultiplierClick = (multiplierValue) => {
+  const handleMultiplierClick = (multiplierValue: number): void => {
     setMultiplier(multiplierValue);
   };
 
-  const handleReturnClick = () => {};
+  const handleReturnClick = (): void => {};
 
-  const renderButtons = () => {
+  const renderButtons = (): JSX.Element[] => {
     const numbers = [...Array(21).keys()].map((num) => num).concat(25);
 
     return numbers.map((number) => (
