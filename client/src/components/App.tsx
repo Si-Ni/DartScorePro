@@ -40,15 +40,15 @@ function App() {
     const currentPlayerScore = currentPlayer === 1 ? player1Score : player2Score;
     const updatedScore = currentPlayerScore - adjustedPoints;
 
-    setPlayerStats((prevPlayerStats) => ({
-      ...prevPlayerStats,
-      [currentPlayer]: updatePlayerStats(adjustedPoints, currentPlayerStats),
-    }));
-
     if (updatedScore < 0 || updatedScore === 1 || (multiplier === 1 && updatedScore === 0)) {
       setCurrentPlayer(currentPlayer === 1 ? 2 : 1);
       setThrowsRemaining(3);
     } else {
+      setPlayerStats((prevPlayerStats) => ({
+        ...prevPlayerStats,
+        [currentPlayer]: updatePlayerStats(adjustedPoints, currentPlayerStats),
+      }));
+
       currentPlayer === 1 ? setPlayer1Score(updatedScore) : setPlayer2Score(updatedScore);
 
       setThrowsRemaining((throwsRemaining) => throwsRemaining - 1);
