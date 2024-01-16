@@ -1,7 +1,9 @@
 import Login from "./Login";
 import { ReactNode, useRef, useState } from "react";
-import Register from "./Register";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import DartsCounter from "./DartsCounter";
+import Register from "./Register";
+import RegisterCode from "./RegisterVerify";
 
 function App() {
   const pwdRef = useRef<HTMLInputElement>(null);
@@ -19,6 +21,8 @@ function App() {
             path="/register"
             element={<Register loginErrorMsg={loginErrorMsg} pwdRef={pwdRef} setLoginErrorMsg={setLoginErrorMsg} />}
           />
+          <Route path="/register/verify" element={<RegisterCode />} />
+          <Route path="/dartscounter" element={<DartsCounter />} />
         </Routes>
       </Router>
     </>

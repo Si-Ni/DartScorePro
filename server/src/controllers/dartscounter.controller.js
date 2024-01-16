@@ -14,4 +14,5 @@ async function handleRequest(handler, req, res, next) {
 module.exports = {
   login: async (req, res, next) => await handleRequest(scheduleService.login, req, res, next),
   register: async (req, res, next) => await handleRequest(scheduleService.register, req, res, next),
+  registerVerify: async (req, res, next) => await handleRequest(scheduleService.registerVerify, req, res, next),
 };

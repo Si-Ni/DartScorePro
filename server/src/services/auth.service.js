@@ -1,5 +1,7 @@
 const { connectDB } = require("./db.service");
-const nodemailer = require("nodemailer");
+const generateRegistrationCode = require("../helpers/generateRegistrationCode.helper");
+const sendRegistrationEmail = require("../helpers/sendRegistrationEmail.helper");
+const checkUserRegistered = require("../helpers/checkUserRegistered.helper");
 (async () => {
   await connectDB();
 })();
@@ -10,6 +12,42 @@ async function login() {
 }
 
 async function register(req) {
+  let { userMail, userID, userPWD } = req.body;
+  const mailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const userIDRegex = /^[a-zA-Z0-9._-]+$/;
+
+  if (!userMail || !userID || !userPWD) {
+    return {
+      status: 400,
+      json: "Please provide valid values for email, username, and password.",
+    };
+  }
+
+  userMail = userMail.trim();
+  userID = userID.trim();
+  userPWD = userPWD.trim();
+
+  if (!mailRegex.test(userMail))
+    return {
+      status: 400,
+      json: "Invalid email format",
+    };
+  if (!userIDRegex.test(userID))
+    return {
+      status: 400,
+      json: "Invalid username format",
+    };
+
+  const isUserRegistered = await checkUserRegistered(userID, userMail);
+
+  if (isUserRegistered)
+    return {
+      status: 400,
+      json: `${
+        isUserRegistered.userID === userID ? isUserRegistered.userID : isUserRegistered.userMail
+      } already exists`,
+    };
+
   const registrationCode = generateRegistrationCode();
 
   const emailSent = await sendRegistrationEmail(req.body, registrationCode);
@@ -20,59 +58,14 @@ async function register(req) {
     return { status: 500, json: "Failed to send registration email" };
   }
 }
-function generateRegistrationCode() {
-  return Math.random().toString(36).substring(7);
-}
 
-async function sendRegistrationEmail(reqBody, registrationCode) {
-  const transporter = nodemailer.createTransport({
-    service: process.env.EMAIL_SERVICE,
-    auth: {
-      user: process.env.EMAIL_SENDER,
-      pass: process.env.EMAIL_PASSWORD,
-    },
-  });
-
-  const mailOptions = {
-    from: process.env.EMAIL_SENDER,
-    to: reqBody.userMail,
-    subject: "Registration Code DartsCounter",
-    html: `
-    <html>
-      <head>
-        <style>
-          body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            color: #333;
-          }
-          h2 {
-            color: #007BFF;
-          }
-        </style>
-      </head>
-      <body>
-        <p>Hello ${reqBody.userID},</p>
-        <p>Your registration code is: <strong>${registrationCode}</strong></p>
-        <p>Thank you for registering with our service.</p>
-      </body>
-    </html>
-  `,
-  };
-
-  try {
-    const info = await transporter.sendMail(mailOptions);
-    console.log("Registration email sent successfully");
-    console.log("Message sent: %s", info.messageId);
-    console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-    return true;
-  } catch (error) {
-    console.error("Error sending registration email:", error);
-    return false;
-  }
+async function registerVerify() {
+  console.log("verify");
+  return { status: 200, json: "test" };
 }
 
 module.exports = {
   login,
   register,
+  registerVerify,
 };

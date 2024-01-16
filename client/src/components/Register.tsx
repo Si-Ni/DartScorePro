@@ -4,7 +4,7 @@ import "../styles/Login.css";
 import { BarLoader } from "react-spinners";
 // import { calenderSetDarkTheme, calenderSetLightTheme } from "../helpers";
 import { RegisterProps } from "../global/types";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 vhCheck("vh-check");
 
@@ -15,6 +15,7 @@ function Register(props: RegisterProps) {
   const userMailRef = useRef<HTMLInputElement>(null);
   const [isModeLoaded, setIsModeLoaded] = useState(true);
   const [policyAccepted, setPolicyAccepted] = useState<boolean>(Boolean(localStorage.getItem("privacyPolicyAccepted")));
+  const navigate = useNavigate();
 
   const onSubmitPwd = () => {
     if (!policyAccepted) {
@@ -23,16 +24,17 @@ function Register(props: RegisterProps) {
       return;
     }
     if (!props.pwdRef.current!.value || !userIDRef.current!.value) return;
-    const pwd = props.pwdRef.current!.value;
+    const userPWD = props.pwdRef.current!.value;
     const userID = userIDRef.current!.value;
     const userMail = userMailRef.current!.value;
 
-    console.log(userID, userMail, pwd);
+    console.log(userID, userMail, userPWD);
     setPwdDisabled(true);
     axios
-      .post("http://localhost:4000/register/", { userMail, userID, pwd })
+      .post("http://localhost:4000/register/", { userMail, userID, userPWD })
       .then(() => {
         setPwdDisabled(false);
+        navigate("/register/code");
       })
       .catch((error) => {
         setPwdDisabled(false);

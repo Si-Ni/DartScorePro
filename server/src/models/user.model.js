@@ -5,7 +5,11 @@ const userModel = new mongoose.Schema({
     required: true,
     type: String,
   },
-  pwd: {
+  userMail: {
+    required: true,
+    type: String,
+  },
+  userPWD: {
     required: true,
     type: String,
   },
