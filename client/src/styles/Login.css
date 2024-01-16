@@ -1,53 +1,53 @@
 .dark {
-    background-color: #303030 !important;
+  background-color: #303030 !important;
 }
 .dark .box {
-    color: white !important;
-    background-color: #383838 !important;
+  color: white !important;
+  background-color: #383838 !important;
 }
 .dark .LoadingAnim {
-    background-color: #303030;
-    color: white;
+  background-color: #303030;
+  color: white;
 }
 
 .light {
-    background-color: #ffffff !important;
+  background-color: #ffffff !important;
 }
 
 #top-barloader {
-    position: absolute !important;
+  position: absolute !important;
 }
 ::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
 .hero.is-fullheight {
-    min-height: calc(100vh - var(--vh-check, 0px)) !important;
+  min-height: calc(100vh - var(--vh-check, 0px)) !important;
 }
 
 .policy {
-    padding-top: 0 !important;
-    display: block !important;
-    font-size: 12px;
+  padding-top: 0 !important;
+  display: block !important;
+  font-size: 12px;
 }
 
 input[type="checkbox"] {
-    width: 15px;
-    height: 15px;
-    vertical-align: bottom !important;
-    position: relative;
-    top: -1px;
+  width: 15px;
+  height: 15px;
+  vertical-align: bottom !important;
+  position: relative;
+  top: -1px;
 }
 
 input[type="checkbox"] {
-    margin-right: 10px !important;
+  margin-right: 10px !important;
 }
 
 input[type="checkbox"]:hover,
 .policyCheckbox:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .policyLink:hover {
-    color: #344ba9;
+  color: #344ba9;
 }
