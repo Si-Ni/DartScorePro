@@ -1,4 +1,4 @@
-const scheduleService = require("../services/dartscounter.service");
+const scheduleService = require("../services/auth.service");
 
 async function handleRequest(handler, req, res, next) {
   try {
@@ -13,4 +13,5 @@ async function handleRequest(handler, req, res, next) {
 
 module.exports = {
   login: async (req, res, next) => await handleRequest(scheduleService.login, req, res, next),
+  register: async (req, res, next) => await handleRequest(scheduleService.register, req, res, next),
 };
