@@ -116,7 +116,7 @@ function Register(props: RegisterProps) {
                 />
                 I agree to the{" "}
                 <a className="policyLink" href="" target="_blank">
-                  privacy policy
+                  <Link to={"/privacy-policy"}>privacy policy</Link>
                 </a>
               </div>
               <div className="column">

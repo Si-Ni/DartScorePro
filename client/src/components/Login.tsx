@@ -13,15 +13,9 @@ function Login(props: LoginProps) {
   const [isPwdDisabled, setPwdDisabled] = useState(false);
   const userIDorMailRef = useRef<HTMLInputElement>(null);
   const [isModeLoaded, setIsModeLoaded] = useState(true);
-  const [policyAccepted, setPolicyAccepted] = useState<boolean>(Boolean(localStorage.getItem("privacyPolicyAccepted")));
   const navigate = useNavigate();
 
   const onSubmitPwd = () => {
-    if (!policyAccepted) {
-      props.setLoginErrorMsg("You must agree to the privacy policy!");
-      invalidPwdMsgRef.current!.style.display = "block";
-      return;
-    }
     if (!props.pwdRef.current!.value || !userIDorMailRef.current!.value) return;
     const userPWD = props.pwdRef.current!.value;
     const userIDorMail = userIDorMailRef.current!.value;
@@ -92,19 +86,6 @@ function Login(props: LoginProps) {
                 <p ref={invalidPwdMsgRef} style={{ display: "none" }} className="help is-danger">
                   {props.loginErrorMsg}
                 </p>
-              </div>
-              <div className="column policy">
-                <input
-                  type="checkbox"
-                  defaultChecked={policyAccepted}
-                  onChange={() => {
-                    setPolicyAccepted(!policyAccepted);
-                  }}
-                />
-                I agree to the{" "}
-                <a className="policyLink" href="" target="_blank">
-                  privacy policy
-                </a>
               </div>
               <div className="column">
                 <button
