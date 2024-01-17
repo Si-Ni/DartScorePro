@@ -2,13 +2,40 @@ const { connectDB } = require("./db.service");
 const generateRegistrationCode = require("../helpers/generateRegistrationCode.helper");
 const sendRegistrationEmail = require("../helpers/sendRegistrationEmail.helper");
 const checkUserRegistered = require("../helpers/checkUserRegistered.helper");
+const createNewUser = require("../helpers/createNewUser.helper");
+const checkUserVerified = require("../helpers/checkUserVerified.helper");
+const checkPWDvalid = require("../helpers/checkPwd.helper");
+
 (async () => {
   await connectDB();
 })();
 
-async function login() {
-  console.log("login");
-  return { status: 200, json: "test" };
+async function login(req) {
+  let { userIDorMail, userPWD } = req.body;
+  const mailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const userIDRegex = /^[a-zA-Z0-9._-]+$/;
+
+  userIDorMail = userIDorMail.trim();
+  userPWD = userPWD.trim();
+
+  const isMail = mailRegex.test(userIDorMail);
+  const isUserID = userIDRegex.test(userIDorMail);
+
+  if (isMail || isUserID) {
+    const isUserRegistered = await checkUserRegistered(isMail ? null : userIDorMail, isUserID ? null : userIDorMail);
+
+    if (!isUserRegistered) {
+      return { status: 400, json: "No user with this name or mail" };
+    }
+  } else {
+    return { status: 400, json: "Invalid userID or mail format" };
+  }
+
+  const isPWDValid = await checkPWDvalid(isMail ? null : userIDorMail, isUserID ? null : userIDorMail, userPWD);
+
+  if (!isPWDValid) return { status: 400, json: "Login Failed" };
+
+  return { status: 200, json: "Login Success" };
 }
 
 async function register(req) {
@@ -48,9 +75,11 @@ async function register(req) {
       } already exists`,
     };
 
-  const registrationCode = generateRegistrationCode();
+  const registerCode = generateRegistrationCode();
 
-  const emailSent = await sendRegistrationEmail(req.body, registrationCode);
+  const emailSent = await sendRegistrationEmail(userID, userMail, registerCode);
+
+  await createNewUser(userID, userMail, userPWD, registerCode);
 
   if (emailSent) {
     return { status: 200, json: "Registration email sent successfully" };
@@ -59,8 +88,15 @@ async function register(req) {
   }
 }
 
-async function registerVerify() {
-  console.log("verify");
+async function registerVerify(req) {
+  let { userMail, registerCode } = req.body;
+
+  userMail = userMail.trim();
+  registerCode = registerCode.trim();
+
+  console.log("verify", userMail, registerCode);
+
+  await checkUserVerified(userMail, registerCode);
   return { status: 200, json: "test" };
 }
 

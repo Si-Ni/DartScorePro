@@ -4,16 +4,17 @@ import "../styles/Login.css";
 import { BarLoader } from "react-spinners";
 // import { calenderSetDarkTheme, calenderSetLightTheme } from "../helpers";
 import { LoginProps } from "../global/types";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 vhCheck("vh-check");
 
 function Login(props: LoginProps) {
   const invalidPwdMsgRef = useRef<HTMLInputElement>(null);
   const [isPwdDisabled, setPwdDisabled] = useState(false);
-  const userIDRef = useRef<HTMLInputElement>(null);
+  const userIDorMailRef = useRef<HTMLInputElement>(null);
   const [isModeLoaded, setIsModeLoaded] = useState(true);
   const [policyAccepted, setPolicyAccepted] = useState<boolean>(Boolean(localStorage.getItem("privacyPolicyAccepted")));
+  const navigate = useNavigate();
 
   const onSubmitPwd = () => {
     if (!policyAccepted) {
@@ -21,13 +22,14 @@ function Login(props: LoginProps) {
       invalidPwdMsgRef.current!.style.display = "block";
       return;
     }
-    if (!props.pwdRef.current!.value || !userIDRef.current!.value) return;
-    const pwd = props.pwdRef.current!.value;
-    const userID = userIDRef.current!.value;
+    if (!props.pwdRef.current!.value || !userIDorMailRef.current!.value) return;
+    const userPWD = props.pwdRef.current!.value;
+    const userIDorMail = userIDorMailRef.current!.value;
     setPwdDisabled(true);
     axios
-      .post("http://localhost:4000/login/", { userID, pwd })
+      .post("http://localhost:4000/login/", { userIDorMail, userPWD })
       .then(() => {
+        navigate("/dartscounter");
         setPwdDisabled(false);
       })
       .catch((error) => {
@@ -67,13 +69,13 @@ function Login(props: LoginProps) {
               </div>
               <div className="column">
                 <input
-                  ref={userIDRef}
+                  ref={userIDorMailRef}
                   disabled={isPwdDisabled}
                   autoFocus
                   onChange={onChangeHideInvalidPwdMsg}
                   onKeyUp={onEnterPressed}
                   className="input is-primary"
-                  placeholder="username"
+                  placeholder="username or mail"
                 />
               </div>
               <div className="column">

@@ -4,7 +4,7 @@ import Login from "./Login";
 import MainMenu from "./MainMenu";
 import { ReactNode, useRef, useState } from "react";
 import Register from "./Register";
-import RegisterCode from "./RegisterVerify";
+import RegisterVerify from "./RegisterVerify";
 
 function App() {
   const pwdRef = useRef<HTMLInputElement>(null);
@@ -23,7 +23,7 @@ function App() {
             path="/register"
             element={<Register loginErrorMsg={loginErrorMsg} pwdRef={pwdRef} setLoginErrorMsg={setLoginErrorMsg} />}
           />
-          <Route path="/register/verify" element={<RegisterCode />} />
+          <Route path="/register/verify" element={<RegisterVerify />} />
           <Route path="/dartscounter" element={<DartsCounter />} />
         </Routes>
       </Router>
