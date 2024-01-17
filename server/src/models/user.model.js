@@ -13,6 +13,14 @@ const userModel = new mongoose.Schema({
     required: true,
     type: String,
   },
+  verified: {
+    required: true,
+    type: Boolean,
+  },
+  registerCode: {
+    required: true,
+    type: String,
+  },
 });
 
 module.exports = mongoose.model("user", userModel, "users");

@@ -1,6 +1,6 @@
 const nodemailer = require("nodemailer");
 
-async function sendRegistrationEmail(reqBody, registrationCode) {
+async function sendRegistrationEmail(userID, userMail, registrationCode) {
   const transporter = nodemailer.createTransport({
     service: process.env.EMAIL_SERVICE,
     auth: {
@@ -11,7 +11,7 @@ async function sendRegistrationEmail(reqBody, registrationCode) {
 
   const mailOptions = {
     from: process.env.EMAIL_SENDER,
-    to: reqBody.userMail,
+    to: userMail,
     subject: "Registration Code DartsCounter",
     html: `
     <html>
@@ -28,7 +28,7 @@ async function sendRegistrationEmail(reqBody, registrationCode) {
         </style>
       </head>
       <body>
-        <p>Hello ${reqBody.userID},</p>
+        <p>Hello ${userID},</p>
         <p>Your registration code is: <strong>${registrationCode}</strong></p>
         <p>Thank you for registering with our service.</p>
       </body>

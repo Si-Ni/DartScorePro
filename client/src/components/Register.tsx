@@ -34,7 +34,7 @@ function Register(props: RegisterProps) {
       .post("http://localhost:4000/register/", { userMail, userID, userPWD })
       .then(() => {
         setPwdDisabled(false);
-        navigate("/register/code");
+        navigate("/register/verify");
       })
       .catch((error) => {
         setPwdDisabled(false);
