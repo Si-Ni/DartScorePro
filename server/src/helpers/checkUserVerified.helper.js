@@ -7,7 +7,6 @@ const checkUserRegistered = async (userMail, registerCode) => {
     { new: true },
   );
 
-  console.log(isUserVerified);
   return isUserVerified;
 };
 

@@ -33,9 +33,9 @@ async function login(req) {
 
   const isPWDValid = await checkPWDvalid(isMail ? null : userIDorMail, isUserID ? null : userIDorMail, userPWD);
 
-  console.log(isPWDValid);
-  console.log("login");
-  return { status: 200, json: "test" };
+  if (!isPWDValid) return { status: 400, json: "Login Failed" };
+
+  return { status: 200, json: "Login Success" };
 }
 
 async function register(req) {
