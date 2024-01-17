@@ -1,7 +1,8 @@
-import Login from "./Login";
-import { ReactNode, useRef, useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import DartsCounter from "./DartsCounter";
+import Login from "./Login";
+import MainMenu from "./MainMenu";
+import { ReactNode, useRef, useState } from "react";
 import Register from "./Register";
 import RegisterCode from "./RegisterVerify";
 
@@ -13,6 +14,7 @@ function App() {
     <>
       <Router>
         <Routes>
+          <Route path="/" element={<MainMenu />} />
           <Route
             path="/login"
             element={<Login loginErrorMsg={loginErrorMsg} pwdRef={pwdRef} setLoginErrorMsg={setLoginErrorMsg} />}
