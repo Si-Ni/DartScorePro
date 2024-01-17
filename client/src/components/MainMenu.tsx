@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import "../styles/Menu.css";
 
 function MainMenu() {
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ function MainMenu() {
             <h1 className="is-size-4 mb-3">Main Menu</h1>
           </div>
           <div className="buttons is-centered">
-            <button className="button is-primary m-1 is-large is-fullwidth" onClick={() => navigate("/sinlgeplayer")}>
+            <button className="button is-primary m-1 is-large is-fullwidth" onClick={() => navigate("/singleplayer")}>
               Singleplayer
             </button>
             <button className="button is-primary m-1 is-large is-fullwidth" onClick={() => navigate("/multiplayer")}>
@@ -24,17 +25,12 @@ function MainMenu() {
           </div>
           <div className="buttons is-centered">
             <button
-              className="button is-primary m-1 is-large"
-              style={{ flex: "1" }}
+              className="button is-primary m-1 is-large sideBySideMenuBtn"
               onClick={() => navigate("/statistics")}
             >
               Statistics
             </button>
-            <button
-              className="button is-primary m-1 is-large"
-              style={{ flex: "1" }}
-              onClick={() => navigate("/settings")}
-            >
+            <button className="button is-primary m-1 is-large sideBySideMenuBtn" onClick={() => navigate("/settings")}>
               Settings
             </button>
           </div>
