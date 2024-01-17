@@ -1,18 +1,22 @@
 import React, { useRef, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function RegisterVerify() {
-  const userRegisterCodeRef = useRef<HTMLInputElement>(null);
+  const RegisterCodeRef = useRef<HTMLInputElement>(null);
   const [inputDisabled, setInputDisabled] = useState(false);
-  const onSubmitRegisterCode = () => {
-    if (!userRegisterCodeRef.current!.value) return;
-    const userRegisterCode = userRegisterCodeRef.current!.value;
+  const userMailRef = useRef<HTMLInputElement>(null);
+  const navigate = useNavigate();
 
+  const onSubmitRegisterCode = () => {
+    if (!RegisterCodeRef.current!.value || !userMailRef.current!.value) return;
+    const registerCode = RegisterCodeRef.current!.value;
+    const userMail = userMailRef.current!.value;
     axios
-      .post("http://localhost:4000/register/verify", { userRegisterCode })
+      .post("http://localhost:4000/register/verify", { userMail, registerCode })
       .then(() => {
         setInputDisabled(false);
-        navigate("/dartscounter");
+        navigate("/login");
       })
       .catch(() => {
         setInputDisabled(false);
@@ -30,12 +34,21 @@ function RegisterVerify() {
           <div className="columns is-half is-flex-direction-column box">
             <div className="column is-flex is-justify-content-center">
               <h1 className="is-size-5">Verify your Mail</h1>
+            </div>{" "}
+            <div className="column">
+              <input
+                ref={userMailRef}
+                disabled={inputDisabled}
+                autoFocus
+                className="input is-primary"
+                placeholder="e-mail"
+                type="email"
+              />
             </div>
             <div className="column">
               <input
-                ref={userRegisterCodeRef}
+                ref={RegisterCodeRef}
                 disabled={inputDisabled}
-                autoFocus
                 className="input is-primary"
                 placeholder="register code"
               />

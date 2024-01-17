@@ -7,6 +7,7 @@ const checkUserRegistered = async (userID, userMail) => {
     })
     .exec();
 
+  console.log("hier", isUserRegistered);
   return isUserRegistered;
 };
 
