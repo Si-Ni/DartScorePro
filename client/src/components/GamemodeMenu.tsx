@@ -16,8 +16,24 @@ function GamemodeMenu() {
     <>
       {selectedGamemode != null ? (
         <div>
-          {selectedGamemode === "301" && <StandardGamemodes gamemodeTotalScore={301} players={["Marc", "Simon"]} />}
-          {selectedGamemode === "501" && <StandardGamemodes gamemodeTotalScore={501} players={["Player1"]} />}
+          {selectedGamemode === "301" && (
+            <StandardGamemodes
+              gamemodeTotalScore={301}
+              players={["Player1"]}
+              returnToMenu={() => {
+                setSelectedGamemode(null);
+              }}
+            />
+          )}
+          {selectedGamemode === "501" && (
+            <StandardGamemodes
+              gamemodeTotalScore={501}
+              players={["Player1"]}
+              returnToMenu={() => {
+                setSelectedGamemode(null);
+              }}
+            />
+          )}
         </div>
       ) : (
         <div className="hero is-justify-content-center is-align-items-center is-fullheight">
