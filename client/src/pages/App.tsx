@@ -1,5 +1,4 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import StandardGamemodes from "./StandardGamemodes";
 import Login from "./Login";
 import MainMenu from "./MainMenu";
 import { useRef, useState } from "react";
