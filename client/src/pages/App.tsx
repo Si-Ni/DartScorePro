@@ -8,7 +8,7 @@ import Singleplayer from "./Singleplayer";
 import PrivacyPolicy from "./PrivacyPolicy";
 
 function App() {
-  const pwdRef = useRef<HTMLInputElement>(null);
+  const pwdRef = useRef<HTMLInputElement | null>(null);
   const [loginErrorMsg, setLoginErrorMsg] = useState<string>("This password or username is invalid");
   const [isLoggedIn, setLoggedIn] = useState<boolean>(false);
   const [displayUserID, setDisplayUserID] = useState<string>("");

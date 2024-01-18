@@ -1,8 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import vhCheck from "vh-check";
 import "../styles/Login.css";
 import { BarLoader } from "react-spinners";
-// import { calenderSetDarkTheme, calenderSetLightTheme } from "../helpers";
 import { LoginProps } from "../global/types";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -12,7 +11,6 @@ function Login(props: LoginProps) {
   const invalidPwdMsgRef = useRef<HTMLInputElement | null>(null);
   const [isPwdDisabled, setPwdDisabled] = useState(false);
   const userIDorMailRef = useRef<HTMLInputElement | null>(null);
-  const [isModeLoaded, setIsModeLoaded] = useState(true);
   const navigate = useNavigate();
 
   const onSubmitPwd = () => {
@@ -41,19 +39,17 @@ function Login(props: LoginProps) {
       });
   };
 
-  const onEnterPressed = (e: any) => {
-    if (e.keyCode === 13) onSubmitPwd();
+  const onEnterPressed = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") onSubmitPwd();
   };
 
   const onChangeHideInvalidPwdMsg = () => {
-    if ((invalidPwdMsgRef.current!.style.display = "block")) invalidPwdMsgRef.current!.style.display = "none";
+    if (invalidPwdMsgRef.current!.style.display === "block") invalidPwdMsgRef.current!.style.display = "none";
   };
-
-  useEffect(() => {}, []);
 
   return (
     <>
-      {isModeLoaded ? (
+      {
         <div className="hero is-fullheight ">
           {isPwdDisabled ? <BarLoader id="top-barloader" color={"#00d1b2"} width={"100%"} /> : null}
           <div className="hero-body  is-justify-content-center is-align-items-center">
@@ -111,7 +107,7 @@ function Login(props: LoginProps) {
             </div>
           </div>
         </div>
-      ) : null}
+      }
     </>
   );
 }

@@ -3,9 +3,9 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 function RegisterVerify() {
-  const RegisterCodeRef = useRef<HTMLInputElement>(null);
+  const RegisterCodeRef = useRef<HTMLInputElement | null>(null);
   const [inputDisabled, setInputDisabled] = useState(false);
-  const userMailRef = useRef<HTMLInputElement>(null);
+  const userMailRef = useRef<HTMLInputElement | null>(null);
   const navigate = useNavigate();
 
   const onSubmitRegisterCode = () => {

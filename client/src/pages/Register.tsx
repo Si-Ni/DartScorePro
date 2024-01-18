@@ -1,19 +1,17 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import vhCheck from "vh-check";
 import "../styles/Login.css";
 import { BarLoader } from "react-spinners";
-// import { calenderSetDarkTheme, calenderSetLightTheme } from "../helpers";
 import { RegisterProps } from "../global/types";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 vhCheck("vh-check");
 
 function Register(props: RegisterProps) {
-  const invalidPwdMsgRef = useRef<HTMLInputElement>(null);
+  const invalidPwdMsgRef = useRef<HTMLInputElement | null>(null);
   const [isPwdDisabled, setPwdDisabled] = useState(false);
-  const userIDRef = useRef<HTMLInputElement>(null);
-  const userMailRef = useRef<HTMLInputElement>(null);
-  const [isModeLoaded, setIsModeLoaded] = useState(true);
+  const userIDRef = useRef<HTMLInputElement | null>(null);
+  const userMailRef = useRef<HTMLInputElement | null>(null);
   const [policyAccepted, setPolicyAccepted] = useState<boolean>(Boolean(localStorage.getItem("privacyPolicyAccepted")));
   const navigate = useNavigate();
 
@@ -50,17 +48,17 @@ function Register(props: RegisterProps) {
       });
   };
 
-  const onEnterPressed = (e: any) => {};
-
-  const onChangeHideInvalidPwdMsg = () => {
-    if ((invalidPwdMsgRef.current!.style.display = "block")) invalidPwdMsgRef.current!.style.display = "none";
+  const onEnterPressed = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") onSubmitPwd();
   };
 
-  useEffect(() => {}, []);
+  const onChangeHideInvalidPwdMsg = () => {
+    if (invalidPwdMsgRef.current!.style.display === "block") invalidPwdMsgRef.current!.style.display = "none";
+  };
 
   return (
     <>
-      {isModeLoaded ? (
+      {
         <div className="hero is-fullheight ">
           {isPwdDisabled ? <BarLoader id="top-barloader" color={"#00d1b2"} width={"100%"} /> : null}
           <div className="hero-body  is-justify-content-center is-align-items-center">
@@ -130,16 +128,7 @@ function Register(props: RegisterProps) {
               </div>
               <div className="has-text-centered">
                 <p className="is-size-7">
-                  <span
-                    tabIndex={0}
-                    onClick={props.changeLoginMode}
-                    onKeyDown={(event) => {
-                      if (event.key === "Enter") {
-                        event.preventDefault();
-                        props.changeLoginMode();
-                      }
-                    }}
-                  >
+                  <span tabIndex={0}>
                     <Link to={"/login"}>Login</Link>
                   </span>{" "}
                   -&nbsp;
@@ -151,7 +140,7 @@ function Register(props: RegisterProps) {
             </div>
           </div>
         </div>
-      ) : null}
+      }
     </>
   );
 }
