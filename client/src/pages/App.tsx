@@ -11,15 +11,26 @@ import PrivacyPolicy from "./PrivacyPolicy";
 function App() {
   const pwdRef = useRef<HTMLInputElement>(null);
   const [loginErrorMsg, setLoginErrorMsg] = useState<string>("This password or username is invalid");
+  const [isLoggedIn, setLoggedIn] = useState<boolean>(false);
+  const [displayUserID, setDisplayUserID] = useState<string>("");
 
   return (
     <>
+      {isLoggedIn && <div className="fixed-bottom-left">Logged in as {displayUserID}</div>}
       <Router>
         <Routes>
           <Route path="/" element={<MainMenu />} />
           <Route
             path="/login"
-            element={<Login loginErrorMsg={loginErrorMsg} pwdRef={pwdRef} setLoginErrorMsg={setLoginErrorMsg} />}
+            element={
+              <Login
+                loginErrorMsg={loginErrorMsg}
+                pwdRef={pwdRef}
+                setLoginErrorMsg={setLoginErrorMsg}
+                setLoggedIn={setLoggedIn}
+                setDisplayUserID={setDisplayUserID}
+              />
+            }
           />
           <Route
             path="/register"

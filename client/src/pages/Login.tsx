@@ -9,9 +9,9 @@ import axios from "axios";
 vhCheck("vh-check");
 
 function Login(props: LoginProps) {
-  const invalidPwdMsgRef = useRef<HTMLInputElement>(null);
+  const invalidPwdMsgRef = useRef<HTMLInputElement | null>(null);
   const [isPwdDisabled, setPwdDisabled] = useState(false);
-  const userIDorMailRef = useRef<HTMLInputElement>(null);
+  const userIDorMailRef = useRef<HTMLInputElement | null>(null);
   const [isModeLoaded, setIsModeLoaded] = useState(true);
   const navigate = useNavigate();
 
@@ -22,9 +22,11 @@ function Login(props: LoginProps) {
     setPwdDisabled(true);
     axios
       .post("http://localhost:4000/login/", { userIDorMail, userPWD })
-      .then(() => {
+      .then((res) => {
         navigate("/");
         setPwdDisabled(false);
+        props.setLoggedIn(true);
+        props.setDisplayUserID(`${res.data.userID}`);
       })
       .catch((error) => {
         setPwdDisabled(false);
