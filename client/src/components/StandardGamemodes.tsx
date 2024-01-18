@@ -52,14 +52,11 @@ function StandardGamemodes(props: StandardGamemodesProps) {
         [players[playerIndex]]: setBeginningScoreForPlayer(playerStats[players[playerIndex]]),
       }));
     }
-    console.log(playerStats);
   };
 
   const setBeginningScoreForPlayer = (playerStats: PlayerStats): PlayerStats => {
-    return {
-      ...playerStats,
-      scoreAtBeginningOfRound: playerStats.score,
-    };
+    playerStats.scoreAtBeginningOfRound = playerStats.score;
+    return playerStats;
   };
 
   const calculateUpdatedScore = (playerIndex: number, thrownPoints: number): number => {
