@@ -29,7 +29,7 @@ function StandardGames(props: StandardGamesProps) {
   const [multiplier, setMultiplier] = useState<number>(1);
   const [previousPlayerStats, setPreviousPlayerStats] = useState<PlayerStats | {}>({});
   const [playerStats, setPlayerStats] = useState<PlayerToPlayerStats>(() =>
-    initializePlayerStats(props.players, props.gamemodeTotalScore)
+    initializePlayerStats(props.players, props.gamemodeTotalScore),
   );
 
   const handleScoreChange = (points: number): void => {
