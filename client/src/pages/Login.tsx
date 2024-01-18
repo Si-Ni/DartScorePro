@@ -3,38 +3,28 @@ import vhCheck from "vh-check";
 import "../styles/Login.css";
 import { BarLoader } from "react-spinners";
 // import { calenderSetDarkTheme, calenderSetLightTheme } from "../helpers";
-import { RegisterProps } from "../global/types";
+import { LoginProps } from "../global/types";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 vhCheck("vh-check");
 
-function Register(props: RegisterProps) {
+function Login(props: LoginProps) {
   const invalidPwdMsgRef = useRef<HTMLInputElement>(null);
   const [isPwdDisabled, setPwdDisabled] = useState(false);
-  const userIDRef = useRef<HTMLInputElement>(null);
-  const userMailRef = useRef<HTMLInputElement>(null);
+  const userIDorMailRef = useRef<HTMLInputElement>(null);
   const [isModeLoaded, setIsModeLoaded] = useState(true);
-  const [policyAccepted, setPolicyAccepted] = useState<boolean>(Boolean(localStorage.getItem("privacyPolicyAccepted")));
   const navigate = useNavigate();
 
   const onSubmitPwd = () => {
-    if (!policyAccepted) {
-      props.setLoginErrorMsg("You must agree to the privacy policy!");
-      invalidPwdMsgRef.current!.style.display = "block";
-      return;
-    }
-    if (!props.pwdRef.current!.value || !userIDRef.current!.value) return;
+    if (!props.pwdRef.current!.value || !userIDorMailRef.current!.value) return;
     const userPWD = props.pwdRef.current!.value;
-    const userID = userIDRef.current!.value;
-    const userMail = userMailRef.current!.value;
-
-    console.log(userID, userMail, userPWD);
+    const userIDorMail = userIDorMailRef.current!.value;
     setPwdDisabled(true);
     axios
-      .post("http://localhost:4000/register/", { userMail, userID, userPWD })
+      .post("http://localhost:4000/login/", { userIDorMail, userPWD })
       .then(() => {
+        navigate("/");
         setPwdDisabled(false);
-        navigate("/register/verify");
       })
       .catch((error) => {
         setPwdDisabled(false);
@@ -51,7 +41,9 @@ function Register(props: RegisterProps) {
       });
   };
 
-  const onEnterPressed = (e: any) => {};
+  const onEnterPressed = (e: any) => {
+    if (e.keyCode === 13) onSubmitPwd();
+  };
 
   const onChangeHideInvalidPwdMsg = () => {
     if ((invalidPwdMsgRef.current!.style.display = "block")) invalidPwdMsgRef.current!.style.display = "none";
@@ -67,28 +59,17 @@ function Register(props: RegisterProps) {
           <div className="hero-body  is-justify-content-center is-align-items-center">
             <div className="columns is-half is-flex-direction-column box">
               <div className="column is-flex is-justify-content-center">
-                <h1 className="is-size-5">Register</h1>
+                <h1 className="is-size-5">Login</h1>
               </div>
               <div className="column">
                 <input
-                  ref={userMailRef}
+                  ref={userIDorMailRef}
                   disabled={isPwdDisabled}
                   autoFocus
                   onChange={onChangeHideInvalidPwdMsg}
                   onKeyUp={onEnterPressed}
                   className="input is-primary"
-                  placeholder="e-mail"
-                  type="email"
-                />
-              </div>
-              <div className="column">
-                <input
-                  ref={userIDRef}
-                  disabled={isPwdDisabled}
-                  onChange={onChangeHideInvalidPwdMsg}
-                  onKeyUp={onEnterPressed}
-                  className="input is-primary"
-                  placeholder="username"
+                  placeholder="username or mail"
                 />
               </div>
               <div className="column">
@@ -106,19 +87,6 @@ function Register(props: RegisterProps) {
                   {props.loginErrorMsg}
                 </p>
               </div>
-              <div className="column policy">
-                <input
-                  type="checkbox"
-                  defaultChecked={policyAccepted}
-                  onChange={() => {
-                    setPolicyAccepted(!policyAccepted);
-                  }}
-                />
-                I agree to the{" "}
-                <a className="policyLink" href="" target="_blank">
-                  <Link to={"/privacy-policy"}>privacy policy</Link>
-                </a>
-              </div>
               <div className="column">
                 <button
                   onClick={onSubmitPwd}
@@ -126,25 +94,16 @@ function Register(props: RegisterProps) {
                   className="button is-primary is-fullwidth"
                   type="submit"
                 >
-                  Register
+                  Login
                 </button>
               </div>
               <div className="has-text-centered">
                 <p className="is-size-7">
-                  <span
-                    tabIndex={0}
-                    onClick={props.changeLoginMode}
-                    onKeyDown={(event) => {
-                      if (event.key === "Enter") {
-                        event.preventDefault();
-                        props.changeLoginMode();
-                      }
-                    }}
-                  >
-                    <Link to={"/login"}>Login</Link>
+                  <span tabIndex={0}>
+                    <Link to={"/register"}>Register</Link>
                   </span>{" "}
                   -&nbsp;
-                  <a href="" className="has-text-danger">
+                  <a href="client/src/components" className="has-text-danger">
                     Help?
                   </a>
                 </p>
@@ -157,4 +116,4 @@ function Register(props: RegisterProps) {
   );
 }
 
-export default Register;
+export default Login;

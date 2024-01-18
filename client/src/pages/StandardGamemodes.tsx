@@ -3,7 +3,7 @@ import "../styles/App.css";
 import type { JSX } from "react";
 import { PlayerStats, PlayerToPlayerStats, StandardGamemodesProps } from "../global/types";
 import PlayerScoreCard from "./PlayerScoreCard";
-import PopUp from "./PopUp";
+import PopUp from "../components/PopUp";
 
 function StandardGamemodes(props: StandardGamemodesProps) {
   const [showGoToMainMenuPopUp, setShowGoToMainMenuPopUp] = useState<boolean>(false);

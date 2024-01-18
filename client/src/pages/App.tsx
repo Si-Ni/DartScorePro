@@ -6,7 +6,7 @@ import { useRef, useState } from "react";
 import Register from "./Register";
 import RegisterVerify from "./RegisterVerify";
 import GamemodeMenu from "./GamemodeMenu";
-import PrivacyPolicy from "../pages/PrivacyPolicy";
+import PrivacyPolicy from "./PrivacyPolicy";
 
 function App() {
   const pwdRef = useRef<HTMLInputElement>(null);
