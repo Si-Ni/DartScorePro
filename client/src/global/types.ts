@@ -39,3 +39,9 @@ export interface PlayerScoreCardProps {
   score: number;
   average: number;
 }
+
+export interface PopUpProps {
+  content: string;
+  yesClicked(): void;
+  noClicked(): void;
+}

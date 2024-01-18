@@ -3,8 +3,10 @@ import "../styles/App.css";
 import type { JSX } from "react";
 import { PlayerStats, PlayerToPlayerStats, StandardGamemodesProps } from "../global/types";
 import PlayerScoreCard from "./PlayerScoreCard";
+import PopUp from "./PopUp";
 
 function StandardGamemodes(props: StandardGamemodesProps) {
+  const [showGoToMainMenuPopUp, setShowGoToMainMenuPopUp] = useState<boolean>(false);
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState<number>(0);
   const [players] = useState<string[]>(props.players);
   const [throwsRemaining, setThrowsRemaining] = useState<number>(3);
@@ -127,8 +129,8 @@ function StandardGamemodes(props: StandardGamemodesProps) {
     setMultiplier(multiplierValue);
   };
 
-  const handleReturnClick = (): void => {
-    props.returnToMenu();
+  const handleUndoClick = (): void => {
+    //TODO: Add undo functionality
   };
 
   const renderButtons = (): JSX.Element[] => {
@@ -148,6 +150,13 @@ function StandardGamemodes(props: StandardGamemodesProps) {
 
   return (
     <div className="App hero is-flex is-justify-content-center is-align-items-center is-fullheight">
+      {showGoToMainMenuPopUp ? (
+        <PopUp
+          content={"Do you really want to go back? All progress will be lost!"}
+          yesClicked={props.returnToMenu}
+          noClicked={() => setShowGoToMainMenuPopUp(false)}
+        />
+      ) : null}
       <div className="columns is-centered">
         {players.map((player) => (
           <PlayerScoreCard
@@ -172,9 +181,21 @@ function StandardGamemodes(props: StandardGamemodesProps) {
         <button className="button is-warning m-1 is-size-5" onClick={() => handleMultiplierClick(3)}>
           Triple
         </button>
-        <button className="button is-danger m-1 is-size-5" onClick={handleReturnClick}>
-          Return
+        <button className="button is-danger m-1 is-size-5" onClick={handleUndoClick}>
+          Undo
         </button>
+      </div>
+      <div className="columns is-centered">
+        <div className="column ">
+          <button
+            className="button is-danger m-1 is-size-5"
+            onClick={() => {
+              setShowGoToMainMenuPopUp(true);
+            }}
+          >
+            Back
+          </button>
+        </div>
       </div>
     </div>
   );
