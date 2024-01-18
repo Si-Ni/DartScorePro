@@ -19,3 +19,7 @@ export interface PlayerStats {
   totalScore: number;
   turns: number;
 }
+
+export interface StandardGamemodesProps {
+  gamemodeTotalScore: number;
+}

@@ -1,12 +1,12 @@
 import { useState } from "react";
 import "../styles/App.css";
 import type { JSX } from "react";
-import { PlayerStats } from "../global/types";
+import { PlayerStats, StandardGamemodesProps } from "../global/types";
 
-function DartsCounter() {
+function StandardGamemodes(props: StandardGamemodesProps) {
   const [currentPlayer, setCurrentPlayer] = useState<number>(1);
-  const [player1Score, setPlayer1Score] = useState<number>(501);
-  const [player2Score, setPlayer2Score] = useState<number>(501);
+  const [player1Score, setPlayer1Score] = useState<number>(props.gamemodeTotalScore);
+  const [player2Score, setPlayer2Score] = useState<number>(props.gamemodeTotalScore);
   const [throwsRemaining, setThrowsRemaining] = useState<number>(3);
   const [multiplier, setMultiplier] = useState<number>(1);
   const [playerStats, setPlayerStats] = useState<{
@@ -123,4 +123,4 @@ function DartsCounter() {
   );
 }
 
-export default DartsCounter;
+export default StandardGamemodes;

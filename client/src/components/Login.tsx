@@ -23,7 +23,7 @@ function Login(props: LoginProps) {
     axios
       .post("http://localhost:4000/login/", { userIDorMail, userPWD })
       .then(() => {
-        navigate("/dartscounter");
+        navigate("/");
         setPwdDisabled(false);
       })
       .catch((error) => {
