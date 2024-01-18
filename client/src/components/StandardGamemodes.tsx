@@ -1,63 +1,127 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../styles/App.css";
 import type { JSX } from "react";
-import { PlayerStats, StandardGamemodesProps } from "../global/types";
+import { PlayerStats, PlayerToPlayerStats, StandardGamemodesProps } from "../global/types";
+import PlayerScoreCard from "./PlayerScoreCard";
 
 function StandardGamemodes(props: StandardGamemodesProps) {
-  const [currentPlayer, setCurrentPlayer] = useState<number>(1);
-  const [player1Score, setPlayer1Score] = useState<number>(props.gamemodeTotalScore);
-  const [player2Score, setPlayer2Score] = useState<number>(props.gamemodeTotalScore);
+  const [currentPlayerIndex, setCurrentPlayerIndex] = useState<number>(0);
+  const [players] = useState<string[]>(props.players);
   const [throwsRemaining, setThrowsRemaining] = useState<number>(3);
   const [multiplier, setMultiplier] = useState<number>(1);
-  const [playerStats, setPlayerStats] = useState<{
-    1: PlayerStats;
-    2: PlayerStats;
-  }>({
-    1: { average: 0, dartsThrown: 0, totalScore: 0, turns: 0 },
-    2: { average: 0, dartsThrown: 0, totalScore: 0, turns: 0 },
-  });
-
-  const updatePlayerStats = (score: number, currentPlayerStats: PlayerStats): PlayerStats => ({
-    ...currentPlayerStats,
-    totalScore: currentPlayerStats.totalScore + score,
-    dartsThrown: currentPlayerStats.dartsThrown + 1,
-    turns: throwsRemaining === 1 ? currentPlayerStats.turns + 1 : currentPlayerStats.turns,
-    average: ((currentPlayerStats.totalScore + score) * 3) / (currentPlayerStats.dartsThrown + 1),
+  const [playerStats, setPlayerStats] = useState<PlayerToPlayerStats>(() => {
+    const initialPoints: PlayerToPlayerStats = {};
+    props.players.forEach((player) => {
+      initialPoints[player] = {
+        score: props.gamemodeTotalScore,
+        scoreAtBeginningOfRound: props.gamemodeTotalScore,
+        average: 0,
+        dartsThrown: 0,
+        totalScore: 0,
+        turns: 0,
+      };
+    });
+    return initialPoints;
   });
 
   const handleScoreChange = (points: number): void => {
-    const adjustedPoints = points * multiplier;
-
     if (multiplier === 3 && points === 25) return;
 
-    const currentPlayerStats = playerStats[currentPlayer.toString() as "1" | "2"];
-    const currentPlayerScore = currentPlayer === 1 ? player1Score : player2Score;
-    const updatedScore = currentPlayerScore - adjustedPoints;
+    saveScoreAtBeginningOfRound(currentPlayerIndex);
 
-    if (updatedScore < 0 || updatedScore === 1 || (multiplier === 1 && updatedScore === 0)) {
-      setCurrentPlayer(currentPlayer === 1 ? 2 : 1);
-      setThrowsRemaining(3);
+    const thrownPoints = points * multiplier;
+    const updatedScore = calculateUpdatedScore(currentPlayerIndex, thrownPoints);
+
+    const updatedScoreIsInvalid = updatedScore < 0 || updatedScore === 1 || (multiplier === 1 && updatedScore === 0);
+    if (updatedScoreIsInvalid) {
+      resetScoreToBeginningOfRound(currentPlayerIndex);
+      switchToNextPlayer();
     } else {
-      setPlayerStats((prevPlayerStats) => ({
-        ...prevPlayerStats,
-        [currentPlayer]: updatePlayerStats(adjustedPoints, currentPlayerStats),
-      }));
-
-      currentPlayer === 1 ? setPlayer1Score(updatedScore) : setPlayer2Score(updatedScore);
-
-      setThrowsRemaining((throwsRemaining) => throwsRemaining - 1);
-
-      if (updatedScore === 0 && multiplier === 2) {
-        console.log(`Player ${currentPlayer} wins!`);
-      }
-
-      if (updatedScore === 0 || throwsRemaining === 1) {
-        setCurrentPlayer(currentPlayer === 1 ? 2 : 1);
-        setThrowsRemaining(3);
-      }
+      updateStatsAndRemainingThrows(updatedScore, thrownPoints);
+      checkIfPlayerHasWon(updatedScore);
     }
+
     setMultiplier(1);
   };
+
+  const saveScoreAtBeginningOfRound = (playerIndex: number): void => {
+    const beginningOfRound = throwsRemaining === 3;
+    if (beginningOfRound) {
+      setPlayerStats((prevPlayerStats) => ({
+        ...prevPlayerStats,
+        [players[playerIndex]]: setBeginningScoreForPlayer(playerStats[players[playerIndex]]),
+      }));
+    }
+  };
+
+  const setBeginningScoreForPlayer = (playerStats: PlayerStats): PlayerStats => {
+    playerStats.scoreAtBeginningOfRound = playerStats.score;
+    return playerStats;
+  };
+
+  const calculateUpdatedScore = (playerIndex: number, thrownPoints: number): number => {
+    const currentPlayerStats = playerStats[players[playerIndex]];
+    const currentPlayerScore = currentPlayerStats.score;
+    const updatedScore = currentPlayerScore - thrownPoints;
+    return updatedScore;
+  };
+
+  const updateStatsAndRemainingThrows = (updatedScore: number, thrownPoints: number) => {
+    updatePlayerStats(currentPlayerIndex, thrownPoints);
+    updateRemainingThrows(updatedScore);
+  };
+
+  const checkIfPlayerHasWon = (updatedScore: number) => {
+    const playerWon = updatedScore === 0 && multiplier === 2;
+    if (playerWon) {
+      console.log(`Player ${players[currentPlayerIndex]} wins!`);
+    }
+  };
+
+  const updatePlayerStats = (playerIndex: number, thrownPoints: number): void => {
+    setPlayerStats((prevPlayerStats) => ({
+      ...prevPlayerStats,
+      [players[playerIndex]]: calculateNewPlayerStats(thrownPoints, playerStats[players[playerIndex]]),
+    }));
+  };
+
+  const calculateNewPlayerStats = (thrownPoints: number, currentPlayerStats: PlayerStats): PlayerStats => ({
+    ...currentPlayerStats,
+    score: currentPlayerStats.score - thrownPoints,
+    totalScore: currentPlayerStats.totalScore + thrownPoints,
+    dartsThrown: currentPlayerStats.dartsThrown + 1,
+    turns: throwsRemaining === 1 ? currentPlayerStats.turns + 1 : currentPlayerStats.turns,
+    average: ((currentPlayerStats.totalScore + thrownPoints) * 3) / (currentPlayerStats.dartsThrown + 1),
+  });
+
+  const updateRemainingThrows = (updatedScore: number): void => {
+    setThrowsRemaining((throwsRemaining) => throwsRemaining - 1);
+    if (updatedScore === 0 || throwsRemaining === 1) {
+      switchToNextPlayer();
+      setThrowsRemaining(3);
+    }
+  };
+
+  const switchToNextPlayer = (): void => {
+    if (currentPlayerIndex === players.length - 1) {
+      setCurrentPlayerIndex(0);
+    } else {
+      setCurrentPlayerIndex((currentPlayerIndex) => currentPlayerIndex + 1);
+    }
+    setThrowsRemaining(3);
+  };
+
+  const resetScoreToBeginningOfRound = (playerIndex: number) => {
+    setPlayerStats((prevPlayerStats) => ({
+      ...prevPlayerStats,
+      [players[playerIndex]]: resetScore(playerStats[players[playerIndex]]),
+    }));
+  };
+
+  const resetScore = (playerStats: PlayerStats): PlayerStats => ({
+    ...playerStats,
+    score: playerStats.scoreAtBeginningOfRound,
+  });
 
   const handleMultiplierClick = (multiplierValue: number): void => {
     setMultiplier(multiplierValue);
@@ -83,24 +147,15 @@ function StandardGamemodes(props: StandardGamemodesProps) {
   return (
     <div className="App hero is-flex is-justify-content-center is-align-items-center is-fullheight">
       <div className="columns is-centered">
-        <div className="column is-full">
-          <div className="box" style={{ borderLeft: currentPlayer === 1 ? "5px solid red" : "" }}>
-            <h1 className="title is-5">Player 1</h1>
-            <p className="subtitle is-1">{player1Score}</p>
-            <div className="average-box">
-              <p className="subtitle is-6">Average: {playerStats[1].average.toFixed(2)}</p>
-            </div>
-          </div>
-        </div>
-        <div className="column is-full">
-          <div className="box" style={{ borderLeft: currentPlayer === 2 ? "5px solid red" : "" }}>
-            <h1 className="title is-5">Player 2</h1>
-            <p className="subtitle is-1">{player2Score}</p>
-            <div className="average-box">
-              <p className="subtitle is-6">Average: {playerStats[2].average.toFixed(2)}</p>
-            </div>
-          </div>
-        </div>
+        {players.map((player) => (
+          <PlayerScoreCard
+            key={player}
+            playerName={player}
+            isCurrentPlayer={players[currentPlayerIndex] === player}
+            score={playerStats[player].score}
+            average={playerStats[player].average}
+          />
+        ))}
       </div>
 
       <div className="columns is-centered">
