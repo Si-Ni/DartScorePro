@@ -28,7 +28,7 @@ export type PlayerToPlayerStats = { [player: string]: PlayerStats };
 export interface StandardGamemodesProps {
   gamemodeTotalScore: number;
   players: string[];
-  returnToMenu(): void;
+  cbReturnToMenu(): void;
 }
 
 export type Gamemode = "301" | "501" | "rcl" | "cri";
@@ -42,6 +42,10 @@ export interface PlayerScoreCardProps {
 
 export interface PopUpProps {
   content: string;
-  yesClicked(): void;
-  noClicked(): void;
+  cbYesClicked(): void;
+  cbNoClicked(): void;
+}
+
+export interface GamemodeMenuProps {
+  cbGamemodeSelected(gamemode: Gamemode): void;
 }

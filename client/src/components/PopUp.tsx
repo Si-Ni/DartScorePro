@@ -13,10 +13,10 @@ function PopUp(props: PopUpProps) {
             </div>
           </section>
           <section className="modal-card-foot is-justify-content-center is-align-items-center">
-            <button className="button is-success m-1 is-large" style={{ width: "150px" }} onClick={props.yesClicked}>
+            <button className="button is-success m-1 is-large" style={{ width: "150px" }} onClick={props.cbYesClicked}>
               Yes
             </button>
-            <button className="button is-danger m-1 is-large" style={{ width: "150px" }} onClick={props.noClicked}>
+            <button className="button is-danger m-1 is-large" style={{ width: "150px" }} onClick={props.cbNoClicked}>
               No
             </button>
           </section>

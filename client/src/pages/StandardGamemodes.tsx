@@ -11,6 +11,7 @@ function StandardGamemodes(props: StandardGamemodesProps) {
   const [players] = useState<string[]>(props.players);
   const [throwsRemaining, setThrowsRemaining] = useState<number>(3);
   const [multiplier, setMultiplier] = useState<number>(1);
+  const [previousPlayerStats, setPreviousPlayerStats] = useState<PlayerStats | {}>({});
   const [playerStats, setPlayerStats] = useState<PlayerToPlayerStats>(() => {
     const initialPoints: PlayerToPlayerStats = {};
     props.players.forEach((player) => {
@@ -29,6 +30,7 @@ function StandardGamemodes(props: StandardGamemodesProps) {
   const handleScoreChange = (points: number): void => {
     if (multiplier === 3 && points === 25) return;
 
+    savePreviousPlayerStats(currentPlayerIndex);
     saveScoreAtBeginningOfRound(currentPlayerIndex);
 
     const thrownPoints = points * multiplier;
@@ -44,6 +46,10 @@ function StandardGamemodes(props: StandardGamemodesProps) {
     }
 
     setMultiplier(1);
+  };
+
+  const savePreviousPlayerStats = (playerIndex: number): void => {
+    setPreviousPlayerStats(playerStats[players[playerIndex]]);
   };
 
   const saveScoreAtBeginningOfRound = (playerIndex: number): void => {
@@ -130,7 +136,33 @@ function StandardGamemodes(props: StandardGamemodesProps) {
   };
 
   const handleUndoClick = (): void => {
-    //TODO: Add undo functionality
+    if (Object.keys(previousPlayerStats).length === 0) return;
+
+    let playerIndex = getPreviousPlayerIndex();
+
+    if (playerIndex != currentPlayerIndex) {
+      setCurrentPlayerIndex(playerIndex);
+      setThrowsRemaining(1);
+    }
+
+    setPlayerStats((prevPlayerStats) => ({
+      ...prevPlayerStats,
+      [players[playerIndex]]: previousPlayerStats as PlayerStats,
+    }));
+  };
+
+  useEffect(() => {
+    console.log(playerStats);
+  }, [playerStats]);
+
+  const getPreviousPlayerIndex = (): number => {
+    let playerIndex = currentPlayerIndex;
+    if (throwsRemaining === 3 && playerIndex != 0) {
+      playerIndex--;
+    } else if (throwsRemaining === 3) {
+      playerIndex = players.length - 1;
+    }
+    return playerIndex;
   };
 
   const renderButtons = (): JSX.Element[] => {
@@ -153,8 +185,8 @@ function StandardGamemodes(props: StandardGamemodesProps) {
       {showGoToMainMenuPopUp ? (
         <PopUp
           content={"Do you really want to go back? All progress will be lost!"}
-          yesClicked={props.returnToMenu}
-          noClicked={() => setShowGoToMainMenuPopUp(false)}
+          cbYesClicked={props.cbReturnToMenu}
+          cbNoClicked={() => setShowGoToMainMenuPopUp(false)}
         />
       ) : null}
       <div className="columns is-centered">
