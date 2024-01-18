@@ -28,6 +28,7 @@ export type PlayerToPlayerStats = { [player: string]: PlayerStats };
 export interface StandardGamemodesProps {
   gamemodeTotalScore: number;
   players: string[];
+  returnToMenu(): void;
 }
 
 export type Gamemode = "301" | "501" | "rcl" | "cri";

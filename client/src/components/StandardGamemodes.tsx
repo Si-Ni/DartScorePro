@@ -127,7 +127,9 @@ function StandardGamemodes(props: StandardGamemodesProps) {
     setMultiplier(multiplierValue);
   };
 
-  const handleReturnClick = (): void => {};
+  const handleReturnClick = (): void => {
+    props.returnToMenu();
+  };
 
   const renderButtons = (): JSX.Element[] => {
     const numbers = [...Array(21).keys()].map((num) => num).concat(25);
