@@ -1,9 +1,24 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "../styles/App.css";
 import type { JSX } from "react";
 import { PlayerStats, PlayerToPlayerStats, StandardGamemodesProps } from "../global/types";
 import PlayerScoreCard from "../components/PlayerScoreCard";
 import PopUp from "../components/PopUp";
+
+const initializePlayerStats = (players: string[], gamemodeTotalScore: number): PlayerToPlayerStats => {
+  const initialPoints: PlayerToPlayerStats = {};
+  players.forEach((player) => {
+    initialPoints[player] = {
+      score: gamemodeTotalScore,
+      scoreAtBeginningOfRound: gamemodeTotalScore,
+      average: 0,
+      dartsThrown: 0,
+      totalScore: 0,
+      turns: 0,
+    };
+  });
+  return initialPoints;
+};
 
 function StandardGamemodes(props: StandardGamemodesProps) {
   const [showGoToMainMenuPopUp, setShowGoToMainMenuPopUp] = useState<boolean>(false);
@@ -11,20 +26,9 @@ function StandardGamemodes(props: StandardGamemodesProps) {
   const [players] = useState<string[]>(props.players);
   const [throwsRemaining, setThrowsRemaining] = useState<number>(3);
   const [multiplier, setMultiplier] = useState<number>(1);
-  const [playerStats, setPlayerStats] = useState<PlayerToPlayerStats>(() => {
-    const initialPoints: PlayerToPlayerStats = {};
-    props.players.forEach((player) => {
-      initialPoints[player] = {
-        score: props.gamemodeTotalScore,
-        scoreAtBeginningOfRound: props.gamemodeTotalScore,
-        average: 0,
-        dartsThrown: 0,
-        totalScore: 0,
-        turns: 0,
-      };
-    });
-    return initialPoints;
-  });
+  const [playerStats, setPlayerStats] = useState<PlayerToPlayerStats>(() =>
+    initializePlayerStats(props.players, props.gamemodeTotalScore)
+  );
 
   const handleScoreChange = (points: number): void => {
     if (multiplier === 3 && points === 25) return;
