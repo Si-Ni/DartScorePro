@@ -18,7 +18,7 @@ function Singleplayer() {
           {selectedGamemode === "301" && (
             <StandardGamemodes
               gamemodeTotalScore={301}
-              players={["Player1", "Player2"]}
+              players={["Player1"]}
               cbReturnToMenu={() => {
                 setSelectedGamemode(null);
               }}
