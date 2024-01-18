@@ -5,7 +5,7 @@ import MainMenu from "./MainMenu";
 import { useRef, useState } from "react";
 import Register from "./Register";
 import RegisterVerify from "./RegisterVerify";
-import GamemodeMenu from "./GamemodeMenu";
+import Singleplayer from "./Singleplayer";
 import PrivacyPolicy from "./PrivacyPolicy";
 
 function App() {
@@ -27,9 +27,7 @@ function App() {
           />
           <Route path="/register/verify" element={<RegisterVerify />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-          <Route path="/singleplayer" element={<GamemodeMenu />} />
-          <Route path="/301" element={<StandardGamemodes gamemodeTotalScore={301} />} />
-          <Route path="/501" element={<StandardGamemodes gamemodeTotalScore={501} />} />
+          <Route path="/singleplayer" element={<Singleplayer />} />
         </Routes>
       </Router>
     </>
