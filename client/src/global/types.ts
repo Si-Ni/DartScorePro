@@ -27,7 +27,7 @@ export interface PlayerStats {
 
 export type PlayerToPlayerStats = { [player: string]: PlayerStats };
 
-export interface StandardGamemodesProps {
+export interface StandardGamesProps {
   gamemodeTotalScore: number;
   players: string[];
   cbReturnToMenu(): void;

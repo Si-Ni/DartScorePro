@@ -1,22 +1,18 @@
 import "../styles/Menu.css";
 import { useState } from "react";
-import StandardGamemodes from "./StandardGamemodes";
+import StandardGames from "./StandardGames";
 import { Gamemode } from "../global/types";
 import GamemodeMenu from "../components/GamemodeMenu";
 
 function Singleplayer() {
   const [selectedGamemode, setSelectedGamemode] = useState<Gamemode | null>(null);
 
-  const handleMenuClick = (gamemode: Gamemode) => {
-    setSelectedGamemode(gamemode);
-  };
-
   return (
     <>
       {selectedGamemode != null ? (
         <div>
           {selectedGamemode === "301" && (
-            <StandardGamemodes
+            <StandardGames
               gamemodeTotalScore={301}
               players={["Player1"]}
               cbReturnToMenu={() => {
@@ -25,7 +21,7 @@ function Singleplayer() {
             />
           )}
           {selectedGamemode === "501" && (
-            <StandardGamemodes
+            <StandardGames
               gamemodeTotalScore={501}
               players={["Player1"]}
               cbReturnToMenu={() => {

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "../styles/App.css";
 import type { JSX } from "react";
-import { PlayerStats, PlayerToPlayerStats, StandardGamemodesProps } from "../global/types";
+import { PlayerStats, PlayerToPlayerStats, StandardGamesProps } from "../global/types";
 import PlayerScoreCard from "../components/PlayerScoreCard";
 import PopUp from "../components/PopUp";
 
@@ -20,9 +20,10 @@ const initializePlayerStats = (players: string[], gamemodeTotalScore: number): P
   return initialPoints;
 };
 
-function StandardGamemodes(props: StandardGamemodesProps) {
+function StandardGames(props: StandardGamesProps) {
   const [showGoToMainMenuPopUp, setShowGoToMainMenuPopUp] = useState<boolean>(false);
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState<number>(0);
+  const [currentRound, setCurrentRound] = useState<number>(1);
   const [players] = useState<string[]>(props.players);
   const [throwsRemaining, setThrowsRemaining] = useState<number>(3);
   const [multiplier, setMultiplier] = useState<number>(1);
@@ -117,6 +118,7 @@ function StandardGamemodes(props: StandardGamemodesProps) {
   const switchToNextPlayer = (): void => {
     if (currentPlayerIndex === players.length - 1) {
       setCurrentPlayerIndex(0);
+      setCurrentRound((currentRound) => currentRound + 1);
     } else {
       setCurrentPlayerIndex((currentPlayerIndex) => currentPlayerIndex + 1);
     }
@@ -142,12 +144,12 @@ function StandardGamemodes(props: StandardGamemodesProps) {
   const handleUndoClick = (): void => {
     if (Object.keys(previousPlayerStats).length === 0) return;
 
-    let playerIndex = getPreviousPlayerIndex();
+    switchToPrevRoundForUndoIfNecessary();
 
-    if (playerIndex != currentPlayerIndex) {
-      setCurrentPlayerIndex(playerIndex);
-      setThrowsRemaining(1);
-    }
+    const playerIndex = getIndexOfPlayerFromLastTurn();
+
+    const switchToPrevPlayer = playerIndex != currentPlayerIndex || (throwsRemaining === 3 && players.length === 1);
+    if (switchToPrevPlayer) switchToPlayersLastTurn(playerIndex);
 
     setPlayerStats((prevPlayerStats) => ({
       ...prevPlayerStats,
@@ -155,7 +157,7 @@ function StandardGamemodes(props: StandardGamemodesProps) {
     }));
   };
 
-  const getPreviousPlayerIndex = (): number => {
+  const getIndexOfPlayerFromLastTurn = (): number => {
     let playerIndex = currentPlayerIndex;
     if (throwsRemaining === 3 && playerIndex != 0) {
       playerIndex--;
@@ -163,6 +165,16 @@ function StandardGamemodes(props: StandardGamemodesProps) {
       playerIndex = players.length - 1;
     }
     return playerIndex;
+  };
+
+  const switchToPrevRoundForUndoIfNecessary = (): void => {
+    const switchToPrevRound = throwsRemaining === 3 && currentPlayerIndex === 0;
+    if (switchToPrevRound) setCurrentRound((currentRound) => currentRound - 1);
+  };
+
+  const switchToPlayersLastTurn = (playerIndex: number): void => {
+    setCurrentPlayerIndex(playerIndex);
+    setThrowsRemaining(1);
   };
 
   const renderButtons = (): JSX.Element[] => {
@@ -189,6 +201,11 @@ function StandardGamemodes(props: StandardGamemodesProps) {
           cbNoClicked={() => setShowGoToMainMenuPopUp(false)}
         />
       ) : null}
+      <div className="is-centered">
+        <p className="is-size-3 mb-3" style={{ textAlign: "center" }}>
+          Round: {currentRound}
+        </p>
+      </div>
       <div className="columns is-centered">
         {players.map((player) => (
           <PlayerScoreCard
@@ -200,9 +217,13 @@ function StandardGamemodes(props: StandardGamemodesProps) {
           />
         ))}
       </div>
-
+      <div className="is-centered">
+        <p className="is-size-6 mb-1" style={{ textAlign: "center" }}>
+          Remaining throws: {throwsRemaining}
+        </p>
+      </div>
       <div className="columns is-centered">
-        <div className="column ">
+        <div className="column">
           <div className="box">{renderButtons()}</div>
         </div>
       </div>
@@ -233,4 +254,4 @@ function StandardGamemodes(props: StandardGamemodesProps) {
   );
 }
 
-export default StandardGamemodes;
+export default StandardGames;
