@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import DartsCounter from "./DartsCounter";
+import StandardGamemodes from "./StandardGamemodes";
 import Login from "./Login";
 import MainMenu from "./MainMenu";
 import { useRef, useState } from "react";
@@ -28,7 +28,8 @@ function App() {
           <Route path="/register/verify" element={<RegisterVerify />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/singleplayer" element={<GamemodeMenu />} />
-          <Route path="/dartscounter" element={<DartsCounter />} />
+          <Route path="/301" element={<StandardGamemodes gamemodeTotalScore={301} />} />
+          <Route path="/501" element={<StandardGamemodes gamemodeTotalScore={501} />} />
         </Routes>
       </Router>
     </>
