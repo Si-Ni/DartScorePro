@@ -6,9 +6,10 @@ const checkPwd = async (userID, userMail, userPWD) => {
     const user = await userModel
       .findOne({
         $or: [{ userID: userID }, { userMail: userMail }],
+        verified: true,
       })
       .exec();
-
+    //here
     const isPWDValid = await bcrypt.compare(userPWD, user.userPWD);
 
     return isPWDValid;
