@@ -41,8 +41,7 @@ function Register(props: RegisterProps) {
         console.log("dsd", error);
         if (error.response.status === 429) props.setLoginErrorMsg(error.response.statusText);
         else {
-          console.log(error.response.status);
-          props.setLoginErrorMsg("This password or username is invalid");
+          props.setLoginErrorMsg(`${error.response.data}`);
         }
         invalidPwdMsgRef.current!.style.display = "block";
         setTimeout(() => {

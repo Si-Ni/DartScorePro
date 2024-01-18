@@ -8,6 +8,7 @@ const checkPWDvalid = require("../helpers/checkPwd.helper");
 
 const mailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const userIDRegex = /^[a-zA-Z0-9._-]+$/;
+const pwdRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
 (async () => {
   await connectDB();
@@ -47,7 +48,7 @@ async function register(req) {
   let { userMail, userID, userPWD } = req.body;
 
   if (!userMail || !userID || !userPWD) {
-    return { status: 400, json: "Please provide valid values for email, username, and password." };
+    return { status: 400, json: "Please provide valid values for email, username, and password" };
   }
 
   userMail = userMail.trim();
@@ -56,6 +57,9 @@ async function register(req) {
 
   if (!mailRegex.test(userMail) || !userIDRegex.test(userID)) {
     return { status: 400, json: "Invalid email or username format" };
+  }
+  if (!pwdRegex.test(userPWD)) {
+    return { status: 400, json: "Please use a strong password" };
   }
 
   const isUserRegistered = await checkUserRegistered(userID, userMail);
