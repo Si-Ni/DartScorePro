@@ -3,8 +3,11 @@ const generateRegistrationCode = require("../helpers/generateRegistrationCode.he
 const sendRegistrationEmail = require("../helpers/sendRegistrationEmail.helper");
 const checkUserRegistered = require("../helpers/checkUserRegistered.helper");
 const createNewUser = require("../helpers/createNewUser.helper");
-const checkUserVerified = require("../helpers/checkUserVerified.helper");
+const setUserVerified = require("../helpers/setUserVerified.helper");
 const checkPWDvalid = require("../helpers/checkPwd.helper");
+
+const mailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const userIDRegex = /^[a-zA-Z0-9._-]+$/;
 
 (async () => {
   await connectDB();
@@ -12,8 +15,6 @@ const checkPWDvalid = require("../helpers/checkPwd.helper");
 
 async function login(req) {
   let { userIDorMail, userPWD } = req.body;
-  const mailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const userIDRegex = /^[a-zA-Z0-9._-]+$/;
 
   userIDorMail = userIDorMail.trim();
   userPWD = userPWD.trim();
@@ -31,15 +32,19 @@ async function login(req) {
     return { status: 400, json: "No user with this name or mail" };
   }
 
+  if (isUserRegistered && !isUserRegistered.verified) {
+    return { status: 400, json: "User is registered but not verified" };
+  }
+
   const isPWDValid = await checkPWDvalid(isMail ? null : userIDorMail, isUserID ? null : userIDorMail, userPWD);
 
-  return isPWDValid ? { status: 200, json: "Login Success" } : { status: 400, json: "Login Failed" };
+  return isPWDValid
+    ? { status: 200, json: "Login Success" }
+    : { status: 400, json: "This password or username is invalid" };
 }
 
 async function register(req) {
   let { userMail, userID, userPWD } = req.body;
-  const mailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const userIDRegex = /^[a-zA-Z0-9._-]+$/;
 
   if (!userMail || !userID || !userPWD) {
     return { status: 400, json: "Please provide valid values for email, username, and password." };
@@ -81,8 +86,9 @@ async function registerVerify(req) {
 
   console.log("verify", userMail, registerCode);
 
-  await checkUserVerified(userMail, registerCode);
-  return { status: 200, json: "test" };
+  const isUserVerified = await setUserVerified(userMail, registerCode);
+
+  return isUserVerified ? { status: 200, json: "User verified" } : { status: 400, json: "User not verified" };
 }
 
 module.exports = {
