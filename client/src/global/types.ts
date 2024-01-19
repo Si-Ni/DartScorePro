@@ -23,12 +23,14 @@ export interface PlayerStats {
   dartsThrown: number;
   totalScore: number;
   turns: number;
+  lastThrows: string[];
 }
 
 export type PlayerToPlayerStats = { [player: string]: PlayerStats };
 
 export interface PlayerStatsRCl {
   currentTarget: number;
+  lastThrows: string[];
 }
 
 export type PlayerToPlayerStatsRCl = { [player: string]: PlayerStatsRCl };
@@ -51,6 +53,7 @@ export interface PlayerScoreCardProps {
   isCurrentPlayer: boolean;
   score: number;
   average?: number;
+  lastThrows: string[];
 }
 
 export interface YesNoPopUpProps {
