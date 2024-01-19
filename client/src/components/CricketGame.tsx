@@ -31,7 +31,7 @@ function CricketGame(props: CricketGameProps) {
   const [players, setPlayers] = useState<string[]>(props.players);
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState<number>(0);
   const [playerStats, setPlayerStats] = useState<PlayerToPlayerStatsCricket>(() =>
-    initializePlayerStats(props.players)
+    initializePlayerStats(props.players),
   );
 
   const handleScoreBtnClicked = (points: number): void => {
