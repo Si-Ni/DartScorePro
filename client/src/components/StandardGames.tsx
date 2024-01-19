@@ -6,6 +6,7 @@ import { PlayerStats, PlayerToPlayerStats, StandardGamesProps } from "../global/
 import PlayerScoreCard from "./PlayerScoreCard";
 import YesNoPopUp from "./YesNoPopUp";
 import GameInputButtons from "./GameInputButtons";
+import { getAllOptions, sumRound } from "../helpers/calcCheckouts";
 
 const initializePlayerStats = (players: string[], gamemodeTotalScore: number): PlayerToPlayerStats => {
   const initialPoints: PlayerToPlayerStats = {};
@@ -19,6 +20,7 @@ const initializePlayerStats = (players: string[], gamemodeTotalScore: number): P
       turns: 0,
       lastThrows: [],
       throwsRemaining: 0,
+      checkoutOptions: [],
     };
   });
   return initialPoints;
@@ -49,6 +51,8 @@ function StandardGames(props: StandardGamesProps) {
     addThrowToLastThrows(currentPlayerIndex, points, multiplier);
 
     updateScoreForPlayerAndContinueGame(currentPlayerIndex, points);
+
+    console.log(playerStats);
   };
 
   const savePreviousPlayerStats = (playerIndex: number): void => {
@@ -104,6 +108,7 @@ function StandardGames(props: StandardGamesProps) {
     const updatedScore = calculateUpdatedScore(playerIndex, thrownPoints);
 
     const updatedScoreIsInvalid = updatedScore < 0 || updatedScore === 1 || (multiplier === 1 && updatedScore === 0);
+
     if (updatedScoreIsInvalid) {
       resetScoreToBeginningOfRound(playerIndex);
       switchToNextPlayer();
@@ -148,6 +153,7 @@ function StandardGames(props: StandardGamesProps) {
     dartsThrown: currentPlayerStats.dartsThrown + 1,
     turns: throwsRemaining === 1 ? currentPlayerStats.turns + 1 : currentPlayerStats.turns,
     average: ((currentPlayerStats.totalScore + thrownPoints) * 3) / (currentPlayerStats.dartsThrown + 1),
+    checkoutOptions: getAllOptions(3).filter((r) => sumRound(r) === currentPlayerStats.score - thrownPoints),
   });
 
   const updateRemainingThrows = (updatedScore: number): void => {
@@ -248,6 +254,7 @@ function StandardGames(props: StandardGamesProps) {
             score={playerStats[player].score}
             average={playerStats[player].average}
             lastThrows={playerStats[player].lastThrows}
+            checkoutOptions={playerStats[player].checkoutOptions}
           />
         ))}
       </div>

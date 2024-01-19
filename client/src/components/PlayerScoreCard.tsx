@@ -1,3 +1,4 @@
+import React from "react";
 import { PlayerScoreCardProps } from "../global/types";
 import "../styles/Games.css";
 
