@@ -75,13 +75,13 @@ function RoundTheClockGame(props: RoundTheClockGameProps) {
 
   return (
     <div className="App hero is-flex is-justify-content-center is-align-items-center is-fullheight">
-      {showGoToMainMenuPopUp ? (
+      {showGoToMainMenuPopUp && (
         <YesNoPopUp
           content={"Do you really want to go back? All progress will be lost!"}
           cbYesClicked={props.cbReturnToMenu}
           cbNoClicked={() => setShowGoToMainMenuPopUp(false)}
         />
-      ) : null}
+      )}
       <div className="is-centered">
         <p className="is-size-3 mb-6" style={{ textAlign: "center" }}>
           Round: {currentRound}
@@ -94,6 +94,7 @@ function RoundTheClockGame(props: RoundTheClockGameProps) {
             playerName={player}
             isCurrentPlayer={players[currentPlayerIndex] === player}
             score={playerStats[player].currentTarget}
+            lastThrows={[]}
           />
         ))}
       </div>

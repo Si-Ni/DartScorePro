@@ -16,6 +16,7 @@ const initializePlayerStats = (players: string[], gamemodeTotalScore: number): P
       dartsThrown: 0,
       totalScore: 0,
       turns: 0,
+      lastThrows: [],
     };
   });
   return initialPoints;
@@ -30,7 +31,7 @@ function StandardGames(props: StandardGamesProps) {
   const [multiplier, setMultiplier] = useState<number>(1);
   const [previousPlayerStats, setPreviousPlayerStats] = useState<PlayerStats | Record<string, never>>({});
   const [playerStats, setPlayerStats] = useState<PlayerToPlayerStats>(() =>
-    initializePlayerStats(props.players, props.gamemodeTotalScore),
+    initializePlayerStats(props.players, props.gamemodeTotalScore)
   );
 
   const handleScoreChange = (points: number): void => {
@@ -39,23 +40,13 @@ function StandardGames(props: StandardGamesProps) {
     savePreviousPlayerStats(currentPlayerIndex);
     saveScoreAtBeginningOfRound(currentPlayerIndex);
 
-    const thrownPoints = points * multiplier;
-    const updatedScore = calculateUpdatedScore(currentPlayerIndex, thrownPoints);
+    addThrowToLastThrows(currentPlayerIndex, points, multiplier);
 
-    const updatedScoreIsInvalid = updatedScore < 0 || updatedScore === 1 || (multiplier === 1 && updatedScore === 0);
-    if (updatedScoreIsInvalid) {
-      resetScoreToBeginningOfRound(currentPlayerIndex);
-      switchToNextPlayer();
-    } else {
-      updateStatsAndRemainingThrows(updatedScore, thrownPoints);
-      checkIfPlayerHasWon(updatedScore);
-    }
-
-    setMultiplier(1);
+    updateScoreForPlayerAndContinueGame(currentPlayerIndex, points);
   };
 
   const savePreviousPlayerStats = (playerIndex: number): void => {
-    setPreviousPlayerStats(playerStats[players[playerIndex]]);
+    setPreviousPlayerStats(structuredClone(playerStats[players[playerIndex]]));
   };
 
   const saveScoreAtBeginningOfRound = (playerIndex: number): void => {
@@ -73,6 +64,41 @@ function StandardGames(props: StandardGamesProps) {
     return playerStats;
   };
 
+  const formatThrowToString = (value: number | string, mulitplier: number): string => {
+    if (value === 25 && mulitplier === 2) return "BULL";
+    else if (mulitplier === 2) return `D${value}`;
+    else if (mulitplier === 3) return `T${value}`;
+    else return `${value}`;
+  };
+
+  const addThrowToLastThrows = (playerIndex: number, points: number, multiplier: number): void => {
+    const formatedThrow = formatThrowToString(points, multiplier);
+    const playerKey = players[playerIndex];
+    setPlayerStats((prevPlayerStats) => ({
+      ...prevPlayerStats,
+      [playerKey]: {
+        ...prevPlayerStats[playerKey],
+        currentTarget: prevPlayerStats[playerKey].lastThrows.push(formatedThrow),
+      },
+    }));
+  };
+
+  const updateScoreForPlayerAndContinueGame = (playerIndex: number, points: number): void => {
+    const thrownPoints = points * multiplier;
+    const updatedScore = calculateUpdatedScore(playerIndex, thrownPoints);
+
+    const updatedScoreIsInvalid = updatedScore < 0 || updatedScore === 1 || (multiplier === 1 && updatedScore === 0);
+    if (updatedScoreIsInvalid) {
+      resetScoreToBeginningOfRound(playerIndex);
+      switchToNextPlayer();
+    } else {
+      updateStatsAndRemainingThrows(updatedScore, thrownPoints);
+      checkIfPlayerHasWon(updatedScore);
+    }
+
+    setMultiplier(1);
+  };
+
   const calculateUpdatedScore = (playerIndex: number, thrownPoints: number): number => {
     const currentPlayerStats = playerStats[players[playerIndex]];
     const currentPlayerScore = currentPlayerStats.score;
@@ -81,7 +107,7 @@ function StandardGames(props: StandardGamesProps) {
   };
 
   const updateStatsAndRemainingThrows = (updatedScore: number, thrownPoints: number) => {
-    updatePlayerStats(currentPlayerIndex, thrownPoints);
+    updatePlayerStatsByThrownPoints(currentPlayerIndex, thrownPoints);
     updateRemainingThrows(updatedScore);
   };
 
@@ -92,7 +118,7 @@ function StandardGames(props: StandardGamesProps) {
     }
   };
 
-  const updatePlayerStats = (playerIndex: number, thrownPoints: number): void => {
+  const updatePlayerStatsByThrownPoints = (playerIndex: number, thrownPoints: number): void => {
     setPlayerStats((prevPlayerStats) => ({
       ...prevPlayerStats,
       [players[playerIndex]]: calculateNewPlayerStats(thrownPoints, playerStats[players[playerIndex]]),
@@ -120,10 +146,25 @@ function StandardGames(props: StandardGamesProps) {
     if (currentPlayerIndex === players.length - 1) {
       setCurrentPlayerIndex(0);
       setCurrentRound((currentRound) => currentRound + 1);
+      clearAllLastThrows();
     } else {
       setCurrentPlayerIndex((currentPlayerIndex) => currentPlayerIndex + 1);
     }
     setThrowsRemaining(3);
+  };
+
+  const clearAllLastThrows = (): void => {
+    setPlayerStats((prevPlayerStats) => {
+      const updatedPlayerStats = { ...prevPlayerStats };
+      players.forEach((player) => {
+        updatedPlayerStats[player] = {
+          ...updatedPlayerStats[player],
+          lastThrows: [],
+        };
+      });
+
+      return updatedPlayerStats;
+    });
   };
 
   const resetScoreToBeginningOfRound = (playerIndex: number) => {
@@ -195,13 +236,13 @@ function StandardGames(props: StandardGamesProps) {
 
   return (
     <div className="App hero is-flex is-justify-content-center is-align-items-center is-fullheight">
-      {showGoToMainMenuPopUp ? (
+      {showGoToMainMenuPopUp && (
         <YesNoPopUp
           content={"Do you really want to go back? All progress will be lost!"}
           cbYesClicked={props.cbReturnToMenu}
           cbNoClicked={() => setShowGoToMainMenuPopUp(false)}
         />
-      ) : null}
+      )}
       <div className="is-centered">
         <p className="is-size-3 mb-3" style={{ textAlign: "center" }}>
           Round: {currentRound}
@@ -215,6 +256,7 @@ function StandardGames(props: StandardGamesProps) {
             isCurrentPlayer={players[currentPlayerIndex] === player}
             score={playerStats[player].score}
             average={playerStats[player].average}
+            lastThrows={playerStats[player].lastThrows}
           />
         ))}
       </div>

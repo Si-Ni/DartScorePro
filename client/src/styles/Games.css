@@ -1,3 +1,7 @@
 .uniformButton {
   width: 100px;
 }
+
+.playerCardMinWidth {
+  min-width: 200px;
+}
