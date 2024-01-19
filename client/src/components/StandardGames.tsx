@@ -1,9 +1,10 @@
 import { useState } from "react";
 import "../styles/App.css";
+import "../styles/Games.css";
 import type { JSX } from "react";
 import { PlayerStats, PlayerToPlayerStats, StandardGamesProps } from "../global/types";
-import PlayerScoreCard from "../components/PlayerScoreCard";
-import PopUp from "../components/PopUp";
+import PlayerScoreCard from "./PlayerScoreCard";
+import YesNoPopUp from "./YesNoPopUp";
 
 const initializePlayerStats = (players: string[], gamemodeTotalScore: number): PlayerToPlayerStats => {
   const initialPoints: PlayerToPlayerStats = {};
@@ -29,7 +30,7 @@ function StandardGames(props: StandardGamesProps) {
   const [multiplier, setMultiplier] = useState<number>(1);
   const [previousPlayerStats, setPreviousPlayerStats] = useState<PlayerStats | Record<string, never>>({});
   const [playerStats, setPlayerStats] = useState<PlayerToPlayerStats>(() =>
-    initializePlayerStats(props.players, props.gamemodeTotalScore),
+    initializePlayerStats(props.players, props.gamemodeTotalScore)
   );
 
   const handleScoreChange = (points: number): void => {
@@ -195,7 +196,7 @@ function StandardGames(props: StandardGamesProps) {
   return (
     <div className="App hero is-flex is-justify-content-center is-align-items-center is-fullheight">
       {showGoToMainMenuPopUp ? (
-        <PopUp
+        <YesNoPopUp
           content={"Do you really want to go back? All progress will be lost!"}
           cbYesClicked={props.cbReturnToMenu}
           cbNoClicked={() => setShowGoToMainMenuPopUp(false)}
@@ -228,20 +229,20 @@ function StandardGames(props: StandardGamesProps) {
         </div>
       </div>
       <div className="columns is-centered">
-        <button className="button is-success m-1 is-size-5" onClick={() => handleMultiplierClick(2)}>
+        <button className="button is-success m-1 is-size-5 uniformButton" onClick={() => handleMultiplierClick(2)}>
           Double
         </button>
-        <button className="button is-warning m-1 is-size-5" onClick={() => handleMultiplierClick(3)}>
+        <button className="button is-warning m-1 is-size-5 uniformButton" onClick={() => handleMultiplierClick(3)}>
           Triple
         </button>
-        <button className="button is-danger m-1 is-size-5" onClick={handleUndoClick}>
+        <button className="button is-danger m-1 is-size-5 uniformButton" onClick={handleUndoClick}>
           Undo
         </button>
       </div>
       <div className="columns is-centered">
         <div className="column ">
           <button
-            className="button is-danger m-1 is-size-5"
+            className="button is-danger m-1 is-size-5 uniformButton"
             onClick={() => {
               setShowGoToMainMenuPopUp(true);
             }}
