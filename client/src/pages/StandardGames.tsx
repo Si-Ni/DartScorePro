@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../styles/App.css";
 import type { JSX } from "react";
 import { PlayerStats, PlayerToPlayerStats, StandardGamesProps } from "../global/types";
@@ -31,6 +31,10 @@ function StandardGames(props: StandardGamesProps) {
   const [playerStats, setPlayerStats] = useState<PlayerToPlayerStats>(() =>
     initializePlayerStats(props.players, props.gamemodeTotalScore)
   );
+
+  useEffect(() => {
+    console.log(playerStats);
+  }, [playerStats]);
 
   const handleScoreChange = (points: number): void => {
     if (multiplier === 3 && points === 25) return;
