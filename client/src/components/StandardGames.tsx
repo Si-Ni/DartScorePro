@@ -17,6 +17,7 @@ const initializePlayerStats = (players: string[], gamemodeTotalScore: number): P
       totalScore: 0,
       turns: 0,
       lastThrows: [],
+      throwsRemaining: 0,
     };
   });
   return initialPoints;
@@ -31,7 +32,7 @@ function StandardGames(props: StandardGamesProps) {
   const [multiplier, setMultiplier] = useState<number>(1);
   const [previousPlayerStats, setPreviousPlayerStats] = useState<PlayerStats | Record<string, never>>({});
   const [playerStats, setPlayerStats] = useState<PlayerToPlayerStats>(() =>
-    initializePlayerStats(props.players, props.gamemodeTotalScore),
+    initializePlayerStats(props.players, props.gamemodeTotalScore)
   );
 
   const handleScoreChange = (points: number): void => {
@@ -50,7 +51,10 @@ function StandardGames(props: StandardGamesProps) {
   };
 
   const savePreviousPlayerStats = (playerIndex: number): void => {
-    setPreviousPlayerStats(structuredClone(playerStats[players[playerIndex]]));
+    setPreviousPlayerStats({
+      ...structuredClone(playerStats[players[playerIndex]]),
+      throwsRemaining: throwsRemaining,
+    });
   };
 
   const saveBeginningScore = (playerIndex: number): void => {
@@ -186,12 +190,17 @@ function StandardGames(props: StandardGamesProps) {
 
     const playerIndex = getIndexOfPlayerFromLastTurn();
 
-    const switchToPrevPlayer = playerIndex != currentPlayerIndex || (throwsRemaining === 3 && players.length === 1);
+    const switchToPrevPlayer = playerIndex !== currentPlayerIndex || (throwsRemaining === 3 && players.length === 1);
     if (switchToPrevPlayer) switchToPlayersLastTurn(playerIndex);
+
+    setThrowsRemaining(previousPlayerStats.throwsRemaining);
 
     setPlayerStats((prevPlayerStats) => ({
       ...prevPlayerStats,
-      [players[playerIndex]]: previousPlayerStats as PlayerStats,
+      [players[playerIndex]]: {
+        ...prevPlayerStats[players[playerIndex]],
+        ...previousPlayerStats,
+      } as PlayerStats,
     }));
   };
 

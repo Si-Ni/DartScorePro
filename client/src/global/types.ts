@@ -24,6 +24,7 @@ export interface PlayerStats {
   totalScore: number;
   turns: number;
   lastThrows: string[];
+  throwsRemaining: number;
 }
 
 export type PlayerToPlayerStats = { [player: string]: PlayerStats };
