@@ -50,6 +50,8 @@ function StandardGames(props: StandardGamesProps) {
     addThrowToLastThrows(currentPlayerIndex, points, multiplier);
 
     updateScoreForPlayerAndContinueGame(currentPlayerIndex, points);
+
+    console.log(playerStats);
   };
 
   const savePreviousPlayerStats = (playerIndex: number): void => {
@@ -266,6 +268,7 @@ function StandardGames(props: StandardGamesProps) {
             score={playerStats[player].score}
             average={playerStats[player].average}
             lastThrows={playerStats[player].lastThrows}
+            checkoutOptions={playerStats[player].checkoutOptions}
           />
         ))}
       </div>

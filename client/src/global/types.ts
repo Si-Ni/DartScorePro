@@ -57,6 +57,7 @@ export interface PlayerScoreCardProps {
   score: number;
   average?: number;
   lastThrows: string[];
+  checkoutOptions: Round[];
 }
 
 export interface YesNoPopUpProps {
