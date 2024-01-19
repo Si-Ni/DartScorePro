@@ -27,8 +27,19 @@ export interface PlayerStats {
 
 export type PlayerToPlayerStats = { [player: string]: PlayerStats };
 
+export interface PlayerStatsRCl {
+  currentTarget: number;
+}
+
+export type PlayerToPlayerStatsRCl = { [player: string]: PlayerStatsRCl };
+
 export interface StandardGamesProps {
   gamemodeTotalScore: number;
+  players: string[];
+  cbReturnToMenu(): void;
+}
+
+export interface RoundTheClockGameProps {
   players: string[];
   cbReturnToMenu(): void;
 }
@@ -39,10 +50,10 @@ export interface PlayerScoreCardProps {
   playerName: string;
   isCurrentPlayer: boolean;
   score: number;
-  average: number;
+  average?: number;
 }
 
-export interface PopUpProps {
+export interface YesNoPopUpProps {
   content: string;
   cbYesClicked(): void;
   cbNoClicked(): void;
