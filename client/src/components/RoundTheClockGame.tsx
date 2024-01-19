@@ -8,6 +8,7 @@ const initializePlayerStats = (players: string[]): PlayerToPlayerStatsRCl => {
   players.forEach((player) => {
     initialPoints[player] = {
       currentTarget: 1,
+      lastThrows: [],
     };
   });
   return initialPoints;
@@ -21,7 +22,7 @@ function RoundTheClockGame(props: RoundTheClockGameProps) {
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState<number>(0);
   const [playerStats, setPlayerStats] = useState<PlayerToPlayerStatsRCl>(() => initializePlayerStats(props.players));
 
-  const handleHitClicked = () => {
+  const handleHitClicked = (): void => {
     if (checkIfPlayerHasWon(currentPlayerIndex)) {
       console.log(players[currentPlayerIndex] + " has won!");
     } else {
@@ -36,17 +37,19 @@ function RoundTheClockGame(props: RoundTheClockGameProps) {
   };
 
   const increaseTargetByOne = (playerIndex: number): void => {
+    const beginningOfRound = throwsRemaining === 3;
     const playerKey = players[playerIndex];
     setPlayerStats((prevPlayerStats) => ({
       ...prevPlayerStats,
       [playerKey]: {
         ...prevPlayerStats[playerKey],
         currentTarget: prevPlayerStats[playerKey].currentTarget + 1,
+        lastThrows: beginningOfRound ? ["Hit"] : [...prevPlayerStats[playerKey].lastThrows, "Hit"],
       },
     }));
   };
 
-  const updateRemainingThrows = () => {
+  const updateRemainingThrows = (): void => {
     const endOfTurn = throwsRemaining === 1;
     if (endOfTurn) {
       switchToNextPlayer();
@@ -66,22 +69,42 @@ function RoundTheClockGame(props: RoundTheClockGameProps) {
   };
 
   const handleMissClicked = () => {
+    addToLastThrows(currentPlayerIndex, ["Miss"]);
     updateRemainingThrows();
   };
 
-  const handleNextClicked = () => {
+  const addToLastThrows = (playerIndex: number, lastThrows: string[]): void => {
+    const beginningOfRound = throwsRemaining === 3;
+    const playerKey = players[playerIndex];
+    setPlayerStats((prevPlayerStats) => ({
+      ...prevPlayerStats,
+      [playerKey]: {
+        ...prevPlayerStats[playerKey],
+        lastThrows: beginningOfRound ? [...lastThrows] : [...prevPlayerStats[playerKey].lastThrows, ...lastThrows],
+      },
+    }));
+  };
+
+  const handleNextClicked = (): void => {
+    addMissesToLastThrows(currentPlayerIndex);
     switchToNextPlayer();
+  };
+
+  const addMissesToLastThrows = (playerIndex: number): void => {
+    const throws = [];
+    for (let i = 0; i < throwsRemaining; i++) throws.push("Miss");
+    addToLastThrows(playerIndex, throws);
   };
 
   return (
     <div className="App hero is-flex is-justify-content-center is-align-items-center is-fullheight">
-      {showGoToMainMenuPopUp ? (
+      {showGoToMainMenuPopUp && (
         <YesNoPopUp
           content={"Do you really want to go back? All progress will be lost!"}
           cbYesClicked={props.cbReturnToMenu}
           cbNoClicked={() => setShowGoToMainMenuPopUp(false)}
         />
-      ) : null}
+      )}
       <div className="is-centered">
         <p className="is-size-3 mb-6" style={{ textAlign: "center" }}>
           Round: {currentRound}
@@ -94,6 +117,7 @@ function RoundTheClockGame(props: RoundTheClockGameProps) {
             playerName={player}
             isCurrentPlayer={players[currentPlayerIndex] === player}
             score={playerStats[player].currentTarget}
+            lastThrows={playerStats[player].lastThrows}
           />
         ))}
       </div>
@@ -108,7 +132,7 @@ function RoundTheClockGame(props: RoundTheClockGameProps) {
       <div className="columns is-centered">
         <div className="column ">
           <button className="button is-warning m-1 is-size-5" style={{ width: "150px" }} onClick={handleNextClicked}>
-            Next Player
+            Skip Player
           </button>
         </div>
       </div>

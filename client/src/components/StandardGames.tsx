@@ -16,6 +16,7 @@ const initializePlayerStats = (players: string[], gamemodeTotalScore: number): P
       dartsThrown: 0,
       totalScore: 0,
       turns: 0,
+      lastThrows: [],
     };
   });
   return initialPoints;
@@ -37,14 +38,69 @@ function StandardGames(props: StandardGamesProps) {
     if (multiplier === 3 && points === 25) return;
 
     savePreviousPlayerStats(currentPlayerIndex);
-    saveScoreAtBeginningOfRound(currentPlayerIndex);
+    const beginningOfRound = throwsRemaining === 3;
+    if (beginningOfRound) {
+      saveBeginningScore(currentPlayerIndex);
+      clearLastThrowsOfPlayer(currentPlayerIndex);
+    }
 
+    addThrowToLastThrows(currentPlayerIndex, points, multiplier);
+
+    updateScoreForPlayerAndContinueGame(currentPlayerIndex, points);
+  };
+
+  const savePreviousPlayerStats = (playerIndex: number): void => {
+    setPreviousPlayerStats(structuredClone(playerStats[players[playerIndex]]));
+  };
+
+  const saveBeginningScore = (playerIndex: number): void => {
+    setPlayerStats((prevPlayerStats) => ({
+      ...prevPlayerStats,
+      [players[playerIndex]]: setBeginningScoreForPlayer(playerStats[players[playerIndex]]),
+    }));
+  };
+
+  const setBeginningScoreForPlayer = (playerStats: PlayerStats): PlayerStats => {
+    playerStats.scoreAtBeginningOfRound = playerStats.score;
+    return playerStats;
+  };
+
+  const clearLastThrowsOfPlayer = (playerIndex: number): void => {
+    const playerKey = players[playerIndex];
+    setPlayerStats((prevPlayerStats) => ({
+      ...prevPlayerStats,
+      [playerKey]: setLastThrows(playerStats[playerKey], []),
+    }));
+  };
+
+  const formatThrowToString = (value: number | string, mulitplier: number): string => {
+    if (value === 25 && mulitplier === 2) return "BULL";
+    else if (mulitplier === 2) return `D${value}`;
+    else if (mulitplier === 3) return `T${value}`;
+    else return `${value}`;
+  };
+
+  const addThrowToLastThrows = (playerIndex: number, points: number, multiplier: number): void => {
+    const formattedThrow = formatThrowToString(points, multiplier);
+    const playerKey = players[playerIndex];
+    setPlayerStats((prevPlayerStats) => ({
+      ...prevPlayerStats,
+      [playerKey]: setLastThrows(playerStats[playerKey], [...prevPlayerStats[playerKey].lastThrows, formattedThrow]),
+    }));
+  };
+
+  const setLastThrows = (playerStats: PlayerStats, lastThrows: string[]): PlayerStats => {
+    playerStats.lastThrows = lastThrows;
+    return playerStats;
+  };
+
+  const updateScoreForPlayerAndContinueGame = (playerIndex: number, points: number): void => {
     const thrownPoints = points * multiplier;
-    const updatedScore = calculateUpdatedScore(currentPlayerIndex, thrownPoints);
+    const updatedScore = calculateUpdatedScore(playerIndex, thrownPoints);
 
     const updatedScoreIsInvalid = updatedScore < 0 || updatedScore === 1 || (multiplier === 1 && updatedScore === 0);
     if (updatedScoreIsInvalid) {
-      resetScoreToBeginningOfRound(currentPlayerIndex);
+      resetScoreToBeginningOfRound(playerIndex);
       switchToNextPlayer();
     } else {
       updateStatsAndRemainingThrows(updatedScore, thrownPoints);
@@ -52,25 +108,6 @@ function StandardGames(props: StandardGamesProps) {
     }
 
     setMultiplier(1);
-  };
-
-  const savePreviousPlayerStats = (playerIndex: number): void => {
-    setPreviousPlayerStats(playerStats[players[playerIndex]]);
-  };
-
-  const saveScoreAtBeginningOfRound = (playerIndex: number): void => {
-    const beginningOfRound = throwsRemaining === 3;
-    if (beginningOfRound) {
-      setPlayerStats((prevPlayerStats) => ({
-        ...prevPlayerStats,
-        [players[playerIndex]]: setBeginningScoreForPlayer(playerStats[players[playerIndex]]),
-      }));
-    }
-  };
-
-  const setBeginningScoreForPlayer = (playerStats: PlayerStats): PlayerStats => {
-    playerStats.scoreAtBeginningOfRound = playerStats.score;
-    return playerStats;
   };
 
   const calculateUpdatedScore = (playerIndex: number, thrownPoints: number): number => {
@@ -81,7 +118,7 @@ function StandardGames(props: StandardGamesProps) {
   };
 
   const updateStatsAndRemainingThrows = (updatedScore: number, thrownPoints: number) => {
-    updatePlayerStats(currentPlayerIndex, thrownPoints);
+    updatePlayerStatsByThrownPoints(currentPlayerIndex, thrownPoints);
     updateRemainingThrows(updatedScore);
   };
 
@@ -92,7 +129,7 @@ function StandardGames(props: StandardGamesProps) {
     }
   };
 
-  const updatePlayerStats = (playerIndex: number, thrownPoints: number): void => {
+  const updatePlayerStatsByThrownPoints = (playerIndex: number, thrownPoints: number): void => {
     setPlayerStats((prevPlayerStats) => ({
       ...prevPlayerStats,
       [players[playerIndex]]: calculateNewPlayerStats(thrownPoints, playerStats[players[playerIndex]]),
@@ -195,13 +232,13 @@ function StandardGames(props: StandardGamesProps) {
 
   return (
     <div className="App hero is-flex is-justify-content-center is-align-items-center is-fullheight">
-      {showGoToMainMenuPopUp ? (
+      {showGoToMainMenuPopUp && (
         <YesNoPopUp
           content={"Do you really want to go back? All progress will be lost!"}
           cbYesClicked={props.cbReturnToMenu}
           cbNoClicked={() => setShowGoToMainMenuPopUp(false)}
         />
-      ) : null}
+      )}
       <div className="is-centered">
         <p className="is-size-3 mb-3" style={{ textAlign: "center" }}>
           Round: {currentRound}
@@ -215,6 +252,7 @@ function StandardGames(props: StandardGamesProps) {
             isCurrentPlayer={players[currentPlayerIndex] === player}
             score={playerStats[player].score}
             average={playerStats[player].average}
+            lastThrows={playerStats[player].lastThrows}
           />
         ))}
       </div>
