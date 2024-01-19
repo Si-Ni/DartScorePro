@@ -1,7 +1,6 @@
 import { useState } from "react";
 import "../styles/App.css";
 import "../styles/Games.css";
-import type { JSX } from "react";
 import { PlayerStats, PlayerToPlayerStats, StandardGamesProps } from "../global/types";
 import PlayerScoreCard from "./PlayerScoreCard";
 import YesNoPopUp from "./YesNoPopUp";
@@ -35,7 +34,7 @@ function StandardGames(props: StandardGamesProps) {
   const [multiplier, setMultiplier] = useState<number>(1);
   const [previousPlayerStats, setPreviousPlayerStats] = useState<PlayerStats | Record<string, never>>({});
   const [playerStats, setPlayerStats] = useState<PlayerToPlayerStats>(() =>
-    initializePlayerStats(props.players, props.gamemodeTotalScore),
+    initializePlayerStats(props.players, props.gamemodeTotalScore)
   );
 
   const handleScoreChange = (points: number): void => {
@@ -270,6 +269,8 @@ function StandardGames(props: StandardGamesProps) {
               <GameInputButtons
                 values={[...Array(21).keys()].map((num) => num).concat(25)}
                 cbHandleButtonClicked={handleScoreChange}
+                showMissButton={false}
+                btnSize={20}
               />
             }
           </div>
