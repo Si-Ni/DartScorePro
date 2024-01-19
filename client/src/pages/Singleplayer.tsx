@@ -10,12 +10,12 @@ function Singleplayer() {
 
   return (
     <>
-      {selectedGamemode != null ? (
+      {selectedGamemode ? (
         <div>
           {selectedGamemode === "301" && (
             <StandardGames
               gamemodeTotalScore={301}
-              players={["Player1", "Player 2"]}
+              players={["Player 1", "Player 2"]}
               cbReturnToMenu={() => {
                 setSelectedGamemode(null);
               }}
@@ -32,7 +32,7 @@ function Singleplayer() {
           )}
           {selectedGamemode === "rcl" && (
             <RoundTheClockGame
-              players={["Player1", "d"]}
+              players={["Player1"]}
               cbReturnToMenu={() => {
                 setSelectedGamemode(null);
               }}

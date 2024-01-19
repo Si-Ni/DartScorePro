@@ -14,7 +14,7 @@ function PlayerScoreCard(props: PlayerScoreCardProps) {
             </div>
           ))}
         </div>
-        {props.average != null && (
+        {props.average && (
           <div className="average-box">
             <p className="subtitle is-6">Ø {props.average.toFixed(2)}</p>
           </div>
