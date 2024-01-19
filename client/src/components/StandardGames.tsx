@@ -5,6 +5,7 @@ import type { JSX } from "react";
 import { PlayerStats, PlayerToPlayerStats, StandardGamesProps } from "../global/types";
 import PlayerScoreCard from "./PlayerScoreCard";
 import YesNoPopUp from "./YesNoPopUp";
+import { getAllOptions, Round, stringifyRound, sumRound } from "../helpers/calcCheckouts";
 
 const initializePlayerStats = (players: string[], gamemodeTotalScore: number): PlayerToPlayerStats => {
   const initialPoints: PlayerToPlayerStats = {};
@@ -18,6 +19,7 @@ const initializePlayerStats = (players: string[], gamemodeTotalScore: number): P
       turns: 0,
       lastThrows: [],
       throwsRemaining: 0,
+      checkoutOptions: [],
     };
   });
   return initialPoints;
@@ -103,6 +105,7 @@ function StandardGames(props: StandardGamesProps) {
     const updatedScore = calculateUpdatedScore(playerIndex, thrownPoints);
 
     const updatedScoreIsInvalid = updatedScore < 0 || updatedScore === 1 || (multiplier === 1 && updatedScore === 0);
+
     if (updatedScoreIsInvalid) {
       resetScoreToBeginningOfRound(playerIndex);
       switchToNextPlayer();
@@ -147,6 +150,7 @@ function StandardGames(props: StandardGamesProps) {
     dartsThrown: currentPlayerStats.dartsThrown + 1,
     turns: throwsRemaining === 1 ? currentPlayerStats.turns + 1 : currentPlayerStats.turns,
     average: ((currentPlayerStats.totalScore + thrownPoints) * 3) / (currentPlayerStats.dartsThrown + 1),
+    checkoutOptions: getAllOptions(3).filter((r) => sumRound(r) === currentPlayerStats.score - thrownPoints),
   });
 
   const updateRemainingThrows = (updatedScore: number): void => {

@@ -1,4 +1,5 @@
 import React from "react";
+import { Round } from "../helpers/calcCheckouts";
 
 export interface LoginProps {
   pwdRef: React.RefObject<HTMLInputElement>;
@@ -25,6 +26,7 @@ export interface PlayerStats {
   turns: number;
   lastThrows: string[];
   throwsRemaining: number;
+  checkoutOptions: Round[];
 }
 
 export type PlayerToPlayerStats = { [player: string]: PlayerStats };

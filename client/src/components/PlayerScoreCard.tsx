@@ -1,5 +1,6 @@
 import { PlayerScoreCardProps } from "../global/types";
 import "../styles/Games.css";
+import { stringifyRound } from "../helpers/calcCheckouts";
 
 function PlayerScoreCard(props: PlayerScoreCardProps) {
   return (
