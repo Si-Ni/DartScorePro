@@ -28,7 +28,7 @@ function stringifyRound(round: Round) {
 function canBeLastThrow(t: Throw) {
   return t && (t.multiplier === 2 || t.number > 25);
 }
-type Throw = typeof throwOptions[number];
+type Throw = (typeof throwOptions)[number];
 export type Round = Throw[];
 
 export { getAllOptions, stringifyRound, sumRound };
