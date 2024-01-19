@@ -1,6 +1,6 @@
-import { PopUpProps } from "../global/types";
+import { YesNoPopUpProps } from "../global/types";
 
-function PopUp(props: PopUpProps) {
+function YesNoPopUp(props: YesNoPopUpProps) {
   return (
     <div className="is-justify-content-center is-align-items-center is-fullheight">
       <div className="modal" style={{ display: "flex", backdropFilter: "blur(2px)" }}>
@@ -25,4 +25,4 @@ function PopUp(props: PopUpProps) {
     </div>
   );
 }
-export default PopUp;
+export default YesNoPopUp;
