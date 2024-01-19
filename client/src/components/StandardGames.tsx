@@ -5,6 +5,7 @@ import type { JSX } from "react";
 import { PlayerStats, PlayerToPlayerStats, StandardGamesProps } from "../global/types";
 import PlayerScoreCard from "./PlayerScoreCard";
 import YesNoPopUp from "./YesNoPopUp";
+import GameInputButtons from "./GameInputButtons";
 
 const initializePlayerStats = (players: string[], gamemodeTotalScore: number): PlayerToPlayerStats => {
   const initialPoints: PlayerToPlayerStats = {};
@@ -32,7 +33,7 @@ function StandardGames(props: StandardGamesProps) {
   const [multiplier, setMultiplier] = useState<number>(1);
   const [previousPlayerStats, setPreviousPlayerStats] = useState<PlayerStats | Record<string, never>>({});
   const [playerStats, setPlayerStats] = useState<PlayerToPlayerStats>(() =>
-    initializePlayerStats(props.players, props.gamemodeTotalScore),
+    initializePlayerStats(props.players, props.gamemodeTotalScore)
   );
 
   const handleScoreChange = (points: number): void => {
@@ -224,21 +225,6 @@ function StandardGames(props: StandardGamesProps) {
     setThrowsRemaining(1);
   };
 
-  const renderButtons = (): JSX.Element[] => {
-    const numbers = [...Array(21).keys()].map((num) => num).concat(25);
-
-    return numbers.map((number) => (
-      <button
-        key={number}
-        className="button is-primary m-1 is-size-5"
-        onClick={() => handleScoreChange(number)}
-        style={{ width: "20px" }}
-      >
-        {number}
-      </button>
-    ));
-  };
-
   return (
     <div className="App hero is-flex is-justify-content-center is-align-items-center is-fullheight">
       {showGoToMainMenuPopUp && (
@@ -272,7 +258,14 @@ function StandardGames(props: StandardGamesProps) {
       </div>
       <div className="columns is-centered">
         <div className="column">
-          <div className="box">{renderButtons()}</div>
+          <div className="box">
+            {
+              <GameInputButtons
+                values={[...Array(21).keys()].map((num) => num).concat(25)}
+                cbHandleButtonClicked={handleScoreChange}
+              />
+            }
+          </div>
         </div>
       </div>
       <div className="columns is-centered">

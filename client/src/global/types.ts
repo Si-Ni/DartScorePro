@@ -47,6 +47,11 @@ export interface RoundTheClockGameProps {
   cbReturnToMenu(): void;
 }
 
+export interface GameInputButtonsProps {
+  values: number[];
+  cbHandleButtonClicked(number: number): void;
+}
+
 export type Gamemode = "301" | "501" | "rcl" | "cri";
 
 export interface PlayerScoreCardProps {
@@ -55,6 +60,32 @@ export interface PlayerScoreCardProps {
   score: number;
   average?: number;
   lastThrows: string[];
+}
+
+// 4 = closed for all players
+type CricketStatus = 0 | 1 | 2 | 3 | 4;
+
+export interface CricketStats {
+  20: CricketStatus;
+  19: CricketStatus;
+  18: CricketStatus;
+  17: CricketStatus;
+  16: CricketStatus;
+  15: CricketStatus;
+  Bull: CricketStatus;
+}
+
+export interface PlayerScoreCardCricketProps {
+  playerName: string;
+  isCurrentPlayer: boolean;
+  score: number;
+  cricketStats: CricketStats;
+}
+
+export interface PlayerScoreCardProps {
+  playerName: string;
+  isCurrentPlayer: boolean;
+  score: number;
 }
 
 export interface YesNoPopUpProps {
