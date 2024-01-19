@@ -30,6 +30,7 @@ export type PlayerToPlayerStats = { [player: string]: PlayerStats };
 
 export interface PlayerStatsRCl {
   currentTarget: number;
+  lastThrows: string[];
 }
 
 export type PlayerToPlayerStatsRCl = { [player: string]: PlayerStatsRCl };

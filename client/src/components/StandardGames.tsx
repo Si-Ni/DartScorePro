@@ -38,7 +38,11 @@ function StandardGames(props: StandardGamesProps) {
     if (multiplier === 3 && points === 25) return;
 
     savePreviousPlayerStats(currentPlayerIndex);
-    saveScoreAtBeginningOfRound(currentPlayerIndex);
+    const beginningOfRound = throwsRemaining === 3;
+    if (beginningOfRound) {
+      saveBeginningScore(currentPlayerIndex);
+      clearLastThrowsOfPlayer(currentPlayerIndex);
+    }
 
     addThrowToLastThrows(currentPlayerIndex, points, multiplier);
 
@@ -49,19 +53,24 @@ function StandardGames(props: StandardGamesProps) {
     setPreviousPlayerStats(structuredClone(playerStats[players[playerIndex]]));
   };
 
-  const saveScoreAtBeginningOfRound = (playerIndex: number): void => {
-    const beginningOfRound = throwsRemaining === 3;
-    if (beginningOfRound) {
-      setPlayerStats((prevPlayerStats) => ({
-        ...prevPlayerStats,
-        [players[playerIndex]]: setBeginningScoreForPlayer(playerStats[players[playerIndex]]),
-      }));
-    }
+  const saveBeginningScore = (playerIndex: number): void => {
+    setPlayerStats((prevPlayerStats) => ({
+      ...prevPlayerStats,
+      [players[playerIndex]]: setBeginningScoreForPlayer(playerStats[players[playerIndex]]),
+    }));
   };
 
   const setBeginningScoreForPlayer = (playerStats: PlayerStats): PlayerStats => {
     playerStats.scoreAtBeginningOfRound = playerStats.score;
     return playerStats;
+  };
+
+  const clearLastThrowsOfPlayer = (playerIndex: number): void => {
+    const playerKey = players[playerIndex];
+    setPlayerStats((prevPlayerStats) => ({
+      ...prevPlayerStats,
+      [playerKey]: setLastThrows(playerStats[playerKey], []),
+    }));
   };
 
   const formatThrowToString = (value: number | string, mulitplier: number): string => {
@@ -72,15 +81,17 @@ function StandardGames(props: StandardGamesProps) {
   };
 
   const addThrowToLastThrows = (playerIndex: number, points: number, multiplier: number): void => {
-    const formatedThrow = formatThrowToString(points, multiplier);
+    const formattedThrow = formatThrowToString(points, multiplier);
     const playerKey = players[playerIndex];
     setPlayerStats((prevPlayerStats) => ({
       ...prevPlayerStats,
-      [playerKey]: {
-        ...prevPlayerStats[playerKey],
-        currentTarget: prevPlayerStats[playerKey].lastThrows.push(formatedThrow),
-      },
+      [playerKey]: setLastThrows(playerStats[playerKey], [...prevPlayerStats[playerKey].lastThrows, formattedThrow]),
     }));
+  };
+
+  const setLastThrows = (playerStats: PlayerStats, lastThrows: string[]): PlayerStats => {
+    playerStats.lastThrows = lastThrows;
+    return playerStats;
   };
 
   const updateScoreForPlayerAndContinueGame = (playerIndex: number, points: number): void => {
@@ -146,25 +157,10 @@ function StandardGames(props: StandardGamesProps) {
     if (currentPlayerIndex === players.length - 1) {
       setCurrentPlayerIndex(0);
       setCurrentRound((currentRound) => currentRound + 1);
-      clearAllLastThrows();
     } else {
       setCurrentPlayerIndex((currentPlayerIndex) => currentPlayerIndex + 1);
     }
     setThrowsRemaining(3);
-  };
-
-  const clearAllLastThrows = (): void => {
-    setPlayerStats((prevPlayerStats) => {
-      const updatedPlayerStats = { ...prevPlayerStats };
-      players.forEach((player) => {
-        updatedPlayerStats[player] = {
-          ...updatedPlayerStats[player],
-          lastThrows: [],
-        };
-      });
-
-      return updatedPlayerStats;
-    });
   };
 
   const resetScoreToBeginningOfRound = (playerIndex: number) => {

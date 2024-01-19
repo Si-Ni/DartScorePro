@@ -8,8 +8,8 @@ function PlayerScoreCard(props: PlayerScoreCardProps) {
         <h1 className="title is-5">{props.playerName}</h1>
         <p className="subtitle is-1">{props.score}</p>
         <div className="columns ml-0" style={{ minHeight: "24px", display: "block" }}>
-          {props.lastThrows.map((lastThrow) => (
-            <div className="column pt-0 pb-0 pl-0 pr-2" style={{ display: "inline-block" }}>
+          {props.lastThrows.map((lastThrow, index) => (
+            <div key={index} className="column pt-0 pb-0 pl-0 pr-2" style={{ display: "inline-block" }}>
               <p className="is-size-6">{lastThrow}</p>
             </div>
           ))}
