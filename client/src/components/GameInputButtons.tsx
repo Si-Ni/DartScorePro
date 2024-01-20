@@ -1,11 +1,6 @@
 import { GameInputButtonsProps } from "../global/types";
 
 function GameInputButtons(props: GameInputButtonsProps) {
-  const formatNumberToString = (number: number): string => {
-    if (number === 50) return "Bull";
-    return `${number}`;
-  };
-
   return (
     <>
       {props.values.map((number) => (
@@ -15,7 +10,7 @@ function GameInputButtons(props: GameInputButtonsProps) {
           onClick={() => props.cbHandleButtonClicked(number)}
           style={{ width: `${props.btnSize}px` }}
         >
-          {formatNumberToString(number)}
+          {number}
         </button>
       ))}
       {props.showMissButton && (
