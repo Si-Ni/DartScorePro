@@ -115,3 +115,8 @@ export interface YesNoPopUpProps {
 export interface GamemodeMenuProps {
   cbGamemodeSelected(gamemode: Gamemode): void;
 }
+
+export interface MainMenuProps {
+  setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+  setDisplayUserID: React.Dispatch<React.SetStateAction<string>>;
+}
