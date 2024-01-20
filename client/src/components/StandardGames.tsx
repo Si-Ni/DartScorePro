@@ -1,10 +1,10 @@
 import { useState } from "react";
 import "../styles/App.css";
 import "../styles/Games.css";
-import type { JSX } from "react";
 import { PlayerStats, PlayerToPlayerStats, StandardGamesProps } from "../global/types";
 import PlayerScoreCard from "./PlayerScoreCard";
 import YesNoPopUp from "./YesNoPopUp";
+import GameInputButtons from "./GameInputButtons";
 import { getAllOptions, sumRound } from "../helpers/calcCheckouts";
 
 const initializePlayerStats = (players: string[], gamemodeTotalScore: number): PlayerToPlayerStats => {
@@ -222,21 +222,6 @@ function StandardGames(props: StandardGamesProps) {
     setThrowsRemaining(1);
   };
 
-  const renderButtons = (): JSX.Element[] => {
-    const numbers = [...Array(21).keys()].map((num) => num).concat(25);
-
-    return numbers.map((number) => (
-      <button
-        key={number}
-        className="button is-primary m-1 is-size-5"
-        onClick={() => handleScoreChange(number)}
-        style={{ width: "20px" }}
-      >
-        {number}
-      </button>
-    ));
-  };
-
   return (
     <div className="App hero is-flex is-justify-content-center is-align-items-center is-fullheight">
       {showGoToMainMenuPopUp && (
@@ -271,7 +256,16 @@ function StandardGames(props: StandardGamesProps) {
       </div>
       <div className="columns is-centered">
         <div className="column">
-          <div className="box">{renderButtons()}</div>
+          <div className="box">
+            {
+              <GameInputButtons
+                values={[...Array(21).keys()].map((num) => num).concat(25)}
+                cbHandleButtonClicked={handleScoreChange}
+                showMissButton={false}
+                btnSize={20}
+              />
+            }
+          </div>
         </div>
       </div>
       <div className="columns is-centered">

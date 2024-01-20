@@ -4,6 +4,7 @@ import StandardGames from "../components/StandardGames";
 import { Gamemode } from "../global/types";
 import GamemodeMenu from "../components/GamemodeMenu";
 import RoundTheClockGame from "../components/RoundTheClockGame";
+import CricketGame from "../components/CricketGame";
 
 function Singleplayer() {
   const [selectedGamemode, setSelectedGamemode] = useState<Gamemode | null>(null);
@@ -33,6 +34,14 @@ function Singleplayer() {
           {selectedGamemode === "rcl" && (
             <RoundTheClockGame
               players={["Player1"]}
+              cbReturnToMenu={() => {
+                setSelectedGamemode(null);
+              }}
+            />
+          )}
+          {selectedGamemode === "cri" && (
+            <CricketGame
+              players={["Player1", "Player2"]}
               cbReturnToMenu={() => {
                 setSelectedGamemode(null);
               }}
