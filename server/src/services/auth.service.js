@@ -5,14 +5,17 @@ const checkUserRegistered = require("../helpers/checkUserRegistered.helper");
 const createNewUser = require("../helpers/createNewUser.helper");
 const setUserVerified = require("../helpers/setUserVerified.helper");
 const checkPWDvalid = require("../helpers/checkPwd.helper");
+const jwt = require("jsonwebtoken");
 
 const mailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const userIDRegex = /^[a-zA-Z0-9._-]+$/;
 const pwdRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
-(async () => {
-  await connectDB();
-})();
+function generateToken(userIDorMail) {
+  const secretKey = process.env.ACCESS_TOKEN_SECRET;
+  const token = jwt.sign({ userIDorMail }, secretKey, { expiresIn: "1h" });
+  return token;
+}
 
 async function login(req) {
   let { userIDorMail, userPWD } = req.body;
@@ -39,9 +42,20 @@ async function login(req) {
 
   const isPWDValid = await checkPWDvalid(isMail ? null : userIDorMail, isUserID ? null : userIDorMail, userPWD);
 
-  return isPWDValid
-    ? { status: 200, json: { msg: "Login Success", userID: isUserRegistered.userID } }
-    : { status: 400, json: "This password or username is invalid" };
+  if (isPWDValid) {
+    const token = generateToken(isUserRegistered.userID);
+
+    return {
+      status: 200,
+      json: {
+        msg: "Login Success",
+        userID: isUserRegistered.userID,
+        token: token,
+      },
+    };
+  } else {
+    return { status: 400, json: "This password or username is invalid" };
+  }
 }
 
 async function register(req) {
@@ -95,8 +109,15 @@ async function registerVerify(req) {
   return isUserVerified ? { status: 200, json: "User verified" } : { status: 400, json: "User not verified" };
 }
 
+async function generalAuth(req) {
+  const { userIDorMail } = req.user;
+
+  return { status: 200, json: { msg: "Authentication successful", userID: userIDorMail } };
+}
+
 module.exports = {
   login,
   register,
   registerVerify,
+  generalAuth,
 };

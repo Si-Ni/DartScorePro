@@ -25,6 +25,7 @@ function Login(props: LoginProps) {
         setPwdDisabled(false);
         props.setLoggedIn(true);
         props.setDisplayUserID(`${res.data.userID}`);
+        localStorage.setItem("token", res.data.token);
       })
       .catch((error) => {
         setPwdDisabled(false);

@@ -131,3 +131,8 @@ export interface GamesProps {
 export interface LocalMultiplayerMenuProps {
   cbBackToMenu(): void;
 }
+
+export interface MainMenuProps {
+  setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+  setDisplayUserID: React.Dispatch<React.SetStateAction<string>>;
+}
