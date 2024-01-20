@@ -34,7 +34,7 @@ function StandardGames(props: StandardGamesProps) {
   const [multiplier, setMultiplier] = useState<number>(1);
   const [previousPlayerStats, setPreviousPlayerStats] = useState<PlayerStats | Record<string, never>>({});
   const [playerStats, setPlayerStats] = useState<PlayerToPlayerStats>(() =>
-    initializePlayerStats(props.players, props.gamemodeTotalScore),
+    initializePlayerStats(props.players, props.gamemodeTotalScore)
   );
 
   const handleScoreChange = (points: number): void => {
@@ -50,8 +50,6 @@ function StandardGames(props: StandardGamesProps) {
     addThrowToLastThrows(currentPlayerIndex, points, multiplier);
 
     updateScoreForPlayerAndContinueGame(currentPlayerIndex, points);
-
-    console.log(playerStats);
   };
 
   const savePreviousPlayerStats = (playerIndex: number): void => {

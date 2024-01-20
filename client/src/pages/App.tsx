@@ -6,6 +6,7 @@ import Register from "./Register";
 import RegisterVerify from "./RegisterVerify";
 import Singleplayer from "./Singleplayer";
 import PrivacyPolicy from "./PrivacyPolicy";
+import Multiplayer from "./Multiplayer";
 
 function App() {
   const pwdRef = useRef<HTMLInputElement | null>(null);
@@ -38,6 +39,7 @@ function App() {
           <Route path="/register/verify" element={<RegisterVerify />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/singleplayer" element={<Singleplayer />} />
+          <Route path="/multiplayer" element={<Multiplayer />} />
         </Routes>
       </Router>
     </>

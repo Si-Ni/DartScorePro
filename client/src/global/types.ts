@@ -115,3 +115,19 @@ export interface YesNoPopUpProps {
 export interface GamemodeMenuProps {
   cbGamemodeSelected(gamemode: Gamemode): void;
 }
+
+export type MultiplayerMode = "local" | "create" | "join";
+
+export interface MultiplayerModeProps {
+  cbMultiplayerModeSelected(multiplayerMode: MultiplayerMode): void;
+}
+
+export interface GamesProps {
+  selectedGamemode: Gamemode;
+  players: string[];
+  cbReturnToMenu(): void;
+}
+
+export interface LocalMultiplayerMenuProps {
+  cbBackToMenu(): void;
+}
