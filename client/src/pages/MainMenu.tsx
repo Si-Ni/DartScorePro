@@ -1,10 +1,14 @@
 import { useNavigate } from "react-router-dom";
 import "../styles/Menu.css";
+import { MainMenuProps } from "../global/types";
 
-function MainMenu() {
+function MainMenu(props: MainMenuProps) {
   const navigate = useNavigate();
 
   function logout() {
+    localStorage.removeItem("token");
+    props.setLoggedIn(false);
+    props.setDisplayUserID("");
     navigate("/login");
   }
 
