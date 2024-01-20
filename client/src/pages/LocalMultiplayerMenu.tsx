@@ -65,15 +65,18 @@ function LocalMultiplayer(props: LocalMultiplayerMenuProps) {
               <hr></hr>
               <ul className="mb-6 mt-4">
                 {players.map((player, index) => (
-                  <li key={index} className="mb-2 is-flex">
-                    <div className="is-flex-grow-1" style={{ lineHeight: "30px" }}>
-                      {player}
+                  <li key={index}>
+                    <div className="mb-2 is-flex">
+                      <div className="is-flex-grow-1" style={{ lineHeight: "30px" }}>
+                        {player}
+                      </div>
+                      <div>
+                        <button className="button is-danger is-small ml-2" onClick={() => deletePlayer(index)}>
+                          Delete
+                        </button>
+                      </div>
                     </div>
-                    <div>
-                      <button className="button is-danger is-small ml-2" onClick={() => deletePlayer(index)}>
-                        Delete
-                      </button>
-                    </div>
+                    <hr></hr>
                   </li>
                 ))}
               </ul>
