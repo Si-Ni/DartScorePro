@@ -81,12 +81,8 @@ function StandardGames(props: StandardGamesProps) {
     }));
   };
 
-  const formatThrowToString = (value: number | string, mulitplier: number): string => {
-    if (value === 25 && mulitplier === 2) return "BULL";
-    else if (mulitplier === 2) return `D${value}`;
-    else if (mulitplier === 3) return `T${value}`;
-    else return `${value}`;
-  };
+  const formatThrowToString = (value: number | string, multiplier: number): string =>
+    multiplier === 2 && value === 25 ? "BULL" : `${multiplier > 1 ? ["D", "T"][multiplier - 2] : ""}${value}`;
 
   const addThrowToLastThrows = (playerIndex: number, points: number, multiplier: number): void => {
     const formattedThrow = formatThrowToString(points, multiplier);
@@ -164,12 +160,8 @@ function StandardGames(props: StandardGamesProps) {
   };
 
   const switchToNextPlayer = (): void => {
-    if (currentPlayerIndex === players.length - 1) {
-      setCurrentPlayerIndex(0);
-      setCurrentRound((currentRound) => currentRound + 1);
-    } else {
-      setCurrentPlayerIndex((currentPlayerIndex) => currentPlayerIndex + 1);
-    }
+    setCurrentPlayerIndex((currentPlayerIndex + 1) % players.length);
+    setCurrentRound((currentRound) => (currentPlayerIndex === players.length - 1 ? currentRound + 1 : currentRound));
     setThrowsRemaining(3);
   };
 
