@@ -160,12 +160,8 @@ function StandardGames(props: StandardGamesProps) {
   };
 
   const switchToNextPlayer = (): void => {
-    if (currentPlayerIndex === players.length - 1) {
-      setCurrentPlayerIndex(0);
-      setCurrentRound((currentRound) => currentRound + 1);
-    } else {
-      setCurrentPlayerIndex((currentPlayerIndex) => currentPlayerIndex + 1);
-    }
+    setCurrentPlayerIndex((currentPlayerIndex + 1) % players.length);
+    setCurrentRound((currentRound) => (currentPlayerIndex === players.length - 1 ? currentRound + 1 : currentRound));
     setThrowsRemaining(3);
   };
 
