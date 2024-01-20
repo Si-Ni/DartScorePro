@@ -1,18 +1,23 @@
-const dbConfig = require("../configs/db.config");
 const mongoose = require("mongoose");
-const db = mongoose.connection;
+const dbConfig = require("../configs/db.config");
 
-async function connectDB() {
-  mongoose.set("strictQuery", true);
-  mongoose.connect(dbConfig.uri);
-  db.on("error", (error) => {
-    console.log(error);
-  });
-  db.on("connected", () => {
-    console.log("db connected");
-  });
-}
+mongoose.set("strictQuery", true);
 
-module.exports = {
-  connectDB,
+const connectDB = () => {
+  mongoose
+    .connect(dbConfig.uri, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => {
+      console.log("db connected");
+    })
+    .catch((error) => {
+      console.error("Error connecting to the db:", error.message);
+      process.exit(1);
+    });
 };
+
+mongoose.connection.on("error", (error) => {
+  console.error("db connection error:", error);
+  process.exit(1);
+});
+
+module.exports = { connectDB };

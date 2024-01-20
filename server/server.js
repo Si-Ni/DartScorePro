@@ -6,6 +6,7 @@ const dotenv = require("dotenv");
 const dartscounter = require("./src/routes/dartscounter.route");
 const rateLimiter = require("./src/middlewares/rateLimit.middleware");
 const cookieParser = require("cookie-parser");
+const { connectDB } = require("./src/services/db.service");
 const app = express();
 const PORT = 4000 || process.env.PORT;
 
@@ -18,6 +19,8 @@ app.use("/", dartscounter);
 app.use(cookieParser());
 app.set("trust proxy", 1);
 dotenv.config();
+
+connectDB();
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "/../client/dist/index.html"));
