@@ -6,6 +6,7 @@ import Register from "./Register";
 import RegisterVerify from "./RegisterVerify";
 import Singleplayer from "./Singleplayer";
 import PrivacyPolicy from "./PrivacyPolicy";
+import Multiplayer from "./Multiplayer";
 import axios from "axios";
 
 function App() {
@@ -52,6 +53,7 @@ function App() {
           <Route path="/register/verify" element={<RegisterVerify />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/singleplayer" element={<Singleplayer />} />
+          <Route path="/multiplayer" element={<Multiplayer />} />
         </Routes>
       </Router>
     </>

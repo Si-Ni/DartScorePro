@@ -50,8 +50,6 @@ function StandardGames(props: StandardGamesProps) {
     addThrowToLastThrows(currentPlayerIndex, points, multiplier);
 
     updateScoreForPlayerAndContinueGame(currentPlayerIndex, points);
-
-    console.log(playerStats);
   };
 
   const savePreviousPlayerStats = (playerIndex: number): void => {
