@@ -129,7 +129,19 @@ export interface GamesProps {
   cbBackBtnClicked(): void;
 }
 
+export interface PlayerMenuProps {
+  players: string[];
+  setPlayers: React.Dispatch<React.SetStateAction<string[]>>;
+}
+
 export interface LocalMultiplayerMenuProps {
+  players: string[];
+  setPlayers: React.Dispatch<React.SetStateAction<string[]>>;
+  cbGamemodeSelected(gamemode: Gamemode): void;
+  cbBackBtnClicked(): void;
+}
+
+export interface LocalMultiplayerProps {
   cbBackBtnClicked(): void;
 }
 
