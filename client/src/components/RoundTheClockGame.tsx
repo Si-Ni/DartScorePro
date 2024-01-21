@@ -8,7 +8,7 @@ const initializePlayerStats = (players: string[]): PlayerToPlayerStatsRCl => {
   players.forEach((player) => {
     initialPoints[player] = {
       currentTarget: 1,
-      lastThrows: [],
+      lastThrows: []
     };
   });
   return initialPoints;
@@ -44,8 +44,8 @@ function RoundTheClockGame(props: RoundTheClockGameProps) {
       [playerKey]: {
         ...prevPlayerStats[playerKey],
         currentTarget: prevPlayerStats[playerKey].currentTarget + 1,
-        lastThrows: beginningOfRound ? ["Hit"] : [...prevPlayerStats[playerKey].lastThrows, "Hit"],
-      },
+        lastThrows: beginningOfRound ? ["Hit"] : [...prevPlayerStats[playerKey].lastThrows, "Hit"]
+      }
     }));
   };
 
@@ -80,8 +80,8 @@ function RoundTheClockGame(props: RoundTheClockGameProps) {
       ...prevPlayerStats,
       [playerKey]: {
         ...prevPlayerStats[playerKey],
-        lastThrows: beginningOfRound ? [...lastThrows] : [...prevPlayerStats[playerKey].lastThrows, ...lastThrows],
-      },
+        lastThrows: beginningOfRound ? [...lastThrows] : [...prevPlayerStats[playerKey].lastThrows, ...lastThrows]
+      }
     }));
   };
 

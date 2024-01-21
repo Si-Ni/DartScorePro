@@ -6,7 +6,7 @@ const checkPwd = async (userID, userMail, userPWD) => {
     const user = await userModel
       .findOne({
         $or: [{ userID: userID }, { userMail: userMail }],
-        verified: true,
+        verified: true
       })
       .exec();
     //here

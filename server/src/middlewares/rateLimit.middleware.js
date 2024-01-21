@@ -8,7 +8,7 @@ const rateLimiterUsingThirdParty = rateLimit({
   legacyHeaders: false,
   skip: function (req) {
     return !((req.path === "/register/" && req.method === "POST") || (req.path === "/login/" && req.method === "POST"));
-  },
+  }
 });
 
 module.exports = rateLimiterUsingThirdParty;

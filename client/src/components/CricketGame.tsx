@@ -16,8 +16,8 @@ const initializePlayerStats = (players: string[]): PlayerToPlayerStatsCricket =>
         17: 0,
         16: 0,
         15: 0,
-        Bull: 0,
-      },
+        Bull: 0
+      }
     };
   });
   return initialPoints;
@@ -31,7 +31,7 @@ function CricketGame(props: CricketGameProps) {
   const [players, setPlayers] = useState<string[]>(props.players);
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState<number>(0);
   const [playerStats, setPlayerStats] = useState<PlayerToPlayerStatsCricket>(() =>
-    initializePlayerStats(props.players),
+    initializePlayerStats(props.players)
   );
 
   const handleScoreBtnClicked = (points: number): void => {
@@ -112,8 +112,8 @@ function CricketGame(props: CricketGameProps) {
           ...updatedPlayerStats[playerKey],
           cricketStats: {
             ...updatedPlayerStats[playerKey].cricketStats,
-            [statsKey]: 4,
-          },
+            [statsKey]: 4
+          }
         };
       });
 
@@ -125,7 +125,7 @@ function CricketGame(props: CricketGameProps) {
     playerKey: string,
     statsKey: string,
     currentCricketStatusValue: number,
-    thrownPoints: number,
+    thrownPoints: number
   ): void => {
     setPlayerStats((prevPlayerStats) => ({
       ...prevPlayerStats,
@@ -134,9 +134,9 @@ function CricketGame(props: CricketGameProps) {
         score: prevPlayerStats[playerKey].score + thrownPoints,
         cricketStats: {
           ...prevPlayerStats[playerKey].cricketStats,
-          [statsKey]: currentCricketStatusValue as CricketStatus,
-        },
-      },
+          [statsKey]: currentCricketStatusValue as CricketStatus
+        }
+      }
     }));
   };
 
@@ -145,8 +145,8 @@ function CricketGame(props: CricketGameProps) {
       ...prevPlayerStats,
       [playerKey]: {
         ...prevPlayerStats[playerKey],
-        score: prevPlayerStats[playerKey].score + thrownPoints,
-      },
+        score: prevPlayerStats[playerKey].score + thrownPoints
+      }
     }));
   };
 
@@ -173,7 +173,7 @@ function CricketGame(props: CricketGameProps) {
     playerKey: string,
     thrownPoints: number,
     currentCricketStatus: string,
-    currentCricketStatusValue: number,
+    currentCricketStatusValue: number
   ): void => {
     const highestScore = calculateHighestScore();
     const playersScore = playerStats[playerKey].score + thrownPoints;
@@ -197,7 +197,7 @@ function CricketGame(props: CricketGameProps) {
   const playerHasClosedAll = (
     playerKey: string,
     currentCricketStatus: string,
-    currentUpdatedCricketStatusValue: number,
+    currentUpdatedCricketStatusValue: number
   ): boolean => {
     if (currentUpdatedCricketStatusValue < 3) return false;
     const currentPlayerCricketStats = playerStats[playerKey].cricketStats;

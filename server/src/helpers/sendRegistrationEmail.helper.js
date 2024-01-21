@@ -5,8 +5,8 @@ async function sendRegistrationEmail(userID, userMail, registrationCode) {
     service: process.env.EMAIL_SERVICE,
     auth: {
       user: process.env.EMAIL_SENDER,
-      pass: process.env.EMAIL_PASSWORD,
-    },
+      pass: process.env.EMAIL_PASSWORD
+    }
   });
 
   const mailOptions = {
@@ -33,7 +33,7 @@ async function sendRegistrationEmail(userID, userMail, registrationCode) {
         <p>Thank you for registering with our service.</p>
       </body>
     </html>
-  `,
+  `
   };
 
   try {

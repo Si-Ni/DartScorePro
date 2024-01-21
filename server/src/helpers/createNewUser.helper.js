@@ -9,7 +9,7 @@ const createNewUser = async (userID, userMail, userPWD, registerCode) => {
     userMail: userMail,
     userPWD: hashedPWD,
     verified: false,
-    registerCode: registerCode,
+    registerCode: registerCode
   });
   await newUser.save();
 };
