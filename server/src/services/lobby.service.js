@@ -10,6 +10,7 @@ const configureLobbyService = (io) => {
     socket.on("createLobby", () => {
       const lobbyCode = generateLobbyCode();
       lobbies[lobbyCode] = { players: [socket.id], messages: [] };
+      socket.join(lobbyCode);
       socket.emit("lobbyCreated", lobbyCode);
     });
 
