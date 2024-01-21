@@ -15,4 +15,4 @@ jobs:
       - name: Prettify code
         uses: creyD/prettier_action@v4.3
         with:
-          prettier_options: --write **/*.{css,js,ts,tsx,html,md} --print-width 120
+          prettier_options: --write **/*.{css,js,ts,tsx,html,md} --print-width 120 --trailing-comma none
