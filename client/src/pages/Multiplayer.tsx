@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { MultiplayerMode } from "../global/types";
 import MultiplayerMenu from "./MultiplayerMenu";
-import LocalMultiplayer from "./LocalMultiplayerMenu";
+import LocalMultiplayer from "./LocalMultiplayer";
 
 function Multiplayer() {
   const [selectedMultiplayerMode, setSelectedMultiplayerMode] = useState<MultiplayerMode | null>(null);
