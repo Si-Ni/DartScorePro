@@ -12,7 +12,7 @@ function Multiplayer() {
         <div>
           {selectedMultiplayerMode === "local" && (
             <LocalMultiplayer
-              cbBackToMenu={() => {
+              cbBackBtnClicked={() => {
                 setSelectedMultiplayerMode(null);
               }}
             />

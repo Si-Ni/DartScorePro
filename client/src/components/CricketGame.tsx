@@ -220,7 +220,7 @@ function CricketGame(props: CricketGameProps) {
       {showGoToMainMenuPopUp && (
         <YesNoPopUp
           content={"Do you really want to go back? All progress will be lost!"}
-          cbYesClicked={props.cbReturnToMenu}
+          cbYesClicked={props.cbBackBtnClicked}
           cbNoClicked={() => setShowGoToMainMenuPopUp(false)}
         />
       )}

@@ -48,17 +48,22 @@ function LocalMultiplayer(props: LocalMultiplayerMenuProps) {
     if (players.length > 0) setShowGamemodeMenu(true);
   };
 
-  const handleBack = () => {
-    props.cbBackToMenu();
+  const handleBackToMultiplayerMenu = () => {
+    props.cbBackBtnClicked();
+  };
+
+  const handleBackToPlayerMenu = () => {
+    setShowGamemodeMenu(false);
+    setSelectedGamemode(null);
   };
 
   return (
     <>
       {selectedGamemode && (
-        <Games selectedGamemode={selectedGamemode} players={players} cbReturnToMenu={() => setSelectedGamemode(null)} />
+        <Games selectedGamemode={selectedGamemode} players={players} cbBackBtnClicked={handleBackToPlayerMenu} />
       )}
       {showGamemodeMenu ? (
-        <GamemodeMenu cbGamemodeSelected={handleGamemodeSelected} />
+        <GamemodeMenu cbGamemodeSelected={handleGamemodeSelected} cbBackBtnClicked={handleBackToPlayerMenu} />
       ) : (
         <div className="hero is-justify-content-center is-align-items-center is-fullheight">
           <div className="hero-body">
@@ -109,7 +114,7 @@ function LocalMultiplayer(props: LocalMultiplayerMenuProps) {
                 </p>
               )}
               <div className="buttons is-centered mt-5">
-                <button className="button is-danger m-1" onClick={handleBack}>
+                <button className="button is-danger m-1" onClick={handleBackToMultiplayerMenu}>
                   Back
                 </button>
                 <button className="button is-primary m-1" onClick={handleNext} disabled={players.length === 0}>
