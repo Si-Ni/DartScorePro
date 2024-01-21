@@ -10,6 +10,10 @@ function LocalMultiplayer(props: LocalMultiplayerMenuProps) {
   const [selectedGamemode, setSelectedGamemode] = useState<Gamemode | null>(null);
   const [showGamemodeMenu, setShowGamemodeMenu] = useState<boolean>(false);
 
+  const onEnterPressed = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") addPlayer();
+  };
+
   const addPlayer = () => {
     if (currentPlayer.trim() !== "" && players.length < 4) {
       const truncatedPlayer = currentPlayer.substring(0, 20);
@@ -88,6 +92,7 @@ function LocalMultiplayer(props: LocalMultiplayerMenuProps) {
                     type="text"
                     value={currentPlayer}
                     onChange={handleInputChange}
+                    onKeyUp={onEnterPressed}
                     placeholder="Enter player name"
                     disabled={players.length === 4}
                   />
