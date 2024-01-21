@@ -1,5 +1,4 @@
-const { connectDB } = require("./db.service");
-const generateRegistrationCode = require("../helpers/generateRegistrationCode.helper");
+const generateCode = require("../helpers/generateCode.helper");
 const sendRegistrationEmail = require("../helpers/sendRegistrationEmail.helper");
 const checkUserRegistered = require("../helpers/checkUserRegistered.helper");
 const createNewUser = require("../helpers/createNewUser.helper");
@@ -87,7 +86,7 @@ async function register(req) {
     };
   }
 
-  const registerCode = generateRegistrationCode();
+  const registerCode = generateCode();
   const emailSent = await sendRegistrationEmail(userID, userMail, registerCode);
   await createNewUser(userID, userMail, userPWD, registerCode);
 

@@ -7,6 +7,9 @@ import RegisterVerify from "./RegisterVerify";
 import Singleplayer from "./Singleplayer";
 import PrivacyPolicy from "./PrivacyPolicy";
 import axios from "axios";
+import Lobby from "./Lobby";
+import Game from "./Game";
+import io from "socket.io-client";
 
 function App() {
   const pwdRef = useRef<HTMLInputElement | null>(null);
@@ -27,6 +30,8 @@ function App() {
       })
       .catch(() => {});
   }, []);
+
+  const socket = io.connect("http://localhost:4000"); // Update with your server URL
   return (
     <>
       {isLoggedIn && <div className="fixed-bottom-left">Logged in as {displayUserID}</div>}
@@ -52,6 +57,8 @@ function App() {
           <Route path="/register/verify" element={<RegisterVerify />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/singleplayer" element={<Singleplayer />} />
+          <Route path="/multiplayer/lobby/:code" element={<Game socket={socket} displayUserID={displayUserID} />} />
+          <Route path="/multiplayer/lobby" element={<Lobby socket={socket} />} />
         </Routes>
       </Router>
     </>
