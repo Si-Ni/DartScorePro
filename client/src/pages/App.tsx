@@ -19,8 +19,8 @@ function App() {
     axios
       .get("http://localhost:4000/generalAuth", {
         headers: {
-          Authorization: `Bearer ${token}`,
-        },
+          Authorization: `Bearer ${token}`
+        }
       })
       .then((res) => {
         setLoggedIn(true);

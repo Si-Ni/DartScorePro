@@ -19,7 +19,7 @@ const initializePlayerStats = (players: string[], gamemodeTotalScore: number): P
       turns: 0,
       lastThrows: [],
       throwsRemaining: 0,
-      checkoutOptions: [],
+      checkoutOptions: []
     };
   });
   return initialPoints;
@@ -34,7 +34,7 @@ function StandardGames(props: StandardGamesProps) {
   const [multiplier, setMultiplier] = useState<number>(1);
   const [previousPlayerStats, setPreviousPlayerStats] = useState<PlayerStats | Record<string, never>>({});
   const [playerStats, setPlayerStats] = useState<PlayerToPlayerStats>(() =>
-    initializePlayerStats(props.players, props.gamemodeTotalScore),
+    initializePlayerStats(props.players, props.gamemodeTotalScore)
   );
 
   const handleScoreChange = (points: number): void => {
@@ -55,14 +55,14 @@ function StandardGames(props: StandardGamesProps) {
   const savePreviousPlayerStats = (playerIndex: number): void => {
     setPreviousPlayerStats({
       ...structuredClone(playerStats[players[playerIndex]]),
-      throwsRemaining: throwsRemaining,
+      throwsRemaining: throwsRemaining
     });
   };
 
   const saveBeginningScore = (playerIndex: number): void => {
     setPlayerStats((prevPlayerStats) => ({
       ...prevPlayerStats,
-      [players[playerIndex]]: setBeginningScoreForPlayer(playerStats[players[playerIndex]]),
+      [players[playerIndex]]: setBeginningScoreForPlayer(playerStats[players[playerIndex]])
     }));
   };
 
@@ -75,7 +75,7 @@ function StandardGames(props: StandardGamesProps) {
     const playerKey = players[playerIndex];
     setPlayerStats((prevPlayerStats) => ({
       ...prevPlayerStats,
-      [playerKey]: setLastThrows(playerStats[playerKey], []),
+      [playerKey]: setLastThrows(playerStats[playerKey], [])
     }));
   };
 
@@ -87,7 +87,7 @@ function StandardGames(props: StandardGamesProps) {
     const playerKey = players[playerIndex];
     setPlayerStats((prevPlayerStats) => ({
       ...prevPlayerStats,
-      [playerKey]: setLastThrows(playerStats[playerKey], [...prevPlayerStats[playerKey].lastThrows, formattedThrow]),
+      [playerKey]: setLastThrows(playerStats[playerKey], [...prevPlayerStats[playerKey].lastThrows, formattedThrow])
     }));
   };
 
@@ -135,7 +135,7 @@ function StandardGames(props: StandardGamesProps) {
   const updatePlayerStatsByThrownPoints = (playerIndex: number, thrownPoints: number): void => {
     setPlayerStats((prevPlayerStats) => ({
       ...prevPlayerStats,
-      [players[playerIndex]]: calculateNewPlayerStats(thrownPoints, playerStats[players[playerIndex]]),
+      [players[playerIndex]]: calculateNewPlayerStats(thrownPoints, playerStats[players[playerIndex]])
     }));
   };
 
@@ -146,7 +146,7 @@ function StandardGames(props: StandardGamesProps) {
     dartsThrown: currentPlayerStats.dartsThrown + 1,
     turns: throwsRemaining === 1 ? currentPlayerStats.turns + 1 : currentPlayerStats.turns,
     average: ((currentPlayerStats.totalScore + thrownPoints) * 3) / (currentPlayerStats.dartsThrown + 1),
-    checkoutOptions: getAllOptions(3).filter((r) => sumRound(r) === currentPlayerStats.score - thrownPoints),
+    checkoutOptions: getAllOptions(3).filter((r) => sumRound(r) === currentPlayerStats.score - thrownPoints)
   });
 
   const updateRemainingThrows = (updatedScore: number): void => {
@@ -166,13 +166,13 @@ function StandardGames(props: StandardGamesProps) {
   const resetScoreToBeginningOfRound = (playerIndex: number) => {
     setPlayerStats((prevPlayerStats) => ({
       ...prevPlayerStats,
-      [players[playerIndex]]: resetScore(playerStats[players[playerIndex]]),
+      [players[playerIndex]]: resetScore(playerStats[players[playerIndex]])
     }));
   };
 
   const resetScore = (playerStats: PlayerStats): PlayerStats => ({
     ...playerStats,
-    score: playerStats.scoreAtBeginningOfRound,
+    score: playerStats.scoreAtBeginningOfRound
   });
 
   const handleMultiplierClick = (multiplierValue: number): void => {
@@ -195,8 +195,8 @@ function StandardGames(props: StandardGamesProps) {
       ...prevPlayerStats,
       [players[playerIndex]]: {
         ...prevPlayerStats[players[playerIndex]],
-        ...previousPlayerStats,
-      } as PlayerStats,
+        ...previousPlayerStats
+      } as PlayerStats
     }));
   };
 
