@@ -31,7 +31,7 @@ function CricketGame(props: CricketGameProps) {
   const [players, setPlayers] = useState<string[]>(props.players);
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState<number>(0);
   const [playerStats, setPlayerStats] = useState<PlayerToPlayerStatsCricket>(() =>
-    initializePlayerStats(props.players),
+    initializePlayerStats(props.players)
   );
 
   const handleScoreBtnClicked = (points: number): void => {
@@ -125,7 +125,7 @@ function CricketGame(props: CricketGameProps) {
     playerKey: string,
     statsKey: string,
     currentCricketStatusValue: number,
-    thrownPoints: number,
+    thrownPoints: number
   ): void => {
     setPlayerStats((prevPlayerStats) => ({
       ...prevPlayerStats,
@@ -173,7 +173,7 @@ function CricketGame(props: CricketGameProps) {
     playerKey: string,
     thrownPoints: number,
     currentCricketStatus: string,
-    currentCricketStatusValue: number,
+    currentCricketStatusValue: number
   ): void => {
     const highestScore = calculateHighestScore();
     const playersScore = playerStats[playerKey].score + thrownPoints;
@@ -197,7 +197,7 @@ function CricketGame(props: CricketGameProps) {
   const playerHasClosedAll = (
     playerKey: string,
     currentCricketStatus: string,
-    currentUpdatedCricketStatusValue: number,
+    currentUpdatedCricketStatusValue: number
   ): boolean => {
     if (currentUpdatedCricketStatusValue < 3) return false;
     const currentPlayerCricketStats = playerStats[playerKey].cricketStats;
@@ -220,7 +220,7 @@ function CricketGame(props: CricketGameProps) {
       {showGoToMainMenuPopUp && (
         <YesNoPopUp
           content={"Do you really want to go back? All progress will be lost!"}
-          cbYesClicked={props.cbReturnToMenu}
+          cbYesClicked={props.cbBackBtnClicked}
           cbNoClicked={() => setShowGoToMainMenuPopUp(false)}
         />
       )}

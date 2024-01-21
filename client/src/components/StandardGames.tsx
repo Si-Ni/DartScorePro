@@ -34,7 +34,7 @@ function StandardGames(props: StandardGamesProps) {
   const [multiplier, setMultiplier] = useState<number>(1);
   const [previousPlayerStats, setPreviousPlayerStats] = useState<PlayerStats | Record<string, never>>({});
   const [playerStats, setPlayerStats] = useState<PlayerToPlayerStats>(() =>
-    initializePlayerStats(props.players, props.gamemodeTotalScore),
+    initializePlayerStats(props.players, props.gamemodeTotalScore)
   );
 
   const handleScoreChange = (points: number): void => {
@@ -225,7 +225,7 @@ function StandardGames(props: StandardGamesProps) {
       {showGoToMainMenuPopUp && (
         <YesNoPopUp
           content={"Do you really want to go back? All progress will be lost!"}
-          cbYesClicked={props.cbReturnToMenu}
+          cbYesClicked={props.cbBackBtnClicked}
           cbNoClicked={() => setShowGoToMainMenuPopUp(false)}
         />
       )}

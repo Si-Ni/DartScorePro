@@ -3,8 +3,10 @@ import { useState } from "react";
 import { Gamemode } from "../global/types";
 import GamemodeMenu from "../components/GamemodeMenu";
 import Games from "../components/Games";
+import { useNavigate } from "react-router-dom";
 
 function Singleplayer() {
+  const navigate = useNavigate();
   const [selectedGamemode, setSelectedGamemode] = useState<Gamemode | null>(null);
 
   return (
@@ -13,12 +15,12 @@ function Singleplayer() {
         <Games
           selectedGamemode={selectedGamemode}
           players={["Player1"]}
-          cbReturnToMenu={() => {
+          cbBackBtnClicked={() => {
             setSelectedGamemode(null);
           }}
         />
       ) : (
-        <GamemodeMenu cbGamemodeSelected={setSelectedGamemode} />
+        <GamemodeMenu cbBackBtnClicked={() => navigate("/")} cbGamemodeSelected={setSelectedGamemode} />
       )}
     </>
   );

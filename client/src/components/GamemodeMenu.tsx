@@ -1,9 +1,6 @@
-import { useNavigate } from "react-router-dom";
 import { Gamemode, GamemodeMenuProps } from "../global/types";
 
 function GamemodeMenu(props: GamemodeMenuProps) {
-  const navigate = useNavigate();
-
   const handleMenuClick = (gamemode: Gamemode) => {
     props.cbGamemodeSelected(gamemode);
   };
@@ -32,7 +29,7 @@ function GamemodeMenu(props: GamemodeMenuProps) {
             </button>
           </div>
           <div className="buttons is-centered">
-            <button className="button is-danger m-1 is-large" onClick={() => navigate("/")}>
+            <button className="button is-danger m-1 is-large" onClick={props.cbBackBtnClicked}>
               Back
             </button>
           </div>
