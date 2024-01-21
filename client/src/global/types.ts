@@ -41,12 +41,12 @@ export type PlayerToPlayerStatsRCl = { [player: string]: PlayerStatsRCl };
 export interface StandardGamesProps {
   gamemodeTotalScore: number;
   players: string[];
-  cbReturnToMenu(): void;
+  cbBackBtnClicked(): void;
 }
 
 export interface RoundTheClockGameProps {
   players: string[];
-  cbReturnToMenu(): void;
+  cbBackBtnClicked(): void;
 }
 
 export interface GameInputButtonsProps {
@@ -58,7 +58,7 @@ export interface GameInputButtonsProps {
 
 export interface CricketGameProps {
   players: string[];
-  cbReturnToMenu(): void;
+  cbBackBtnClicked(): void;
 }
 
 export type Gamemode = "301" | "501" | "rcl" | "cri";
@@ -114,6 +114,35 @@ export interface YesNoPopUpProps {
 
 export interface GamemodeMenuProps {
   cbGamemodeSelected(gamemode: Gamemode): void;
+  cbBackBtnClicked(): void;
+}
+
+export type MultiplayerMode = "local" | "create" | "join";
+
+export interface MultiplayerModeProps {
+  cbMultiplayerModeSelected(multiplayerMode: MultiplayerMode): void;
+}
+
+export interface GamesProps {
+  selectedGamemode: Gamemode;
+  players: string[];
+  cbBackBtnClicked(): void;
+}
+
+export interface PlayerMenuProps {
+  players: string[];
+  setPlayers: React.Dispatch<React.SetStateAction<string[]>>;
+}
+
+export interface LocalMultiplayerMenuProps {
+  players: string[];
+  setPlayers: React.Dispatch<React.SetStateAction<string[]>>;
+  cbGamemodeSelected(gamemode: Gamemode): void;
+  cbBackBtnClicked(): void;
+}
+
+export interface LocalMultiplayerProps {
+  cbBackBtnClicked(): void;
 }
 
 export interface MainMenuProps {

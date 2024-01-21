@@ -6,6 +6,7 @@ import Register from "./Register";
 import RegisterVerify from "./RegisterVerify";
 import Singleplayer from "./Singleplayer";
 import PrivacyPolicy from "./PrivacyPolicy";
+import Multiplayer from "./Multiplayer";
 import axios from "axios";
 import Lobby from "./Lobby";
 import Game from "./Game";
@@ -57,8 +58,10 @@ function App() {
           <Route path="/register/verify" element={<RegisterVerify />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/singleplayer" element={<Singleplayer />} />
+
           <Route path="/multiplayer/lobby/:code" element={<Game socket={socket} displayUserID={displayUserID} />} />
-          <Route path="/multiplayer/lobby" element={<Lobby socket={socket} />} />
+
+          <Route path="/multiplayer" element={<Multiplayer socket={socket} />} />
         </Routes>
       </Router>
     </>
