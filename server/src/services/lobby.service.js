@@ -21,7 +21,7 @@ const configureLobbyService = (io) => {
 
         io.to(lobbyCode).emit(
           "updatePlayersList",
-          lobbies[lobbyCode].players.map((player) => player.socketId),
+          lobbies[lobbyCode].players.map((player) => player.socketId)
         );
       } else {
         socket.emit("lobbyNotFound");
@@ -32,7 +32,7 @@ const configureLobbyService = (io) => {
       if (lobbies[lobbyCode]) {
         socket.emit(
           "updatePlayersList",
-          lobbies[lobbyCode].players.map((player) => player.socketId),
+          lobbies[lobbyCode].players.map((player) => player.socketId)
         );
       }
     });
@@ -62,7 +62,7 @@ const leaveLobby = (io, socketId) => {
 
     io.to(lobbyCode).emit(
       "updatePlayersList",
-      lobbies[lobbyCode].players.map((player) => player.socketId),
+      lobbies[lobbyCode].players.map((player) => player.socketId)
     );
   });
 };

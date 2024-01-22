@@ -29,8 +29,8 @@ const server = app.listen(PORT, () => {
 const io = require("socket.io")(server, {
   cors: {
     origin: "http://localhost:3000", // Allow requests only from this origin
-    methods: ["GET", "POST"],
-  },
+    methods: ["GET", "POST"]
+  }
 });
 configureLobbyService(io); // Pass the Socket.IO instance to configureSocket function
 
