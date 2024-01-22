@@ -24,7 +24,7 @@ function App() {
     axios
       .get("http://localhost:4000/generalAuth", {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
         },
       })
       .then((res) => {
@@ -63,10 +63,20 @@ function App() {
 
           <Route
             path="/multiplayer/lobby/:code"
-            element={<OnlineMultiplayer socket={socket} displayUserID={displayUserID} lobbyCode={lobbyCode} isLobbyLeader={isLobbyLeader}/>}
+            element={
+              <OnlineMultiplayer
+                socket={socket}
+                displayUserID={displayUserID}
+                lobbyCode={lobbyCode}
+                isLobbyLeader={isLobbyLeader}
+              />
+            }
           />
-      
-          <Route path="/multiplayer" element={<Multiplayer socket={socket} setLobbyCode={setLobbyCode} setIsLobbyLeader={setIsLobbyLeader}/>} />
+
+          <Route
+            path="/multiplayer"
+            element={<Multiplayer socket={socket} setLobbyCode={setLobbyCode} setIsLobbyLeader={setIsLobbyLeader} />}
+          />
         </Routes>
       </Router>
     </>

@@ -12,7 +12,7 @@ const configureLobbyService = (io) => {
     });
 
     socket.on("joinLobby", (lobbyCode) => {
-      console.log(lobbyCode)
+      console.log(lobbyCode);
       if (lobbies[lobbyCode]) {
         console.log("here", lobbies, lobbyCode);
 
@@ -31,7 +31,7 @@ const configureLobbyService = (io) => {
     });
 
     socket.on("joinedSuccessfully", (lobbyCode) => {
-      console.log(lobbyCode)
+      console.log(lobbyCode);
       if (lobbies[lobbyCode]) {
         socket.emit("playerList", lobbies[lobbyCode].players);
       }
@@ -58,7 +58,6 @@ const configureLobbyService = (io) => {
     });
   });
 };
-
 
 const generateLobbyCode = () => {
   return Math.random().toString(36).substring(2, 8).toUpperCase();

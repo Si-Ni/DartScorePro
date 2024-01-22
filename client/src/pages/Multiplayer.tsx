@@ -39,7 +39,7 @@ function Multiplayer({ socket, setLobbyCode, setIsLobbyLeader }) {
           )}
         </div>
       ) : (
-        <MultiplayerMenu cbMultiplayerModeSelected={setSelectedMultiplayerMode}/>
+        <MultiplayerMenu cbMultiplayerModeSelected={setSelectedMultiplayerMode} />
       )}
     </>
   );
