@@ -178,6 +178,7 @@ export interface MultiplayerProps {
 export interface CreateLobbyProps {
   cbBackBtnClicked(): void;
   socket: Socket<any>;
+  setLobbyCodeGlobal: React.Dispatch<React.SetStateAction<string>>;
   setIsLobbyLeader: React.Dispatch<React.SetStateAction<boolean>>;
 }
 

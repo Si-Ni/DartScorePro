@@ -101,8 +101,6 @@ async function registerVerify(req) {
   userMail = userMail.trim();
   registerCode = registerCode.trim();
 
-  console.log("verify", userMail, registerCode);
-
   const isUserVerified = await setUserVerified(userMail, registerCode);
 
   return isUserVerified ? { status: 200, json: "User verified" } : { status: 400, json: "User not verified" };

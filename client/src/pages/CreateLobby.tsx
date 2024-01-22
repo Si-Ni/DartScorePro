@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { CreateLobbyProps } from "../global/types";
 
-function CreateLobby({ socket, setIsLobbyLeader, cbBackBtnClicked }: CreateLobbyProps) {
+function CreateLobby({ socket, setIsLobbyLeader, cbBackBtnClicked, setLobbyCodeGlobal }: CreateLobbyProps) {
   const navigate = useNavigate();
   const [lobbyCode, setLobbyCode] = useState("");
   const lobbyCodeRef = useRef<HTMLInputElement | null>(null);
@@ -13,6 +13,7 @@ function CreateLobby({ socket, setIsLobbyLeader, cbBackBtnClicked }: CreateLobby
 
     socket.once("lobbyCreated", (newLobbyCode: string) => {
       setLobbyCode(newLobbyCode);
+      setLobbyCodeGlobal(newLobbyCode);
     });
 
     hideCodeCopied();

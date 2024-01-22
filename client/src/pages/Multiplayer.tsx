@@ -25,6 +25,7 @@ function Multiplayer({ socket, setLobbyCode, setIsLobbyLeader }: MultiplayerProp
                 setSelectedMultiplayerMode(null);
               }}
               socket={socket}
+              setLobbyCodeGlobal={setLobbyCode}
               setIsLobbyLeader={setIsLobbyLeader}
             />
           )}

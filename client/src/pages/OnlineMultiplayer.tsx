@@ -8,6 +8,7 @@ function OnlineMultiplayer(props: OnlineMultiplayerProps) {
   const [selectedGamemode, setSelectedGamemode] = useState<Gamemode | null>(null);
 
   const handleGamemodeSelected = (gamemode: Gamemode) => {
+    if (props.isLobbyLeader) props.socket.emit("gamemodeSelected", { lobbyCode: props.lobbyCode, gamemode: gamemode });
     setSelectedGamemode(gamemode);
   };
 

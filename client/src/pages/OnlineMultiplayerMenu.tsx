@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import GamemodeMenu from "../components/GamemodeMenu";
 import PlayerMenu from "../components/PlayerMenu";
-import { OnlineMultiplayerMenuProps } from "../global/types";
+import { Gamemode, OnlineMultiplayerMenuProps } from "../global/types";
 import { useNavigate } from "react-router-dom";
 
 function OnlineMultiplayerMenu(props: OnlineMultiplayerMenuProps) {
@@ -15,21 +15,21 @@ function OnlineMultiplayerMenu(props: OnlineMultiplayerMenuProps) {
   useEffect(() => {
     props.socket.emit("joinedSuccessfully", props.lobbyCode);
 
-    const handlePlayerJoined = (playerJoined: string) => {
-      props.setPlayers((prevPlayers) => [...prevPlayers, playerJoined]);
-    };
-
     const handleSetPlayerList = (players: string[]) => {
       props.setPlayers(players);
     };
 
-    props.socket.on("playerJoined", handlePlayerJoined);
+    const handleGamemodeSelected = (gamemode: Gamemode) => {
+      props.cbGamemodeSelected(gamemode);
+    };
 
     props.socket.on("updatePlayersList", handleSetPlayerList);
 
+    props.socket.on("leaderSelectedGamemode", handleGamemodeSelected);
+
     return () => {
-      props.socket.off("playerJoined", handlePlayerJoined);
       props.socket.off("updatePlayersList", handleSetPlayerList);
+      props.socket.off("leaderSelectedGamemode", handleGamemodeSelected);
     };
   }, [props.socket, props.setPlayers]);
 

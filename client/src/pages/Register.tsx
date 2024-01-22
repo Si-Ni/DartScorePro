@@ -26,7 +26,6 @@ function Register(props: RegisterProps) {
     const userID = userIDRef.current!.value;
     const userMail = userMailRef.current!.value;
 
-    console.log(userID, userMail, userPWD);
     setPwdDisabled(true);
     axios
       .post("http://localhost:4000/register/", { userMail, userID, userPWD })
@@ -36,7 +35,6 @@ function Register(props: RegisterProps) {
       })
       .catch((error) => {
         setPwdDisabled(false);
-        console.log("dsd", error);
         if (error.response.status === 429) props.setLoginErrorMsg(error.response.statusText);
         else {
           props.setLoginErrorMsg(`${error.response.data}`);
