@@ -132,6 +132,7 @@ export interface GamesProps {
 export interface PlayerMenuProps {
   players: string[];
   setPlayers: React.Dispatch<React.SetStateAction<string[]>>;
+  isEditable: boolean;
 }
 
 export interface LocalMultiplayerMenuProps {
@@ -148,4 +149,22 @@ export interface LocalMultiplayerProps {
 export interface MainMenuProps {
   setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
   setDisplayUserID: React.Dispatch<React.SetStateAction<string>>;
+}
+
+export interface OnlineMultiplayerMenuProps {
+  players: string[];
+  setPlayers: React.Dispatch<React.SetStateAction<string[]>>;
+  cbGamemodeSelected(gamemode: Gamemode): void;
+  cbBackBtnClicked(): void;
+  socket: any;
+  lobbyCode: string;
+  isLobbyLeader: boolean;
+}
+
+export interface OnlineMultiplayerProps {
+  cbBackBtnClicked(): void;
+  displayUserID: string;
+  socket: any;
+  lobbyCode: string;
+  isLobbyLeader: boolean;
 }

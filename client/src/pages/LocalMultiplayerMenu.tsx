@@ -21,7 +21,7 @@ function LocalMultiplayerMenu(props: LocalMultiplayerMenuProps) {
         <div className="hero is-justify-content-center is-align-items-center is-fullheight">
           <div className="hero-body">
             <div className="container box">
-              <PlayerMenu players={props.players} setPlayers={props.setPlayers} />
+              <PlayerMenu players={props.players} setPlayers={props.setPlayers} isEditable={true} />
               <div className="buttons is-centered mt-5">
                 <button className="button is-danger m-1" onClick={props.cbBackBtnClicked}>
                   Back

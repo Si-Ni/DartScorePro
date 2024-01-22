@@ -8,21 +8,23 @@ import Singleplayer from "./Singleplayer";
 import PrivacyPolicy from "./PrivacyPolicy";
 import Multiplayer from "./Multiplayer";
 import axios from "axios";
-import Lobby from "./Lobby";
-import Game from "./Game";
 import io from "socket.io-client";
+import OnlineMultiplayer from "./OnlineMultiplayer";
 
 function App() {
   const pwdRef = useRef<HTMLInputElement | null>(null);
   const [loginErrorMsg, setLoginErrorMsg] = useState<string>("This password or username is invalid");
   const [isLoggedIn, setLoggedIn] = useState<boolean>(false);
   const [displayUserID, setDisplayUserID] = useState<string>("");
+  const [lobbyCode, setLobbyCode] = useState<string>("");
+  const [isLobbyLeader, setIsLobbyLeader] = useState<boolean>(false);
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     axios
       .get("http://localhost:4000/generalAuth", {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`
         },
       })
       .then((res) => {
@@ -59,9 +61,12 @@ function App() {
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/singleplayer" element={<Singleplayer />} />
 
-          <Route path="/multiplayer/lobby/:code" element={<Game socket={socket} displayUserID={displayUserID} />} />
-
-          <Route path="/multiplayer" element={<Multiplayer socket={socket} />} />
+          <Route
+            path="/multiplayer/lobby/:code"
+            element={<OnlineMultiplayer socket={socket} displayUserID={displayUserID} lobbyCode={lobbyCode} isLobbyLeader={isLobbyLeader}/>}
+          />
+      
+          <Route path="/multiplayer" element={<Multiplayer socket={socket} setLobbyCode={setLobbyCode} setIsLobbyLeader={setIsLobbyLeader}/>} />
         </Routes>
       </Router>
     </>

@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-function CreateLobby({ socket }) {
+function CreateLobby({ socket, setIsLobbyLeader }) {
   const navigate = useNavigate();
   const [lobbyCode, setLobbyCode] = useState("");
   const lobbyCodeRef = useRef<HTMLInputElement | null>(null);
@@ -38,6 +38,7 @@ function CreateLobby({ socket }) {
 
   const handleNext = () => {
     if (!lobbyCodeRef.current!.value.trim()) return;
+    setIsLobbyLeader(true);
     navigate(`/multiplayer/lobby/${lobbyCode}`);
   };
 

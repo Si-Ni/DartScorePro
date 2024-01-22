@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-function JoinLobby({ socket }) {
+function JoinLobby({ socket, ...props }) {
   const navigate = useNavigate();
   const [lobbyCode, setLobbyCode] = useState("");
   const lobbyCodeRef = useRef<HTMLInputElement | null>(null);
@@ -41,6 +41,7 @@ function JoinLobby({ socket }) {
                 value={lobbyCode}
                 ref={lobbyCodeRef}
                 onChange={(e) => {
+                  props.setLobbyCodeGlobal(e.target.value);
                   setLobbyCode(e.target.value);
                   onChangeHideInvalidCodeMsg();
                 }}

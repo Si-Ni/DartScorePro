@@ -5,7 +5,7 @@ import LocalMultiplayer from "./LocalMultiplayer";
 import JoinLobby from "./JoinLobby";
 import CreateLobby from "./CreateLobby";
 
-function Multiplayer({ socket }) {
+function Multiplayer({ socket, setLobbyCode, setIsLobbyLeader }) {
   const [selectedMultiplayerMode, setSelectedMultiplayerMode] = useState<MultiplayerMode | null>(null);
 
   return (
@@ -25,6 +25,7 @@ function Multiplayer({ socket }) {
                 setSelectedMultiplayerMode(null);
               }}
               socket={socket}
+              setIsLobbyLeader={setIsLobbyLeader}
             />
           )}
           {selectedMultiplayerMode === "join" && (
@@ -33,11 +34,12 @@ function Multiplayer({ socket }) {
                 setSelectedMultiplayerMode(null);
               }}
               socket={socket}
+              setLobbyCodeGlobal={setLobbyCode}
             />
           )}
         </div>
       ) : (
-        <MultiplayerMenu cbMultiplayerModeSelected={setSelectedMultiplayerMode} />
+        <MultiplayerMenu cbMultiplayerModeSelected={setSelectedMultiplayerMode}/>
       )}
     </>
   );

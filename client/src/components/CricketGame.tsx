@@ -28,7 +28,7 @@ function CricketGame(props: CricketGameProps) {
   const [currentRound, setCurrentRound] = useState<number>(1);
   const [throwsRemaining, setThrowsRemaining] = useState<number>(3);
   const [mulitplier, setMultiplier] = useState<number>(1);
-  const [players, setPlayers] = useState<string[]>(props.players);
+  const [players] = useState<string[]>(props.players);
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState<number>(0);
   const [playerStats, setPlayerStats] = useState<PlayerToPlayerStatsCricket>(() =>
     initializePlayerStats(props.players)
