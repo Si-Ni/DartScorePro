@@ -10,9 +10,9 @@ function OnlineMultiplayerMenu(props: OnlineMultiplayerMenuProps) {
     if (props.players.length > 1) setShowGamemodeMenu(true);
   };
 
-  props.socket.emit("joinedSuccessfully", props.lobbyCode);
-
   useEffect(() => {
+    props.socket.emit("joinedSuccessfully", props.lobbyCode);
+
     const handlePlayerJoined = (playerJoined: any) => {
       props.setPlayers((prevPlayers) => [...prevPlayers, playerJoined]);
     };

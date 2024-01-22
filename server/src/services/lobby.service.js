@@ -31,7 +31,6 @@ const configureLobbyService = (io) => {
     });
 
     socket.on("joinedSuccessfully", (lobbyCode) => {
-      console.log(lobbyCode);
       if (lobbies[lobbyCode]) {
         socket.emit("playerList", lobbies[lobbyCode].players);
       }
