@@ -1,9 +1,11 @@
 import { useState } from "react";
-import { MultiplayerMode } from "../global/types";
+import { MultiplayerMode, MultiplayerProps } from "../global/types";
 import MultiplayerMenu from "./MultiplayerMenu";
 import LocalMultiplayer from "./LocalMultiplayer";
+import JoinLobby from "./JoinLobby";
+import CreateLobby from "./CreateLobby";
 
-function Multiplayer() {
+function Multiplayer({ socket, setLobbyCode, setIsLobbyLeader }: MultiplayerProps) {
   const [selectedMultiplayerMode, setSelectedMultiplayerMode] = useState<MultiplayerMode | null>(null);
 
   return (
@@ -15,6 +17,25 @@ function Multiplayer() {
               cbBackBtnClicked={() => {
                 setSelectedMultiplayerMode(null);
               }}
+            />
+          )}
+          {selectedMultiplayerMode === "create" && (
+            <CreateLobby
+              cbBackBtnClicked={() => {
+                setSelectedMultiplayerMode(null);
+              }}
+              socket={socket}
+              setLobbyCodeGlobal={setLobbyCode}
+              setIsLobbyLeader={setIsLobbyLeader}
+            />
+          )}
+          {selectedMultiplayerMode === "join" && (
+            <JoinLobby
+              cbBackBtnClicked={() => {
+                setSelectedMultiplayerMode(null);
+              }}
+              socket={socket}
+              setLobbyCodeGlobal={setLobbyCode}
             />
           )}
         </div>

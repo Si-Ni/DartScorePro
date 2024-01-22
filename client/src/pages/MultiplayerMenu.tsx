@@ -27,7 +27,7 @@ function MultiplayerMenu(props: MultiplayerModeProps) {
           </div>
           <div className="buttons is-centered">
             <button className="button is-primary m-1 is-large is-fullwidth" onClick={() => handleMenuClick("join")}>
-              Join Lobby
+              Join
             </button>
           </div>
           <div className="buttons is-centered">

@@ -1,5 +1,4 @@
-const { connectDB } = require("./db.service");
-const generateRegistrationCode = require("../helpers/generateRegistrationCode.helper");
+const generateCode = require("../helpers/generateCode.helper");
 const sendRegistrationEmail = require("../helpers/sendRegistrationEmail.helper");
 const checkUserRegistered = require("../helpers/checkUserRegistered.helper");
 const createNewUser = require("../helpers/createNewUser.helper");
@@ -9,8 +8,8 @@ const jwt = require("jsonwebtoken");
 
 const mailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const userIDRegex = /^[a-zA-Z0-9._-]+$/;
-const pwdRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-
+let pwdRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+pwdRegex = /^.*$/;
 function generateToken(userIDorMail) {
   const secretKey = process.env.ACCESS_TOKEN_SECRET;
   const token = jwt.sign({ userIDorMail }, secretKey, { expiresIn: "1h" });
@@ -85,7 +84,7 @@ async function register(req) {
     };
   }
 
-  const registerCode = generateRegistrationCode();
+  const registerCode = generateCode();
   const emailSent = await sendRegistrationEmail(userID, userMail, registerCode);
   await createNewUser(userID, userMail, userPWD, registerCode);
 
@@ -99,8 +98,6 @@ async function registerVerify(req) {
 
   userMail = userMail.trim();
   registerCode = registerCode.trim();
-
-  console.log("verify", userMail, registerCode);
 
   const isUserVerified = await setUserVerified(userMail, registerCode);
 
