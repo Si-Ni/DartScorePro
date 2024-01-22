@@ -22,7 +22,6 @@ function OnlineMultiplayer(props: OnlineMultiplayerProps) {
       ) : (
         <OnlineMultiplayerMenu
           cbGamemodeSelected={handleGamemodeSelected}
-          cbBackBtnClicked={props.cbBackBtnClicked}
           players={players}
           setPlayers={setPlayers}
           socket={props.socket}

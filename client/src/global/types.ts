@@ -155,7 +155,6 @@ export interface OnlineMultiplayerMenuProps {
   players: string[];
   setPlayers: React.Dispatch<React.SetStateAction<string[]>>;
   cbGamemodeSelected(gamemode: Gamemode): void;
-  cbBackBtnClicked(): void;
   socket: any;
   lobbyCode: string;
   isLobbyLeader: boolean;

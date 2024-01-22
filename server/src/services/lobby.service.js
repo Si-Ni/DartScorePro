@@ -14,11 +14,7 @@ const configureLobbyService = (io) => {
     socket.on("joinLobby", (lobbyCode) => {
       console.log(lobbyCode);
       if (lobbies[lobbyCode]) {
-        console.log("here", lobbies, lobbyCode);
-
         socket.join(lobbyCode);
-
-        io.to(lobbyCode).emit("playerJoined", socket.id);
 
         lobbies[lobbyCode].players.push(socket.id);
 
@@ -32,7 +28,7 @@ const configureLobbyService = (io) => {
 
     socket.on("joinedSuccessfully", (lobbyCode) => {
       if (lobbies[lobbyCode]) {
-        socket.emit("playerList", lobbies[lobbyCode].players);
+        socket.emit("updatePlayersList", lobbies[lobbyCode].players);
       }
     });
 
@@ -46,15 +42,22 @@ const configureLobbyService = (io) => {
       }
     });
 
+    socket.on("leaveLobby", () => {
+      leaveLobby(io, socket.id);
+    });
+
     socket.on("disconnect", () => {
       console.log("User disconnected:", socket.id);
-
-      Object.keys(lobbies).forEach((lobbyCode) => {
-        lobbies[lobbyCode].players = lobbies[lobbyCode].players.filter((player) => player !== socket.id);
-
-        io.to(lobbyCode).emit("updatePlayersList", lobbies[lobbyCode].players);
-      });
+      leaveLobby(io, socket.id);
     });
+  });
+};
+
+const leaveLobby = (io, socketId) => {
+  Object.keys(lobbies).forEach((lobbyCode) => {
+    lobbies[lobbyCode].players = lobbies[lobbyCode].players.filter((player) => player !== socketId);
+
+    io.to(lobbyCode).emit("updatePlayersList", lobbies[lobbyCode].players);
   });
 };
 
