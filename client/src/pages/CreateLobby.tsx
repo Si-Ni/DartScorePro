@@ -1,7 +1,8 @@
-import React, { useState, useRef } from "react";
+import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { CreateLobbyProps } from "../global/types";
 
-function CreateLobby({ socket, setIsLobbyLeader }) {
+function CreateLobby({ socket, setIsLobbyLeader, cbBackBtnClicked }: CreateLobbyProps) {
   const navigate = useNavigate();
   const [lobbyCode, setLobbyCode] = useState("");
   const lobbyCodeRef = useRef<HTMLInputElement | null>(null);
@@ -10,7 +11,7 @@ function CreateLobby({ socket, setIsLobbyLeader }) {
   const createLobby = () => {
     socket.emit("createLobby");
 
-    socket.once("lobbyCreated", (newLobbyCode) => {
+    socket.once("lobbyCreated", (newLobbyCode: string) => {
       setLobbyCode(newLobbyCode);
     });
 
@@ -71,7 +72,9 @@ function CreateLobby({ socket, setIsLobbyLeader }) {
               </button>
             </div>
             <div className="buttons is-centered mt-5">
-              <button className="button is-danger m-1">Back</button>
+              <button className="button is-danger m-1" onClick={cbBackBtnClicked}>
+                Back
+              </button>
               <button className="button is-primary m-1" onClick={handleNext}>
                 Next
               </button>

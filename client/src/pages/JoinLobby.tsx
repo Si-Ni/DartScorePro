@@ -1,7 +1,8 @@
-import React, { useState, useRef } from "react";
+import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { JoinLobbyProps } from "../global/types";
 
-function JoinLobby({ socket, ...props }) {
+function JoinLobby({ socket, ...props }: JoinLobbyProps) {
   const navigate = useNavigate();
   const [lobbyCode, setLobbyCode] = useState("");
   const lobbyCodeRef = useRef<HTMLInputElement | null>(null);
@@ -55,9 +56,12 @@ function JoinLobby({ socket, ...props }) {
               </p>
             </div>
 
-            <div className="column">
-              <button onClick={joinLobby} className="button is-primary is-fullwidth" type="submit">
-                Submit
+            <div className="buttons is-centered mt-5">
+              <button className="button is-danger" onClick={props.cbBackBtnClicked}>
+                Back
+              </button>
+              <button className="button is-primary" type="submit" onClick={joinLobby}>
+                Join
               </button>
             </div>
           </div>

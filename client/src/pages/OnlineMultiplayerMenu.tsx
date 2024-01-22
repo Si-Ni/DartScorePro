@@ -15,11 +15,11 @@ function OnlineMultiplayerMenu(props: OnlineMultiplayerMenuProps) {
   useEffect(() => {
     props.socket.emit("joinedSuccessfully", props.lobbyCode);
 
-    const handlePlayerJoined = (playerJoined: any) => {
+    const handlePlayerJoined = (playerJoined: string) => {
       props.setPlayers((prevPlayers) => [...prevPlayers, playerJoined]);
     };
 
-    const handleSetPlayerList = (players: any[]) => {
+    const handleSetPlayerList = (players: string[]) => {
       props.setPlayers(players);
     };
 

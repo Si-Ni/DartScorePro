@@ -1,5 +1,6 @@
 import React from "react";
 import { Round } from "../helpers/calcCheckouts";
+import { Socket } from "socket.io-client";
 
 export interface LoginProps {
   pwdRef: React.RefObject<HTMLInputElement>;
@@ -155,7 +156,7 @@ export interface OnlineMultiplayerMenuProps {
   players: string[];
   setPlayers: React.Dispatch<React.SetStateAction<string[]>>;
   cbGamemodeSelected(gamemode: Gamemode): void;
-  socket: any;
+  socket: Socket<any>;
   lobbyCode: string;
   isLobbyLeader: boolean;
 }
@@ -163,7 +164,25 @@ export interface OnlineMultiplayerMenuProps {
 export interface OnlineMultiplayerProps {
   cbBackBtnClicked(): void;
   displayUserID: string;
-  socket: any;
+  socket: Socket<any>;
   lobbyCode: string;
   isLobbyLeader: boolean;
+}
+
+export interface MultiplayerProps {
+  socket: Socket<any>;
+  setLobbyCode: React.Dispatch<React.SetStateAction<string>>;
+  setIsLobbyLeader: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export interface CreateLobbyProps {
+  cbBackBtnClicked(): void;
+  socket: Socket<any>;
+  setIsLobbyLeader: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export interface JoinLobbyProps {
+  cbBackBtnClicked(): void;
+  socket: Socket<any>;
+  setLobbyCodeGlobal: React.Dispatch<React.SetStateAction<string>>;
 }

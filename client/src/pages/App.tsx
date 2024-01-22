@@ -11,7 +11,7 @@ import axios from "axios";
 import io from "socket.io-client";
 import OnlineMultiplayer from "./OnlineMultiplayer";
 
-const socket = io.connect("http://localhost:4000"); // Update with your server URL
+const socket = io("http://localhost:4000"); // Update with your server URL
 
 function App() {
   const pwdRef = useRef<HTMLInputElement | null>(null);
