@@ -11,6 +11,8 @@ import axios from "axios";
 import io from "socket.io-client";
 import OnlineMultiplayer from "./OnlineMultiplayer";
 
+const socket = io.connect("http://localhost:4000"); // Update with your server URL
+
 function App() {
   const pwdRef = useRef<HTMLInputElement | null>(null);
   const [loginErrorMsg, setLoginErrorMsg] = useState<string>("This password or username is invalid");
@@ -34,7 +36,6 @@ function App() {
       .catch(() => {});
   }, []);
 
-  const socket = io.connect("http://localhost:4000"); // Update with your server URL
   return (
     <>
       {isLoggedIn && <div className="fixed-bottom-left">Logged in as {displayUserID}</div>}
@@ -69,6 +70,7 @@ function App() {
                 displayUserID={displayUserID}
                 lobbyCode={lobbyCode}
                 isLobbyLeader={isLobbyLeader}
+                cbBackBtnClicked={() => {}}
               />
             }
           />
