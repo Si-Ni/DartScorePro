@@ -4,17 +4,12 @@ const checkUserRegistered = require("../helpers/checkUserRegistered.helper");
 const createNewUser = require("../helpers/createNewUser.helper");
 const setUserVerified = require("../helpers/setUserVerified.helper");
 const checkPWDvalid = require("../helpers/checkPwd.helper");
-const jwt = require("jsonwebtoken");
+const generateToken = require("../helpers/generateToken.helper");
 
 const mailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const userIDRegex = /^[a-zA-Z0-9._-]+$/;
 let pwdRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 pwdRegex = /^.*$/;
-function generateToken(userIDorMail) {
-  const secretKey = process.env.ACCESS_TOKEN_SECRET;
-  const token = jwt.sign({ userIDorMail }, secretKey, { expiresIn: "1h" });
-  return token;
-}
 
 async function login(req) {
   let { userIDorMail, userPWD } = req.body;

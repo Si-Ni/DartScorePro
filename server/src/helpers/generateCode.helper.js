@@ -1,5 +1,5 @@
-function generateCode(length = 7) {
-  return Math.random().toString(36).substring(2, length);
-}
+const generateCode = () => {
+  return Math.random().toString(36).substring(2, 8).toUpperCase();
+};
 
 module.exports = generateCode;

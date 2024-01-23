@@ -1,12 +1,21 @@
 const userModel = require("../models/user.model");
 
 const setUserVerified = async (userIDorMail, registerCode) => {
-  const query = { $or: [{ userID: userIDorMail }, { userMail: userIDorMail }], registerCode: registerCode };
-  const update = { $set: { verified: true } };
+  try {
+    const isUserVerified = await userModel.findOneAndUpdate(
+      {
+        $or: [{ userID: userIDorMail }, { userMail: userIDorMail }],
+        registerCode: registerCode
+      },
+      { $set: { verified: true } },
+      { new: true }
+    );
 
-  const isUserVerified = await userModel.findOneAndUpdate(query, update, { new: true });
-
-  return isUserVerified;
+    return isUserVerified;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
 };
 
 module.exports = setUserVerified;
