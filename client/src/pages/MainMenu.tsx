@@ -17,7 +17,7 @@ function MainMenu(props: MainMenuProps) {
       <div className="hero-body">
         <div className="container box">
           <div className="column is-flex is-justify-content-center">
-            <img src="/../assets/logo.png" style={{ width: "400px" }}></img>
+            <img src="../assets/logo.png" style={{ width: "400px" }} alt={""}></img>
           </div>
           <div className="buttons is-centered">
             <button className="button is-primary m-1 is-large is-fullwidth" onClick={() => navigate("/singleplayer")}>

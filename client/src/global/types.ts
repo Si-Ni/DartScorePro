@@ -156,7 +156,7 @@ export interface OnlineMultiplayerMenuProps {
   players: string[];
   setPlayers: React.Dispatch<React.SetStateAction<string[]>>;
   cbGamemodeSelected(gamemode: Gamemode): void;
-  socket: Socket<any>;
+  socket: Socket;
   lobbyCode: string;
   isLobbyLeader: boolean;
 }
@@ -164,26 +164,26 @@ export interface OnlineMultiplayerMenuProps {
 export interface OnlineMultiplayerProps {
   cbBackBtnClicked(): void;
   displayUserID: string;
-  socket: Socket<any>;
+  socket: Socket;
   lobbyCode: string;
   isLobbyLeader: boolean;
 }
 
 export interface MultiplayerProps {
-  socket: Socket<any>;
+  socket: Socket;
   setLobbyCode: React.Dispatch<React.SetStateAction<string>>;
   setIsLobbyLeader: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface CreateLobbyProps {
   cbBackBtnClicked(): void;
-  socket: Socket<any>;
+  socket: Socket;
   setLobbyCodeGlobal: React.Dispatch<React.SetStateAction<string>>;
   setIsLobbyLeader: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface JoinLobbyProps {
   cbBackBtnClicked(): void;
-  socket: Socket<any>;
+  socket: Socket;
   setLobbyCodeGlobal: React.Dispatch<React.SetStateAction<string>>;
 }

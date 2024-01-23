@@ -14,20 +14,22 @@ const configureLobbyService = (io) => {
     });
 
     socket.on("joinLobby", (lobbyCode) => {
-      if (lobbies[lobbyCode]) {
-        socket.join(lobbyCode);
+      const socketId = socket.id;
+      const lobby = lobbies[lobbyCode];
 
-        lobbies[lobbyCode].players.push({ socketId: socket.id, isLeader: false });
-
-        socket.emit("lobbyJoined", lobbyCode);
-
-        io.to(lobbyCode).emit(
-          "updatePlayersList",
-          lobbies[lobbyCode].players.map((player) => player.socketId)
-        );
-      } else {
-        socket.emit("lobbyNotFound");
+      if (!lobby) {
+        return socket.emit("lobbyNotFound");
       }
+
+      if (lobby.players.some((player) => player.socketId === socketId)) return;
+
+      socket.join(lobbyCode);
+      lobby.players.push({ socketId, isLeader: false });
+      socket.emit("lobbyJoined", lobbyCode);
+      io.to(lobbyCode).emit(
+        "updatePlayersList",
+        lobby.players.map((player) => player.socketId)
+      );
     });
 
     socket.on("joinedSuccessfully", (lobbyCode) => {
