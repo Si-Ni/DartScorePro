@@ -9,7 +9,6 @@ const generateToken = require("../helpers/generateToken.helper");
 const mailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const userIDRegex = /^[a-zA-Z0-9._-]+$/;
 let pwdRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-pwdRegex = /^.*$/;
 
 async function login(req) {
   let { userIDorMail, userPWD } = req.body;
@@ -44,8 +43,8 @@ async function login(req) {
       json: {
         msg: "Login Success",
         userID: isUserRegistered.userID,
-        token: token
-      }
+        token: token,
+      },
     };
   } else {
     return { status: 400, json: "This password or username is invalid" };
@@ -75,7 +74,9 @@ async function register(req) {
   if (isUserRegistered) {
     return {
       status: 400,
-      json: `${isUserRegistered.userID === userID ? isUserRegistered.userID : isUserRegistered.userMail} already exists`
+      json: `${
+        isUserRegistered.userID === userID ? isUserRegistered.userID : isUserRegistered.userMail
+      } already exists`,
     };
   }
 
@@ -109,5 +110,5 @@ module.exports = {
   login,
   register,
   registerVerify,
-  generalAuth
+  generalAuth,
 };
