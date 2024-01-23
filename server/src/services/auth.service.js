@@ -43,8 +43,8 @@ async function login(req) {
       json: {
         msg: "Login Success",
         userID: isUserRegistered.userID,
-        token: token,
-      },
+        token: token
+      }
     };
   } else {
     return { status: 400, json: "This password or username is invalid" };
@@ -74,9 +74,7 @@ async function register(req) {
   if (isUserRegistered) {
     return {
       status: 400,
-      json: `${
-        isUserRegistered.userID === userID ? isUserRegistered.userID : isUserRegistered.userMail
-      } already exists`,
+      json: `${isUserRegistered.userID === userID ? isUserRegistered.userID : isUserRegistered.userMail} already exists`
     };
   }
 
@@ -110,5 +108,5 @@ module.exports = {
   login,
   register,
   registerVerify,
-  generalAuth,
+  generalAuth
 };
