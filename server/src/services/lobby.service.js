@@ -62,7 +62,7 @@ const configureLobbyService = (io) => {
 
 const leaveLobby = (io, socketId) => {
   Object.keys(lobbies).forEach((lobbyCode) => {
-    lobbies[lobbyCode].players = lobbies[lobbyCode].players.filter((player) => player !== socketId);
+    lobbies[lobbyCode].players = lobbies[lobbyCode].players.filter((player) => player.socketId !== socketId);
 
     io.to(lobbyCode).emit(
       "updatePlayersList",
