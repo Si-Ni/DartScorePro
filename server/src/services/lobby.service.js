@@ -1,3 +1,5 @@
+const generateCode = require("../helpers/generateCode.helper");
+
 const lobbies = {};
 
 const configureLobbyService = (io) => {
@@ -5,7 +7,7 @@ const configureLobbyService = (io) => {
     console.log("New connection:", socket.id);
 
     socket.on("createLobby", () => {
-      const lobbyCode = generateLobbyCode();
+      const lobbyCode = generateCode();
       lobbies[lobbyCode] = { players: [{ socketId: socket.id, isLeader: true }] };
       socket.join(lobbyCode);
       socket.emit("lobbyCreated", lobbyCode);
@@ -67,8 +69,5 @@ const leaveLobby = (io, socketId) => {
   });
 };
 
-const generateLobbyCode = () => {
-  return Math.random().toString(36).substring(2, 8).toUpperCase();
-};
 
 module.exports = { configureLobbyService };

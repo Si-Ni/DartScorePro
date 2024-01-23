@@ -3,7 +3,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const path = require("path");
 const dotenv = require("dotenv");
-const dartscounter = require("./src/routes/dartscounter.route");
+const dartScorePro = require("./src/routes/dartScorePro.route");
 const rateLimiter = require("./src/middlewares/rateLimit.middleware");
 const cookieParser = require("cookie-parser");
 const { connectDB } = require("./src/services/db.service");
@@ -17,7 +17,7 @@ app.use(rateLimiter);
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "../client/dist")));
-app.use("/", dartscounter);
+app.use("/", dartScorePro);
 app.use(cookieParser());
 app.set("trust proxy", 1);
 dotenv.config();
@@ -28,11 +28,11 @@ const server = app.listen(PORT, () => {
 
 const io = require("socket.io")(server, {
   cors: {
-    origin: "http://localhost:3000", // Allow requests only from this origin
+    origin: "http://localhost:3000",
     methods: ["GET", "POST"]
   }
 });
-configureLobbyService(io); // Pass the Socket.IO instance to configureSocket function
+configureLobbyService(io);
 
 connectDB();
 

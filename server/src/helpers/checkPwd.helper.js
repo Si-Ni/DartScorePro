@@ -9,7 +9,7 @@ const checkPwd = async (userID, userMail, userPWD) => {
         verified: true
       })
       .exec();
-    //here
+
     const isPWDValid = await bcrypt.compare(userPWD, user.userPWD);
 
     return isPWDValid;
