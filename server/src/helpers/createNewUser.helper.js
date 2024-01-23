@@ -14,7 +14,6 @@ const createNewUser = async (userID, userMail, userPWD, registerCode) => {
     });
 
     await newUser.save();
-
   } catch (error) {
     console.error(error);
     return false;

@@ -11,7 +11,7 @@ const checkUserRegistered = async (userID, userMail) => {
     return isUserRegistered;
   } catch (error) {
     console.error(error);
-    return false
+    return false;
   }
 };
 

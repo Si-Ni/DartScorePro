@@ -69,5 +69,4 @@ const leaveLobby = (io, socketId) => {
   });
 };
 
-
 module.exports = { configureLobbyService };
