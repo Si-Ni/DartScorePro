@@ -27,6 +27,12 @@ function MainMenu(props: MainMenuProps) {
             <button className="button is-primary m-1 is-large is-fullwidth" onClick={() => navigate("/multiplayer")}>
               Mulitplayer
             </button>
+            <button
+              className="button is-primary m-1 is-large is-fullwidth"
+              onClick={() => navigate("/checkoutCalculator")}
+            >
+              Checkouts
+            </button>
           </div>
           <div className="buttons is-centered">
             <button

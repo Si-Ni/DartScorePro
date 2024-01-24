@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const path = require("path");
 const dotenv = require("dotenv");
 const dartScorePro = require("./src/routes/dartScorePro.route");
+const api = require("./src/routes/api.route");
 const rateLimiter = require("./src/middlewares/rateLimit.middleware");
 const cookieParser = require("cookie-parser");
 const { connectDB } = require("./src/services/db.service");
@@ -18,6 +19,7 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "../client/dist")));
 app.use("/", dartScorePro);
+app.use("/api", api);
 app.use(cookieParser());
 app.set("trust proxy", 1);
 dotenv.config();
@@ -29,8 +31,8 @@ const server = app.listen(PORT, () => {
 const io = require("socket.io")(server, {
   cors: {
     origin: "http://localhost:3000",
-    methods: ["GET", "POST"]
-  }
+    methods: ["GET", "POST"],
+  },
 });
 configureLobbyService(io);
 

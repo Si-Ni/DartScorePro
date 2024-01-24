@@ -5,7 +5,7 @@ function PlayerMenu({ players, setPlayers, ...props }: PlayerMenuProps) {
   const [currentPlayer, setCurrentPlayer] = useState("");
   const [error, setError] = useState("");
 
-  const onEnterPressed = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const onKeyPressed = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") addPlayer();
   };
 
@@ -68,7 +68,7 @@ function PlayerMenu({ players, setPlayers, ...props }: PlayerMenuProps) {
                 type="text"
                 value={currentPlayer}
                 onChange={handleInputChange}
-                onKeyUp={onEnterPressed}
+                onKeyUp={onKeyPressed}
                 placeholder="Enter player name"
                 disabled={players.length === 4}
               />

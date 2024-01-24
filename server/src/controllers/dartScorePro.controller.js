@@ -1,4 +1,4 @@
-const scheduleService = require("../services/auth.service");
+const authService = require("../services/auth.service");
 
 async function handleRequest(handler, req, res, next) {
   try {
@@ -12,8 +12,8 @@ async function handleRequest(handler, req, res, next) {
 }
 
 module.exports = {
-  login: async (req, res, next) => await handleRequest(scheduleService.login, req, res, next),
-  register: async (req, res, next) => await handleRequest(scheduleService.register, req, res, next),
-  registerVerify: async (req, res, next) => await handleRequest(scheduleService.registerVerify, req, res, next),
-  generalAuth: async (req, res, next) => await handleRequest(scheduleService.generalAuth, req, res, next)
+  login: async (req, res, next) => await handleRequest(authService.login, req, res, next),
+  register: async (req, res, next) => await handleRequest(authService.register, req, res, next),
+  registerVerify: async (req, res, next) => await handleRequest(authService.registerVerify, req, res, next),
+  generalAuth: async (req, res, next) => await handleRequest(authService.generalAuth, req, res, next),
 };
