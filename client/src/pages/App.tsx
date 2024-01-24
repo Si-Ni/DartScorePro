@@ -10,6 +10,7 @@ import Multiplayer from "./Multiplayer";
 import axios from "axios";
 import io from "socket.io-client";
 import OnlineMultiplayer from "./OnlineMultiplayer";
+import CheckoutCalculator from "./CheckoutCalculator";
 
 const socket = io("http://localhost:4000"); // Update with your server URL
 
@@ -61,7 +62,6 @@ function App() {
           <Route path="/register/verify" element={<RegisterVerify />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/singleplayer" element={<Singleplayer />} />
-
           <Route
             path="/multiplayer/lobby/:code"
             element={
@@ -74,11 +74,11 @@ function App() {
               />
             }
           />
-
           <Route
             path="/multiplayer"
             element={<Multiplayer socket={socket} setLobbyCode={setLobbyCode} setIsLobbyLeader={setIsLobbyLeader} />}
           />
+          <Route path="/checkoutCalculator" element={<CheckoutCalculator />} />
         </Routes>
       </Router>
     </>
