@@ -2,11 +2,17 @@ import { useEffect, useState } from "react";
 import GamemodeMenu from "../components/GamemodeMenu";
 import PlayerMenu from "../components/PlayerMenu";
 import { Gamemode, OnlineMultiplayerMenuProps } from "../global/types";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 function OnlineMultiplayerMenu(props: OnlineMultiplayerMenuProps) {
   const navigate = useNavigate();
   const [showGamemodeMenu, setShowGamemodeMenu] = useState<boolean>(false);
+
+  const { code } = useParams();
+
+  useEffect(() => {
+    code && props.socket.emit("joinLobby", code);
+  }, [code]);
 
   const handleNext = () => {
     if (props.players.length > 1) setShowGamemodeMenu(true);
