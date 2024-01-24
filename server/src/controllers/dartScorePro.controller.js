@@ -15,5 +15,5 @@ module.exports = {
   login: async (req, res, next) => await handleRequest(authService.login, req, res, next),
   register: async (req, res, next) => await handleRequest(authService.register, req, res, next),
   registerVerify: async (req, res, next) => await handleRequest(authService.registerVerify, req, res, next),
-  generalAuth: async (req, res, next) => await handleRequest(authService.generalAuth, req, res, next),
+  generalAuth: async (req, res, next) => await handleRequest(authService.generalAuth, req, res, next)
 };

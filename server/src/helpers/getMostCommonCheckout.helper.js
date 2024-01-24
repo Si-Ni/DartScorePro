@@ -4,7 +4,7 @@ const getMostCommonCheckout = async (score) => {
   try {
     const checkoutObject = await commonCheckoutModel
       .findOne({
-        score: score,
+        score: score
       })
       .exec();
     return checkoutObject?.checkout || [];

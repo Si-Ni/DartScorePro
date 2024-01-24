@@ -8,5 +8,5 @@ async function mostCommonCheckout(req) {
 }
 
 module.exports = {
-  mostCommonCheckout,
+  mostCommonCheckout
 };
