@@ -7,7 +7,7 @@ const getMostCommonCheckout = async (score) => {
         score: score,
       })
       .exec();
-    return checkoutObject?.checkouts || [];
+    return checkoutObject?.checkout || [];
   } catch (error) {
     console.error(error);
     return [];

@@ -5,7 +5,7 @@ const commonCheckoutModel = new mongoose.Schema({
     required: true,
     type: Number,
   },
-  checkouts: {
+  checkout: {
     required: true,
     type: Array,
   },
