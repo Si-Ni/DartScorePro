@@ -114,8 +114,18 @@ export interface YesNoPopUpProps {
 }
 
 export interface GamemodeMenuProps {
+  selectedGamemode: Gamemode;
   cbGamemodeSelected(gamemode: Gamemode): void;
-  cbBackBtnClicked(): void;
+}
+
+export interface GameSettingsProps {
+  selectedGamemode: Gamemode;
+  setsToWin: number;
+  setSetsToWin: React.Dispatch<React.SetStateAction<number>>;
+  legsForSet: number;
+  setLegsForSet: React.Dispatch<React.SetStateAction<number>>;
+  isError: boolean;
+  setIsError: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export type MultiplayerMode = "local" | "create" | "join";
