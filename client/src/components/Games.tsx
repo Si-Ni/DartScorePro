@@ -7,10 +7,22 @@ function Games(props: GamesProps) {
   return (
     <div>
       {props.selectedGamemode === "301" && (
-        <StandardGames gamemodeTotalScore={301} players={props.players} cbBackBtnClicked={props.cbBackBtnClicked} />
+        <StandardGames
+          gamemodeTotalScore={4}
+          players={props.players}
+          cbBackBtnClicked={props.cbBackBtnClicked}
+          setsToWin={props.setsToWin}
+          legsForSet={props.legsForSet}
+        />
       )}
       {props.selectedGamemode === "501" && (
-        <StandardGames gamemodeTotalScore={501} players={props.players} cbBackBtnClicked={props.cbBackBtnClicked} />
+        <StandardGames
+          gamemodeTotalScore={501}
+          players={props.players}
+          cbBackBtnClicked={props.cbBackBtnClicked}
+          setsToWin={props.setsToWin}
+          legsForSet={props.legsForSet}
+        />
       )}
       {props.selectedGamemode === "rcl" && (
         <RoundTheClockGame players={props.players} cbBackBtnClicked={props.cbBackBtnClicked} />

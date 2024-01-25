@@ -19,6 +19,16 @@ function PlayerScoreCard(props: PlayerScoreCardProps) {
             <p className="subtitle is-6">Ø {props.average.toFixed(2)}</p>
           </div>
         )}
+        <table className="table is-bordered mt-3">
+          <tbody>
+            <tr>
+              <th>Sets:</th>
+              <td> {props.sets}</td>
+              <th>Legs:</th>
+              <td> {props.legs}</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   );

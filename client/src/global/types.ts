@@ -43,6 +43,8 @@ export interface StandardGamesProps {
   gamemodeTotalScore: number;
   players: string[];
   cbBackBtnClicked(): void;
+  setsToWin: number;
+  legsForSet: number;
 }
 
 export interface RoundTheClockGameProps {
@@ -66,11 +68,14 @@ export type Gamemode = "301" | "501" | "rcl" | "cri";
 
 export interface PlayerScoreCardProps {
   playerName: string;
+  isStartingPlayer: boolean;
   isCurrentPlayer: boolean;
   score: number;
   average?: number;
   lastThrows: string[];
   checkoutOptions?: Round[];
+  sets: number;
+  legs: number;
 }
 
 // 4 = closed for all players
@@ -101,16 +106,23 @@ export interface PlayerStatsCricket {
 
 export type PlayerToPlayerStatsCricket = { [player: string]: PlayerStatsCricket };
 
-export interface PlayerScoreCardProps {
-  playerName: string;
-  isCurrentPlayer: boolean;
-  score: number;
+export interface PlayerTotalGameStats {
+  sets: number;
+  legs: number;
 }
+
+export type PlayerToPlayerTotalGameStats = { [player: string]: PlayerTotalGameStats };
 
 export interface YesNoPopUpProps {
   content: string;
   cbYesClicked(): void;
   cbNoClicked(): void;
+}
+
+export interface PopUpProps {
+  content: string;
+  btnContent: string;
+  cbBtnClicked(): void;
 }
 
 export interface GamemodeMenuProps {
@@ -138,6 +150,8 @@ export interface GamesProps {
   selectedGamemode: Gamemode;
   players: string[];
   cbBackBtnClicked(): void;
+  setsToWin: number;
+  legsForSet: number;
 }
 
 export interface PlayerMenuProps {

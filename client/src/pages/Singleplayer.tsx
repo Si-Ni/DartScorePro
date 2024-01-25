@@ -35,6 +35,8 @@ function Singleplayer() {
           cbBackBtnClicked={() => {
             setGameStarted(false);
           }}
+          setsToWin={setsToWin}
+          legsForSet={legsForSet}
         />
       ) : (
         <div className="hero is-justify-content-center is-align-items-center is-fullheight">

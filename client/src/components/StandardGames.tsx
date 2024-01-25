@@ -1,11 +1,12 @@
 import { useState } from "react";
 import "../styles/App.css";
 import "../styles/Games.css";
-import { PlayerStats, PlayerToPlayerStats, StandardGamesProps } from "../global/types";
+import { PlayerStats, PlayerToPlayerStats, PlayerToPlayerTotalGameStats, StandardGamesProps } from "../global/types";
 import PlayerScoreCard from "./PlayerScoreCard";
 import YesNoPopUp from "./YesNoPopUp";
 import GameInputButtons from "./GameInputButtons";
 import { getAllOptions, sumRound } from "../helpers/calcCheckouts";
+import PopUp from "./PopUp";
 
 const initializePlayerStats = (players: string[], gamemodeTotalScore: number): PlayerToPlayerStats => {
   const initialPoints: PlayerToPlayerStats = {};
@@ -25,9 +26,21 @@ const initializePlayerStats = (players: string[], gamemodeTotalScore: number): P
   return initialPoints;
 };
 
+const initializePlayerTotalGameStats = (players: string[]): PlayerToPlayerTotalGameStats => {
+  const initialStats: PlayerToPlayerTotalGameStats = {};
+  players.forEach((player) => {
+    initialStats[player] = {
+      sets: 0,
+      legs: 0
+    };
+  });
+  return initialStats;
+};
+
 function StandardGames(props: StandardGamesProps) {
   const [showGoToMainMenuPopUp, setShowGoToMainMenuPopUp] = useState<boolean>(false);
-  const [currentPlayerIndex, setCurrentPlayerIndex] = useState<number>(0);
+  const [startingPlayerIndex, setStartingPlayerIndex] = useState<number>(0);
+  const [currentPlayerIndex, setCurrentPlayerIndex] = useState<number>(startingPlayerIndex);
   const [currentRound, setCurrentRound] = useState<number>(1);
   const [players] = useState<string[]>(props.players);
   const [throwsRemaining, setThrowsRemaining] = useState<number>(3);
@@ -36,6 +49,10 @@ function StandardGames(props: StandardGamesProps) {
   const [playerStats, setPlayerStats] = useState<PlayerToPlayerStats>(() =>
     initializePlayerStats(props.players, props.gamemodeTotalScore)
   );
+  const [playerTotalGameStats, setPlayerTotalGameStats] = useState<PlayerToPlayerTotalGameStats>(() =>
+    initializePlayerTotalGameStats(props.players)
+  );
+  const [winningPlayer, setWinningPlayer] = useState<string | null>(null);
 
   const handleScoreChange = (points: number): void => {
     if (multiplier === 3 && points === 25) return;
@@ -107,7 +124,7 @@ function StandardGames(props: StandardGamesProps) {
       switchToNextPlayer();
     } else {
       updateStatsAndRemainingThrows(updatedScore, thrownPoints);
-      checkIfPlayerHasWon(updatedScore);
+      checkIfPlayerHasWon(updatedScore, playerIndex);
     }
 
     setMultiplier(1);
@@ -125,11 +142,42 @@ function StandardGames(props: StandardGamesProps) {
     updateRemainingThrows(updatedScore);
   };
 
-  const checkIfPlayerHasWon = (updatedScore: number) => {
+  const checkIfPlayerHasWon = (updatedScore: number, playerIndex: number) => {
     const playerWon = updatedScore === 0 && multiplier === 2;
     if (playerWon) {
-      console.log(`Player ${players[currentPlayerIndex]} wins!`);
+      updatePlayerTotalGameStats(playerIndex);
+      resetRoundStatsForNextGame();
     }
+  };
+
+  const updatePlayerTotalGameStats = (playerIndex: number) => {
+    let currentLegs = playerTotalGameStats[players[playerIndex]].legs + 1;
+    let currentSets = playerTotalGameStats[players[playerIndex]].sets;
+    if (currentLegs === Number(props.legsForSet)) {
+      currentSets++;
+      currentLegs = 0;
+    }
+
+    setPlayerTotalGameStats((prevPlayerTotalGameStats) => ({
+      ...prevPlayerTotalGameStats,
+      [players[playerIndex]]: {
+        ...prevPlayerTotalGameStats[players[playerIndex]],
+        legs: currentLegs,
+        sets: currentSets
+      }
+    }));
+
+    if (currentSets === Number(props.setsToWin)) {
+      setWinningPlayer(players[playerIndex]);
+    }
+  };
+
+  const resetRoundStatsForNextGame = () => {
+    const updatedStartingPlayerIndex = (startingPlayerIndex + 1) % players.length;
+    setStartingPlayerIndex(updatedStartingPlayerIndex);
+    setCurrentPlayerIndex(updatedStartingPlayerIndex);
+    setCurrentRound(1);
+    setPlayerStats(initializePlayerStats(props.players, props.gamemodeTotalScore));
   };
 
   const updatePlayerStatsByThrownPoints = (playerIndex: number, thrownPoints: number): void => {
@@ -158,7 +206,7 @@ function StandardGames(props: StandardGamesProps) {
   };
 
   const switchToNextPlayer = (): void => {
-    setCurrentPlayerIndex((currentPlayerIndex + 1) % players.length);
+    setCurrentPlayerIndex((currentPlayerIndex) => (currentPlayerIndex + 1) % players.length);
     setCurrentRound((currentRound) => (currentPlayerIndex === players.length - 1 ? currentRound + 1 : currentRound));
     setThrowsRemaining(3);
   };
@@ -220,8 +268,18 @@ function StandardGames(props: StandardGamesProps) {
     setThrowsRemaining(1);
   };
 
+  const getWinnerPopUpText = (): string => {
+    if (players.length === 1) {
+      return "You have won!";
+    }
+    return `Player: ${winningPlayer} has won!`;
+  };
+
   return (
     <div className="App hero is-flex is-justify-content-center is-align-items-center is-fullheight">
+      {winningPlayer && (
+        <PopUp content={getWinnerPopUpText()} btnContent={"Back"} cbBtnClicked={props.cbBackBtnClicked} />
+      )}
       {showGoToMainMenuPopUp && (
         <YesNoPopUp
           content={"Do you really want to go back? All progress will be lost!"}
@@ -239,11 +297,14 @@ function StandardGames(props: StandardGamesProps) {
           <PlayerScoreCard
             key={player}
             playerName={player}
+            isStartingPlayer={players[startingPlayerIndex] === player}
             isCurrentPlayer={players[currentPlayerIndex] === player}
             score={playerStats[player].score}
             average={playerStats[player].average}
             lastThrows={playerStats[player].lastThrows}
             checkoutOptions={playerStats[player].checkoutOptions}
+            sets={playerTotalGameStats[player].sets}
+            legs={playerTotalGameStats[player].legs}
           />
         ))}
       </div>
