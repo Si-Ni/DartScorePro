@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import GamemodeMenu from "../components/GamemodeMenu";
 import PlayerMenu from "../components/PlayerMenu";
 import { Gamemode, OnlineMultiplayerMenuProps } from "../global/types";
 import { useNavigate, useParams } from "react-router-dom";
+import SettingsMenu from "./SettingsMenu";
 
 function OnlineMultiplayerMenu(props: OnlineMultiplayerMenuProps) {
   const navigate = useNavigate();
-  const [showGamemodeMenu, setShowGamemodeMenu] = useState<boolean>(false);
+  const [showSettingsMenu, setShowSettingsMenu] = useState<boolean>(false);
 
   const { code } = useParams();
 
@@ -15,7 +15,7 @@ function OnlineMultiplayerMenu(props: OnlineMultiplayerMenuProps) {
   }, [code]);
 
   const handleNext = () => {
-    if (props.players.length > 1) setShowGamemodeMenu(true);
+    if (props.players.length > 1) setShowSettingsMenu(true);
   };
 
   useEffect(() => {
@@ -26,7 +26,7 @@ function OnlineMultiplayerMenu(props: OnlineMultiplayerMenuProps) {
     };
 
     const handleGamemodeSelected = (gamemode: Gamemode) => {
-      props.cbGamemodeSelected(gamemode);
+      props.setSelectedGamemode(gamemode);
     };
 
     props.socket.on("updatePlayersList", handleSetPlayerList);
@@ -41,10 +41,16 @@ function OnlineMultiplayerMenu(props: OnlineMultiplayerMenuProps) {
 
   return (
     <>
-      {showGamemodeMenu ? (
-        <GamemodeMenu
-          cbGamemodeSelected={props.cbGamemodeSelected}
-          cbBackBtnClicked={() => setShowGamemodeMenu(false)}
+      {showSettingsMenu ? (
+        <SettingsMenu
+          selectedGamemode={props.selectedGamemode}
+          setSelectedGamemode={props.setSelectedGamemode}
+          setsToWin={props.setsToWin}
+          setSetsToWin={props.setSetsToWin}
+          legsForSet={props.legsForSet}
+          setLegsForSet={props.setLegsForSet}
+          cbBackBtnClicked={() => setShowSettingsMenu(false)}
+          cbNextBtnClicked={props.cbNextBtnClicked}
         />
       ) : (
         <div className="hero is-justify-content-center is-align-items-center is-fullheight">

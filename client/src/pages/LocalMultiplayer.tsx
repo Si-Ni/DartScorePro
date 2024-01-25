@@ -10,10 +10,6 @@ function LocalMultiplayer(props: LocalMultiplayerProps) {
   const [setsToWin, setSetsToWin] = useState<number>(1);
   const [legsForSet, setLegsForSet] = useState<number>(1);
 
-  const handleGamemodeSelected = (gamemode: Gamemode) => {
-    setSelectedGamemode(gamemode);
-  };
-
   const handleBackToPlayerMenu = () => {
     setGameStarted(false);
     setSelectedGamemode("301");
@@ -31,16 +27,16 @@ function LocalMultiplayer(props: LocalMultiplayerProps) {
         />
       ) : (
         <LocalMultiplayerMenu
-          cbGamemodeSelected={handleGamemodeSelected}
-          cbBackBtnClicked={props.cbBackBtnClicked}
+          selectedGamemode={selectedGamemode}
+          setSelectedGamemode={setSelectedGamemode}
           players={players}
           setPlayers={setPlayers}
           legsForSet={legsForSet}
           setLegsForSet={setLegsForSet}
           setsToWin={setsToWin}
           setSetsToWin={setSetsToWin}
-          selectedGamemode={selectedGamemode}
-          handleSettingsNext={() => {
+          cbBackBtnClicked={props.cbBackBtnClicked}
+          handleSettingsNextBtnClicked={() => {
             setGameStarted(true);
           }}
         />

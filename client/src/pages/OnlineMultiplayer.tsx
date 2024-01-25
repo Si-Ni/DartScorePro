@@ -5,29 +5,46 @@ import OnlineMultiplayerMenu from "./OnlineMultiplayerMenu";
 
 function OnlineMultiplayer(props: OnlineMultiplayerProps) {
   const [players, setPlayers] = useState([props.displayUserID]);
-  const [selectedGamemode, setSelectedGamemode] = useState<Gamemode | null>(null);
+  const [selectedGamemode, setSelectedGamemode] = useState<Gamemode>("301");
+  const [gameStarted, setGameStarted] = useState<boolean>(false);
+  const [setsToWin, setSetsToWin] = useState<number>(1);
+  const [legsForSet, setLegsForSet] = useState<number>(1);
 
-  const handleGamemodeSelected = (gamemode: Gamemode) => {
-    if (props.isLobbyLeader) props.socket.emit("gamemodeSelected", { lobbyCode: props.lobbyCode, gamemode: gamemode });
-    setSelectedGamemode(gamemode);
+  const nextBtnClicked = () => {
+    if (props.isLobbyLeader)
+      props.socket.emit("gamemodeSelected", { lobbyCode: props.lobbyCode, gamemode: selectedGamemode });
+    setGameStarted(true);
   };
 
   const handleBackToPlayerMenu = () => {
-    setSelectedGamemode(null);
+    setGameStarted(false);
+    setSelectedGamemode("301");
   };
 
   return (
     <>
-      {selectedGamemode ? (
-        <Games selectedGamemode={selectedGamemode} players={players} cbBackBtnClicked={handleBackToPlayerMenu} />
+      {gameStarted ? (
+        <Games
+          selectedGamemode={selectedGamemode}
+          players={players}
+          cbBackBtnClicked={handleBackToPlayerMenu}
+          setsToWin={setsToWin}
+          legsForSet={legsForSet}
+        />
       ) : (
         <OnlineMultiplayerMenu
-          cbGamemodeSelected={handleGamemodeSelected}
+          selectedGamemode={selectedGamemode}
+          setSelectedGamemode={setSelectedGamemode}
           players={players}
           setPlayers={setPlayers}
           socket={props.socket}
           lobbyCode={props.lobbyCode}
           isLobbyLeader={props.isLobbyLeader}
+          setsToWin={setsToWin}
+          setSetsToWin={setSetsToWin}
+          legsForSet={legsForSet}
+          setLegsForSet={setLegsForSet}
+          cbNextBtnClicked={nextBtnClicked}
         />
       )}
     </>

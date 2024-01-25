@@ -1,8 +1,8 @@
-import { Gamemode, GamemodeMenuProps } from "../global/types";
+import { Gamemode, GamemodeSelectionProps } from "../global/types";
 
-function GamemodeMenu(props: GamemodeMenuProps) {
+function GamemodeSelection(props: GamemodeSelectionProps) {
   const handleMenuClick = (gamemode: Gamemode) => {
-    props.cbGamemodeSelected(gamemode);
+    props.setSelectedGamemode(gamemode);
   };
 
   const isCurrentlySelected = (gamemode: Gamemode) => {
@@ -62,4 +62,4 @@ function GamemodeMenu(props: GamemodeMenuProps) {
   );
 }
 
-export default GamemodeMenu;
+export default GamemodeSelection;

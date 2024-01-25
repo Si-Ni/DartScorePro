@@ -26,17 +26,6 @@ const initializePlayerStats = (players: string[], gamemodeTotalScore: number): P
   return initialPoints;
 };
 
-const initializePlayerTotalGameStats = (players: string[]): PlayerToPlayerTotalGameStats => {
-  const initialStats: PlayerToPlayerTotalGameStats = {};
-  players.forEach((player) => {
-    initialStats[player] = {
-      sets: 0,
-      legs: 0
-    };
-  });
-  return initialStats;
-};
-
 function StandardGames(props: StandardGamesProps) {
   const [showGoToMainMenuPopUp, setShowGoToMainMenuPopUp] = useState<boolean>(false);
   const [startingPlayerIndex, setStartingPlayerIndex] = useState<number>(0);
@@ -49,10 +38,6 @@ function StandardGames(props: StandardGamesProps) {
   const [playerStats, setPlayerStats] = useState<PlayerToPlayerStats>(() =>
     initializePlayerStats(props.players, props.gamemodeTotalScore)
   );
-  const [playerTotalGameStats, setPlayerTotalGameStats] = useState<PlayerToPlayerTotalGameStats>(() =>
-    initializePlayerTotalGameStats(props.players)
-  );
-  const [winningPlayer, setWinningPlayer] = useState<string | null>(null);
 
   const handleScoreChange = (points: number): void => {
     if (multiplier === 3 && points === 25) return;
@@ -145,30 +130,8 @@ function StandardGames(props: StandardGamesProps) {
   const checkIfPlayerHasWon = (updatedScore: number, playerIndex: number) => {
     const playerWon = updatedScore === 0 && multiplier === 2;
     if (playerWon) {
-      updatePlayerTotalGameStats(playerIndex);
+      props.cbPlayerHasWon(players[playerIndex]);
       resetRoundStatsForNextGame();
-    }
-  };
-
-  const updatePlayerTotalGameStats = (playerIndex: number) => {
-    let currentLegs = playerTotalGameStats[players[playerIndex]].legs + 1;
-    let currentSets = playerTotalGameStats[players[playerIndex]].sets;
-    if (currentLegs === Number(props.legsForSet)) {
-      currentSets++;
-      currentLegs = 0;
-    }
-
-    setPlayerTotalGameStats((prevPlayerTotalGameStats) => ({
-      ...prevPlayerTotalGameStats,
-      [players[playerIndex]]: {
-        ...prevPlayerTotalGameStats[players[playerIndex]],
-        legs: currentLegs,
-        sets: currentSets
-      }
-    }));
-
-    if (currentSets === Number(props.setsToWin)) {
-      setWinningPlayer(players[playerIndex]);
     }
   };
 
@@ -272,12 +235,12 @@ function StandardGames(props: StandardGamesProps) {
     if (players.length === 1) {
       return "You have won!";
     }
-    return `Player: ${winningPlayer} has won!`;
+    return `Player: ${props.winningPlayer} has won!`;
   };
 
   return (
     <div className="App hero is-flex is-justify-content-center is-align-items-center is-fullheight">
-      {winningPlayer && (
+      {props.winningPlayer && (
         <PopUp content={getWinnerPopUpText()} btnContent={"Back"} cbBtnClicked={props.cbBackBtnClicked} />
       )}
       {showGoToMainMenuPopUp && (
@@ -303,8 +266,8 @@ function StandardGames(props: StandardGamesProps) {
             average={playerStats[player].average}
             lastThrows={playerStats[player].lastThrows}
             checkoutOptions={playerStats[player].checkoutOptions}
-            sets={playerTotalGameStats[player].sets}
-            legs={playerTotalGameStats[player].legs}
+            sets={props.playerTotalGameStats[player].sets}
+            legs={props.playerTotalGameStats[player].legs}
           />
         ))}
       </div>
