@@ -165,6 +165,12 @@ export interface LocalMultiplayerMenuProps {
   setPlayers: React.Dispatch<React.SetStateAction<string[]>>;
   cbGamemodeSelected(gamemode: Gamemode): void;
   cbBackBtnClicked(): void;
+  selectedGamemode: Gamemode;
+  setsToWin: number;
+  setSetsToWin: React.Dispatch<React.SetStateAction<number>>;
+  legsForSet: number;
+  setLegsForSet: React.Dispatch<React.SetStateAction<number>>;
+  handleSettingsNext(): void;
 }
 
 export interface LocalMultiplayerProps {

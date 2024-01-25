@@ -14,12 +14,12 @@ function Singleplayer() {
   const [legsForSet, setLegsForSet] = useState<number>(1);
   const [isError, setIsError] = useState<boolean>(false);
 
-  const validateSetsLegsInput = (): boolean => {
+  const invalidSetsLegsInput = (): boolean => {
     return setsToWin < 1 || setsToWin > 20 || legsForSet < 1 || legsForSet > 10;
   };
 
   const handleNext = () => {
-    if (validateSetsLegsInput()) {
+    if (invalidSetsLegsInput()) {
       setIsError(true);
       return;
     }
