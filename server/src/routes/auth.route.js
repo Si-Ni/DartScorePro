@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { login, register, registerVerify, generalAuth } = require("../controllers/dartScorePro.controller");
+const { login, register, registerVerify, generalAuth } = require("../controllers/auth.controller");
 const verifyToken = require("../middlewares/authenticateToken.middleware");
 
 router

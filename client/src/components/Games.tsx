@@ -27,6 +27,7 @@ function Games(props: GamesProps) {
   const [currentRound, setCurrentRound] = useState<number>(1);
   const [startingPlayerIndex, setStartingPlayerIndex] = useState<number>(0);
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState<number>(startingPlayerIndex);
+  const [turns, setTurns] = useState<number>(0);
 
   const updateGameStatsForWinningPlayer = (playerKey: string): void => {
     let currentLegs = playerTotalGameStats[playerKey].legs + 1;
@@ -70,9 +71,11 @@ function Games(props: GamesProps) {
 
   const switchToNextPlayer = (): void => {
     setCurrentPlayerIndex((currentPlayerIndex) => (currentPlayerIndex + 1) % props.players.length);
-    setCurrentRound((currentRound) =>
-      currentPlayerIndex === props.players.length - 1 ? currentRound + 1 : currentRound
-    );
+    setTurns((turns) => turns + 1);
+    if (turns === props.players.length - 1) {
+      setCurrentRound((currentRound) => currentRound + 1);
+      setTurns(0);
+    }
     setThrowsRemaining(3);
   };
 
