@@ -50,18 +50,20 @@ function PlayerScoreCardCricket(props: PlayerScoreCardCricketProps) {
           </tbody>
         </table>
         <div className="columns is-centered mb-1">
-          <p className="subtitle is-2">Score: {props.score}</p>
+          <p className="subtitle is-2 mb-3">Score: {props.score}</p>
         </div>
-        <table className="table is-bordered mt-3">
-          <tbody>
-            <tr>
-              <th>Sets:</th>
-              <td> {props.sets}</td>
-              <th>Legs:</th>
-              <td> {props.legs}</td>
-            </tr>
-          </tbody>
-        </table>
+        <div className="columns is-centered mb-1">
+          <table className="table is-bordered mt-3">
+            <tbody>
+              <tr>
+                <th>Sets:</th>
+                <td> {props.sets}</td>
+                <th>Legs:</th>
+                <td> {props.legs}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

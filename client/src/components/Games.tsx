@@ -5,6 +5,7 @@ import RoundTheClockGame from "./RoundTheClockGame";
 import StandardGames from "./StandardGames";
 import PopUp from "./PopUp";
 import YesNoPopUp from "./YesNoPopUp";
+import "../styles/Games.css";
 
 const initializePlayerTotalGameStats = (players: string[]): PlayerToPlayerTotalGameStats => {
   const initialStats: PlayerToPlayerTotalGameStats = {};
@@ -118,8 +119,19 @@ function Games(props: GamesProps) {
           cbNoClicked={() => setShowGoToMainMenuPopUp(false)}
         />
       )}
+      <div className="is-flex is-justify-content-center m-0 pt-2 pb-2 gameInfo">
+        <p className="is-size-6 mr-4" style={{ textAlign: "center" }}>
+          <strong>Remaining throws:</strong> {throwsRemaining}
+        </p>
+        <p className="is-size-6 mr-4" style={{ textAlign: "center" }}>
+          <strong>First to:</strong> {props.setsToWin} {props.setsToWin > 1 ? "Sets" : "Set"}
+        </p>
+        <p className="is-size-6 mr-0" style={{ textAlign: "center" }}>
+          <strong>Legs per set:</strong> {props.legsForSet}
+        </p>
+      </div>
       {props.selectedGamemode === "301" && (
-        <StandardGames {...gameProps} {...standardGamesProps} gamemodeTotalScore={4} />
+        <StandardGames {...gameProps} {...standardGamesProps} gamemodeTotalScore={301} />
       )}
       {props.selectedGamemode === "501" && (
         <StandardGames {...gameProps} {...standardGamesProps} gamemodeTotalScore={501} />
@@ -129,7 +141,7 @@ function Games(props: GamesProps) {
       <div className="columns is-centered">
         <div className="column ">
           <button
-            className="button is-danger m-1 is-size-5 uniformButton"
+            className="button is-danger m-0 is-size-5 uniformButton"
             onClick={() => {
               setShowGoToMainMenuPopUp(true);
             }}

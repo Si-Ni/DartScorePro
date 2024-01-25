@@ -213,11 +213,6 @@ function CricketGame(props: CricketGameProps) {
           />
         ))}
       </div>
-      <div className="is-centered">
-        <p className="is-size-6 mb-1" style={{ textAlign: "center" }}>
-          Remaining throws: {props.throwsRemaining}
-        </p>
-      </div>
       <div className="columns is-centered">
         <div className="column">
           <div className="box">
