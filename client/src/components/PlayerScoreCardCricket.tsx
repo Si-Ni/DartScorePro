@@ -12,32 +12,23 @@ function PlayerScoreCardCricket(props: PlayerScoreCardCricketProps) {
   const tableHeaders: string[] = Object.keys(props.cricketStats);
   sortTableHeaders(tableHeaders);
 
+  const symbolClassNames = {
+    0: "",
+    1: "slash",
+    2: "x",
+    3: "x circle",
+    4: "closedAll"
+  };
+
   const formatCricketScoreToSymbolClass = (cricketStatus: CricketStatus): string => {
-    let className = "cell";
-    switch (cricketStatus) {
-      case 0:
-        className += "";
-        break;
-      case 1:
-        className += " slash";
-        break;
-      case 2:
-        className += " x";
-        break;
-      case 3:
-        className += " x circle";
-        break;
-      case 4:
-        className += " closedAll";
-        break;
-    }
+    let className = `cell ${symbolClassNames[cricketStatus]}`;
     return className;
   };
 
   return (
     <div className="column playerCardMinWidth">
       <div className="box" style={{ borderLeft: props.isCurrentPlayer ? "5px solid red" : "" }}>
-        <h1 className="title is-5">{props.playerName}</h1>
+        <h1 className={`title is-5 ${props.isStartingPlayer && "red-dot"}`}>{props.playerName}</h1>
         <table className="table is-bordered">
           <thead>
             <tr>
@@ -59,7 +50,19 @@ function PlayerScoreCardCricket(props: PlayerScoreCardCricketProps) {
           </tbody>
         </table>
         <div className="columns is-centered mb-1">
-          <p className="subtitle is-2">Score: {props.score}</p>
+          <p className="subtitle is-2 mb-3">Score: {props.score}</p>
+        </div>
+        <div className="columns is-centered mb-1">
+          <table className="table is-bordered mt-3">
+            <tbody>
+              <tr>
+                <th>Sets:</th>
+                <td> {props.sets}</td>
+                <th>Legs:</th>
+                <td> {props.legs}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { PlayerToPlayerStatsRCl, RoundTheClockGameProps } from "../global/types";
-import YesNoPopUp from "./YesNoPopUp";
 import PlayerScoreCard from "./PlayerScoreCard";
 
 const initializePlayerStats = (players: string[]): PlayerToPlayerStatsRCl => {
@@ -14,21 +13,18 @@ const initializePlayerStats = (players: string[]): PlayerToPlayerStatsRCl => {
   return initialPoints;
 };
 
-function RoundTheClockGame(props: RoundTheClockGameProps) {
-  const [showGoToMainMenuPopUp, setShowGoToMainMenuPopUp] = useState<boolean>(false);
-  const [currentRound, setCurrentRound] = useState<number>(1);
-  const [throwsRemaining, setThrowsRemaining] = useState<number>(3);
-  const [players, setPlayers] = useState<string[]>(props.players);
-  const [currentPlayerIndex, setCurrentPlayerIndex] = useState<number>(0);
+function RoundTheClockGame({ throwsRemaining, currentPlayerIndex, ...props }: RoundTheClockGameProps) {
+  const [players] = useState<string[]>(props.players);
   const [playerStats, setPlayerStats] = useState<PlayerToPlayerStatsRCl>(() => initializePlayerStats(props.players));
 
   const handleHitClicked = (): void => {
     if (checkIfPlayerHasWon(currentPlayerIndex)) {
-      console.log(players[currentPlayerIndex] + " has won!");
+      props.cbPlayerHasWon(players[currentPlayerIndex]);
+      setPlayerStats(initializePlayerStats(props.players));
     } else {
       increaseTargetByOne(currentPlayerIndex);
     }
-    updateRemainingThrows();
+    props.updateRemainingThrows();
   };
 
   const checkIfPlayerHasWon = (playerIndex: number): boolean => {
@@ -49,28 +45,9 @@ function RoundTheClockGame(props: RoundTheClockGameProps) {
     }));
   };
 
-  const updateRemainingThrows = (): void => {
-    const endOfTurn = throwsRemaining === 1;
-    if (endOfTurn) {
-      switchToNextPlayer();
-    } else {
-      setThrowsRemaining((throwsRemaining) => throwsRemaining - 1);
-    }
-  };
-
-  const switchToNextPlayer = (): void => {
-    if (currentPlayerIndex === players.length - 1) {
-      setCurrentPlayerIndex(0);
-      setCurrentRound((currentRound) => currentRound + 1);
-    } else {
-      setCurrentPlayerIndex((currentPlayerIndex) => currentPlayerIndex + 1);
-    }
-    setThrowsRemaining(3);
-  };
-
   const handleMissClicked = () => {
     addToLastThrows(currentPlayerIndex, ["Miss"]);
-    updateRemainingThrows();
+    props.updateRemainingThrows();
   };
 
   const addToLastThrows = (playerIndex: number, lastThrows: string[]): void => {
@@ -87,7 +64,7 @@ function RoundTheClockGame(props: RoundTheClockGameProps) {
 
   const handleNextClicked = (): void => {
     addMissesToLastThrows(currentPlayerIndex);
-    switchToNextPlayer();
+    props.switchToNextPlayer();
   };
 
   const addMissesToLastThrows = (playerIndex: number): void => {
@@ -97,17 +74,10 @@ function RoundTheClockGame(props: RoundTheClockGameProps) {
   };
 
   return (
-    <div className="App hero is-flex is-justify-content-center is-align-items-center is-fullheight">
-      {showGoToMainMenuPopUp && (
-        <YesNoPopUp
-          content={"Do you really want to go back? All progress will be lost!"}
-          cbYesClicked={props.cbBackBtnClicked}
-          cbNoClicked={() => setShowGoToMainMenuPopUp(false)}
-        />
-      )}
+    <>
       <div className="is-centered">
         <p className="is-size-3 mb-6" style={{ textAlign: "center" }}>
-          Round: {currentRound}
+          Round: {props.currentRound}
         </p>
       </div>
       <div className="columns is-centered">
@@ -115,9 +85,12 @@ function RoundTheClockGame(props: RoundTheClockGameProps) {
           <PlayerScoreCard
             key={player}
             playerName={player}
+            isStartingPlayer={players[props.startingPlayerIndex] === player}
             isCurrentPlayer={players[currentPlayerIndex] === player}
             score={playerStats[player].currentTarget}
             lastThrows={playerStats[player].lastThrows}
+            sets={props.playerTotalGameStats[player].sets}
+            legs={props.playerTotalGameStats[player].legs}
           />
         ))}
       </div>
@@ -136,19 +109,7 @@ function RoundTheClockGame(props: RoundTheClockGameProps) {
           </button>
         </div>
       </div>
-      <div className="columns is-centered">
-        <div className="column ">
-          <button
-            className="button is-danger m-1 is-size-5 uniformButton"
-            onClick={() => {
-              setShowGoToMainMenuPopUp(true);
-            }}
-          >
-            Back
-          </button>
-        </div>
-      </div>
-    </div>
+    </>
   );
 }
 

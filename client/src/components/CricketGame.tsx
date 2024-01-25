@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { CricketGameProps, CricketStatus, PlayerToPlayerStatsCricket } from "../global/types";
-import YesNoPopUp from "./YesNoPopUp";
 import PlayerScoreCardCricket from "./PlayerScoreCardCricket";
 import GameInputButtons from "./GameInputButtons";
 
@@ -24,12 +23,8 @@ const initializePlayerStats = (players: string[]): PlayerToPlayerStatsCricket =>
 };
 
 function CricketGame(props: CricketGameProps) {
-  const [showGoToMainMenuPopUp, setShowGoToMainMenuPopUp] = useState<boolean>(false);
-  const [currentRound, setCurrentRound] = useState<number>(1);
-  const [throwsRemaining, setThrowsRemaining] = useState<number>(3);
   const [mulitplier, setMultiplier] = useState<number>(1);
   const [players] = useState<string[]>(props.players);
-  const [currentPlayerIndex, setCurrentPlayerIndex] = useState<number>(0);
   const [playerStats, setPlayerStats] = useState<PlayerToPlayerStatsCricket>(() =>
     initializePlayerStats(props.players)
   );
@@ -37,8 +32,8 @@ function CricketGame(props: CricketGameProps) {
   const handleScoreBtnClicked = (points: number): void => {
     const validThrow = !(points === 25 && mulitplier === 3);
     if (validThrow) {
-      updatePlayerStats(currentPlayerIndex, points);
-      updateRemainingThrows();
+      updatePlayerStats(props.currentPlayerIndex, points);
+      props.updateRemainingThrows();
     }
     setMultiplier(1);
   };
@@ -150,25 +145,6 @@ function CricketGame(props: CricketGameProps) {
     }));
   };
 
-  const updateRemainingThrows = (): void => {
-    const endOfTurn = throwsRemaining === 1;
-    if (endOfTurn) {
-      switchToNextPlayer();
-    } else {
-      setThrowsRemaining((throwsRemaining) => throwsRemaining - 1);
-    }
-  };
-
-  const switchToNextPlayer = (): void => {
-    if (currentPlayerIndex === players.length - 1) {
-      setCurrentPlayerIndex(0);
-      setCurrentRound((currentRound) => currentRound + 1);
-    } else {
-      setCurrentPlayerIndex((currentPlayerIndex) => currentPlayerIndex + 1);
-    }
-    setThrowsRemaining(3);
-  };
-
   const checkIfPlayerHasWon = (
     playerKey: string,
     thrownPoints: number,
@@ -181,7 +157,8 @@ function CricketGame(props: CricketGameProps) {
       playerHasClosedAll(playerKey, currentCricketStatus, currentCricketStatusValue) &&
       playersScore >= highestScore
     ) {
-      console.log(playerKey + " has won!");
+      props.cbPlayerHasWon(playerKey);
+      setPlayerStats(initializePlayerStats(props.players));
     }
   };
 
@@ -216,17 +193,10 @@ function CricketGame(props: CricketGameProps) {
   };
 
   return (
-    <div className="App hero is-flex is-justify-content-center is-align-items-center is-fullheight">
-      {showGoToMainMenuPopUp && (
-        <YesNoPopUp
-          content={"Do you really want to go back? All progress will be lost!"}
-          cbYesClicked={props.cbBackBtnClicked}
-          cbNoClicked={() => setShowGoToMainMenuPopUp(false)}
-        />
-      )}
+    <>
       <div className="is-centered">
         <p className="is-size-3 mb-3" style={{ textAlign: "center" }}>
-          Round: {currentRound}
+          Round: {props.currentRound}
         </p>
       </div>
       <div className="columns is-centered">
@@ -234,16 +204,14 @@ function CricketGame(props: CricketGameProps) {
           <PlayerScoreCardCricket
             key={player}
             playerName={player}
-            isCurrentPlayer={players[currentPlayerIndex] === player}
+            isStartingPlayer={players[props.startingPlayerIndex] === player}
+            isCurrentPlayer={players[props.currentPlayerIndex] === player}
             score={playerStats[player].score}
             cricketStats={playerStats[player].cricketStats}
+            sets={props.playerTotalGameStats[player].sets}
+            legs={props.playerTotalGameStats[player].legs}
           />
         ))}
-      </div>
-      <div className="is-centered">
-        <p className="is-size-6 mb-1" style={{ textAlign: "center" }}>
-          Remaining throws: {throwsRemaining}
-        </p>
       </div>
       <div className="columns is-centered">
         <div className="column">
@@ -266,23 +234,8 @@ function CricketGame(props: CricketGameProps) {
         <button className="button is-warning m-1 is-size-5 uniformButton" onClick={() => handleMultiplierClick(3)}>
           Triple
         </button>
-        {/* <button className="button is-danger m-1 is-size-5 uniformButton" onClick={handleUndoClick}>
-          Undo
-        </button> */}
       </div>
-      <div className="columns is-centered">
-        <div className="column ">
-          <button
-            className="button is-danger m-1 is-size-5 uniformButton"
-            onClick={() => {
-              setShowGoToMainMenuPopUp(true);
-            }}
-          >
-            Back
-          </button>
-        </div>
-      </div>
-    </div>
+    </>
   );
 }
 

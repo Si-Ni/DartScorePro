@@ -42,12 +42,33 @@ export type PlayerToPlayerStatsRCl = { [player: string]: PlayerStatsRCl };
 export interface StandardGamesProps {
   gamemodeTotalScore: number;
   players: string[];
-  cbBackBtnClicked(): void;
+  cbPlayerHasWon(playerKey: string): void;
+  playerTotalGameStats: PlayerToPlayerTotalGameStats;
+  setsToWin: number;
+  legsForSet: number;
+  throwsRemaining: number;
+  currentRound: number;
+  startingPlayerIndex: number;
+  currentPlayerIndex: number;
+  switchToNextPlayer(): void;
+  updateRemainingThrows(): void;
+  setThrowsRemaining: React.Dispatch<React.SetStateAction<number>>;
+  setCurrentRound: React.Dispatch<React.SetStateAction<number>>;
+  setCurrentPlayerIndex: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export interface RoundTheClockGameProps {
   players: string[];
-  cbBackBtnClicked(): void;
+  cbPlayerHasWon(playerKey: string): void;
+  playerTotalGameStats: PlayerToPlayerTotalGameStats;
+  setsToWin: number;
+  legsForSet: number;
+  throwsRemaining: number;
+  currentRound: number;
+  startingPlayerIndex: number;
+  currentPlayerIndex: number;
+  switchToNextPlayer(): void;
+  updateRemainingThrows(): void;
 }
 
 export interface GameInputButtonsProps {
@@ -59,18 +80,30 @@ export interface GameInputButtonsProps {
 
 export interface CricketGameProps {
   players: string[];
-  cbBackBtnClicked(): void;
+  cbPlayerHasWon(playerKey: string): void;
+  playerTotalGameStats: PlayerToPlayerTotalGameStats;
+  setsToWin: number;
+  legsForSet: number;
+  throwsRemaining: number;
+  currentRound: number;
+  startingPlayerIndex: number;
+  currentPlayerIndex: number;
+  switchToNextPlayer(): void;
+  updateRemainingThrows(): void;
 }
 
 export type Gamemode = "301" | "501" | "rcl" | "cri";
 
 export interface PlayerScoreCardProps {
   playerName: string;
+  isStartingPlayer: boolean;
   isCurrentPlayer: boolean;
   score: number;
   average?: number;
   lastThrows: string[];
   checkoutOptions?: Round[];
+  sets: number;
+  legs: number;
 }
 
 // 4 = closed for all players
@@ -89,9 +122,12 @@ export interface CricketStats {
 
 export interface PlayerScoreCardCricketProps {
   playerName: string;
+  isStartingPlayer: boolean;
   isCurrentPlayer: boolean;
   score: number;
   cricketStats: CricketStats;
+  sets: number;
+  legs: number;
 }
 
 export interface PlayerStatsCricket {
@@ -101,11 +137,12 @@ export interface PlayerStatsCricket {
 
 export type PlayerToPlayerStatsCricket = { [player: string]: PlayerStatsCricket };
 
-export interface PlayerScoreCardProps {
-  playerName: string;
-  isCurrentPlayer: boolean;
-  score: number;
+export interface PlayerTotalGameStats {
+  sets: number;
+  legs: number;
 }
+
+export type PlayerToPlayerTotalGameStats = { [player: string]: PlayerTotalGameStats };
 
 export interface YesNoPopUpProps {
   content: string;
@@ -113,9 +150,25 @@ export interface YesNoPopUpProps {
   cbNoClicked(): void;
 }
 
-export interface GamemodeMenuProps {
-  cbGamemodeSelected(gamemode: Gamemode): void;
-  cbBackBtnClicked(): void;
+export interface PopUpProps {
+  content: string;
+  btnContent: string;
+  cbBtnClicked(): void;
+}
+
+export interface GamemodeSelectionProps {
+  selectedGamemode: Gamemode;
+  setSelectedGamemode: React.Dispatch<React.SetStateAction<Gamemode>>;
+}
+
+export interface GameSettingsProps {
+  selectedGamemode: Gamemode;
+  setsToWin: number;
+  setSetsToWin: React.Dispatch<React.SetStateAction<number>>;
+  legsForSet: number;
+  setLegsForSet: React.Dispatch<React.SetStateAction<number>>;
+  isError: boolean;
+  setIsError: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export type MultiplayerMode = "local" | "create" | "join";
@@ -128,6 +181,8 @@ export interface GamesProps {
   selectedGamemode: Gamemode;
   players: string[];
   cbBackBtnClicked(): void;
+  setsToWin: number;
+  legsForSet: number;
 }
 
 export interface PlayerMenuProps {
@@ -139,7 +194,13 @@ export interface PlayerMenuProps {
 export interface LocalMultiplayerMenuProps {
   players: string[];
   setPlayers: React.Dispatch<React.SetStateAction<string[]>>;
-  cbGamemodeSelected(gamemode: Gamemode): void;
+  selectedGamemode: Gamemode;
+  setSelectedGamemode: React.Dispatch<React.SetStateAction<Gamemode>>;
+  setsToWin: number;
+  setSetsToWin: React.Dispatch<React.SetStateAction<number>>;
+  legsForSet: number;
+  setLegsForSet: React.Dispatch<React.SetStateAction<number>>;
+  handleSettingsNextBtnClicked(): void;
   cbBackBtnClicked(): void;
 }
 
@@ -155,10 +216,16 @@ export interface MainMenuProps {
 export interface OnlineMultiplayerMenuProps {
   players: string[];
   setPlayers: React.Dispatch<React.SetStateAction<string[]>>;
-  cbGamemodeSelected(gamemode: Gamemode): void;
+  selectedGamemode: Gamemode;
+  setSelectedGamemode: React.Dispatch<React.SetStateAction<Gamemode>>;
   socket: Socket;
   lobbyCode: string;
   isLobbyLeader: boolean;
+  setsToWin: number;
+  setSetsToWin: React.Dispatch<React.SetStateAction<number>>;
+  legsForSet: number;
+  setLegsForSet: React.Dispatch<React.SetStateAction<number>>;
+  cbNextBtnClicked(): void;
 }
 
 export interface OnlineMultiplayerProps {
@@ -186,4 +253,15 @@ export interface JoinLobbyProps {
   cbBackBtnClicked(): void;
   socket: Socket;
   setLobbyCodeGlobal: React.Dispatch<React.SetStateAction<string>>;
+}
+
+export interface SettingsMenuProps {
+  selectedGamemode: Gamemode;
+  setSelectedGamemode: React.Dispatch<React.SetStateAction<Gamemode>>;
+  setsToWin: number;
+  setSetsToWin: React.Dispatch<React.SetStateAction<number>>;
+  legsForSet: number;
+  setLegsForSet: React.Dispatch<React.SetStateAction<number>>;
+  cbBackBtnClicked(): void;
+  cbNextBtnClicked(): void;
 }
