@@ -12,25 +12,16 @@ function PlayerScoreCardCricket(props: PlayerScoreCardCricketProps) {
   const tableHeaders: string[] = Object.keys(props.cricketStats);
   sortTableHeaders(tableHeaders);
 
+  const symbolClassNames = {
+    0: "",
+    1: "slash",
+    2: "x",
+    3: "x circle",
+    4: "closedAll"
+  };
+
   const formatCricketScoreToSymbolClass = (cricketStatus: CricketStatus): string => {
-    let className = "cell";
-    switch (cricketStatus) {
-      case 0:
-        className += "";
-        break;
-      case 1:
-        className += " slash";
-        break;
-      case 2:
-        className += " x";
-        break;
-      case 3:
-        className += " x circle";
-        break;
-      case 4:
-        className += " closedAll";
-        break;
-    }
+    let className = `cell ${symbolClassNames[cricketStatus]}`;
     return className;
   };
 

@@ -42,22 +42,33 @@ export type PlayerToPlayerStatsRCl = { [player: string]: PlayerStatsRCl };
 export interface StandardGamesProps {
   gamemodeTotalScore: number;
   players: string[];
-  cbBackBtnClicked(): void;
   cbPlayerHasWon(playerKey: string): void;
   playerTotalGameStats: PlayerToPlayerTotalGameStats;
-  winningPlayer: string | null;
   setsToWin: number;
   legsForSet: number;
+  throwsRemaining: number;
+  currentRound: number;
+  startingPlayerIndex: number;
+  currentPlayerIndex: number;
+  switchToNextPlayer(): void;
+  updateRemainingThrows(): void;
+  setThrowsRemaining: React.Dispatch<React.SetStateAction<number>>;
+  setCurrentRound: React.Dispatch<React.SetStateAction<number>>;
+  setCurrentPlayerIndex: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export interface RoundTheClockGameProps {
   players: string[];
-  cbBackBtnClicked(): void;
   cbPlayerHasWon(playerKey: string): void;
   playerTotalGameStats: PlayerToPlayerTotalGameStats;
-  winningPlayer: string | null;
   setsToWin: number;
   legsForSet: number;
+  throwsRemaining: number;
+  currentRound: number;
+  startingPlayerIndex: number;
+  currentPlayerIndex: number;
+  switchToNextPlayer(): void;
+  updateRemainingThrows(): void;
 }
 
 export interface GameInputButtonsProps {
@@ -69,12 +80,16 @@ export interface GameInputButtonsProps {
 
 export interface CricketGameProps {
   players: string[];
-  cbBackBtnClicked(): void;
   cbPlayerHasWon(playerKey: string): void;
   playerTotalGameStats: PlayerToPlayerTotalGameStats;
-  winningPlayer: string | null;
   setsToWin: number;
   legsForSet: number;
+  throwsRemaining: number;
+  currentRound: number;
+  startingPlayerIndex: number;
+  currentPlayerIndex: number;
+  switchToNextPlayer(): void;
+  updateRemainingThrows(): void;
 }
 
 export type Gamemode = "301" | "501" | "rcl" | "cri";

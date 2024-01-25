@@ -13,7 +13,10 @@ function Singleplayer() {
   const [legsForSet, setLegsForSet] = useState<number>(1);
 
   const backBtnClicked = () => navigate("/");
+
   const nextBtnClicked = () => setGameStarted(true);
+
+  const backBtnGameClicked = () => setGameStarted(false);
 
   return (
     <>
@@ -21,9 +24,7 @@ function Singleplayer() {
         <Games
           selectedGamemode={selectedGamemode}
           players={["Player1"]}
-          cbBackBtnClicked={() => {
-            setGameStarted(false);
-          }}
+          cbBackBtnClicked={backBtnGameClicked}
           setsToWin={setsToWin}
           legsForSet={legsForSet}
         />
