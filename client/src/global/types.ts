@@ -275,3 +275,8 @@ export interface NavigationButtonsProps {
   marginTop?: number;
   showNextBtn?: boolean;
 }
+
+export interface GameMultiplierButtonsProps {
+  cbHandleMultiplierClicked(multiplier: number): void;
+  multiplier: number;
+}
