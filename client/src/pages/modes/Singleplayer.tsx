@@ -20,29 +20,25 @@ function Singleplayer() {
 
   const backBtnGameClicked = () => setGameStarted(false);
 
+  const gameProps = {
+    selectedGamemode: selectedGamemode,
+    setsToWin: setsToWin,
+    legsForSet: legsForSet,
+    modeIn: modeIn,
+    modeOut: modeOut
+  };
+
   return (
     <>
       {gameStarted ? (
-        <Games
-          selectedGamemode={selectedGamemode}
-          players={["Player1"]}
-          cbBackBtnClicked={backBtnGameClicked}
-          setsToWin={setsToWin}
-          legsForSet={legsForSet}
-          modeIn={modeIn}
-          modeOut={modeOut}
-        />
+        <Games {...gameProps} players={["Player1"]} cbBackBtnClicked={backBtnGameClicked} />
       ) : (
         <SettingsMenu
-          selectedGamemode={selectedGamemode}
+          {...gameProps}
           setSelectedGamemode={setSelectedGamemode}
-          setsToWin={setsToWin}
           setSetsToWin={setSetsToWin}
-          legsForSet={legsForSet}
           setLegsForSet={setLegsForSet}
-          modeIn={modeIn}
           setModeIn={setModeIn}
-          modeOut={modeOut}
           setModeOut={setModeOut}
           cbBackBtnClicked={backBtnClicked}
           cbNextBtnClicked={nextBtnClicked}

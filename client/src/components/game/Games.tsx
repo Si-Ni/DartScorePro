@@ -129,12 +129,18 @@ function Games(props: GamesProps) {
         <p className="is-size-6 mr-4" style={{ textAlign: "center" }}>
           <strong>First to:</strong> {props.setsToWin} {props.setsToWin > 1 ? "Sets" : "Set"}
         </p>
-        <p className="is-size-6 mr-0" style={{ textAlign: "center" }}>
+        <p className="is-size-6 mr-4" style={{ textAlign: "center" }}>
           <strong>Legs per set:</strong> {props.legsForSet}
+        </p>
+        <p className="is-size-6 mr-4" style={{ textAlign: "center" }}>
+          <strong>{props.modeIn} in</strong>
+        </p>
+        <p className="is-size-6 mr-0" style={{ textAlign: "center" }}>
+          <strong>{props.modeOut} out</strong>
         </p>
       </div>
       {props.selectedGamemode === "301" && (
-        <StandardGames {...gameProps} {...standardGamesProps} gamemodeTotalScore={20} />
+        <StandardGames {...gameProps} {...standardGamesProps} gamemodeTotalScore={301} />
       )}
       {props.selectedGamemode === "501" && (
         <StandardGames {...gameProps} {...standardGamesProps} gamemodeTotalScore={501} />

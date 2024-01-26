@@ -130,8 +130,6 @@ function StandardGames({ currentPlayerIndex, throwsRemaining, ...props }: Standa
 
   const checkIfPlayerHasWon = (updatedScore: number, playerIndex: number) => {
     const playerWon = updatedScore === 0 && (props.modeOut !== "double" || multiplier === 2);
-    console.log(updatedScore === 0);
-    console.log(props.modeOut !== "double" || multiplier === 2);
     if (playerWon) {
       props.cbPlayerHasWon(players[playerIndex]);
       setPlayerStats(initializePlayerStats(props.players, props.gamemodeTotalScore));

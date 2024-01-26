@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Gamemode, OnlineMultiplayerProps } from "../../global/types";
+import { Gamemode, InAndOutMode, OnlineMultiplayerProps } from "../../global/types";
 import Games from "../../components/game/Games";
 import OnlineMultiplayerSettings from "./OnlineMultiplayerSettings";
 
@@ -9,6 +9,8 @@ function OnlineMultiplayer(props: OnlineMultiplayerProps) {
   const [gameStarted, setGameStarted] = useState<boolean>(false);
   const [setsToWin, setSetsToWin] = useState<number>(1);
   const [legsForSet, setLegsForSet] = useState<number>(1);
+  const [modeIn, setModeIn] = useState<InAndOutMode>("straight");
+  const [modeOut, setModeOut] = useState<InAndOutMode>("double");
 
   const nextBtnClicked = () => {
     if (props.isLobbyLeader)
@@ -21,29 +23,31 @@ function OnlineMultiplayer(props: OnlineMultiplayerProps) {
     setSelectedGamemode("301");
   };
 
+  const gameProps = {
+    players: players,
+    selectedGamemode: selectedGamemode,
+    setsToWin: setsToWin,
+    legsForSet: legsForSet,
+    modeIn: modeIn,
+    modeOut: modeOut
+  };
+
   return (
     <>
       {gameStarted ? (
-        <Games
-          selectedGamemode={selectedGamemode}
-          players={players}
-          cbBackBtnClicked={handleBackToPlayerMenu}
-          setsToWin={setsToWin}
-          legsForSet={legsForSet}
-        />
+        <Games {...gameProps} cbBackBtnClicked={handleBackToPlayerMenu} />
       ) : (
         <OnlineMultiplayerSettings
-          selectedGamemode={selectedGamemode}
+          {...gameProps}
           setSelectedGamemode={setSelectedGamemode}
-          players={players}
           setPlayers={setPlayers}
           socket={props.socket}
           lobbyCode={props.lobbyCode}
           isLobbyLeader={props.isLobbyLeader}
-          setsToWin={setsToWin}
           setSetsToWin={setSetsToWin}
-          legsForSet={legsForSet}
           setLegsForSet={setLegsForSet}
+          setModeIn={setModeIn}
+          setModeOut={setModeOut}
           cbNextBtnClicked={nextBtnClicked}
         />
       )}

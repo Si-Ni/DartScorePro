@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Gamemode, LocalMultiplayerProps } from "../../global/types";
+import { Gamemode, InAndOutMode, LocalMultiplayerProps } from "../../global/types";
 import Games from "../../components/game/Games";
 import LocalMultiplayerSettings from "./LocalMultiplayerSettings";
 
@@ -9,32 +9,36 @@ function LocalMultiplayer(props: LocalMultiplayerProps) {
   const [gameStarted, setGameStarted] = useState<boolean>(false);
   const [setsToWin, setSetsToWin] = useState<number>(1);
   const [legsForSet, setLegsForSet] = useState<number>(1);
+  const [modeIn, setModeIn] = useState<InAndOutMode>("straight");
+  const [modeOut, setModeOut] = useState<InAndOutMode>("double");
 
   const handleBackToPlayerMenu = () => {
     setGameStarted(false);
     setSelectedGamemode("301");
   };
 
+  const gameProps = {
+    players: players,
+    selectedGamemode: selectedGamemode,
+    setsToWin: setsToWin,
+    legsForSet: legsForSet,
+    modeIn: modeIn,
+    modeOut: modeOut
+  };
+
   return (
     <>
       {gameStarted ? (
-        <Games
-          selectedGamemode={selectedGamemode}
-          players={players}
-          cbBackBtnClicked={handleBackToPlayerMenu}
-          setsToWin={setsToWin}
-          legsForSet={legsForSet}
-        />
+        <Games {...gameProps} cbBackBtnClicked={handleBackToPlayerMenu} />
       ) : (
         <LocalMultiplayerSettings
-          selectedGamemode={selectedGamemode}
+          {...gameProps}
           setSelectedGamemode={setSelectedGamemode}
-          players={players}
           setPlayers={setPlayers}
-          legsForSet={legsForSet}
           setLegsForSet={setLegsForSet}
-          setsToWin={setsToWin}
           setSetsToWin={setSetsToWin}
+          setModeIn={setModeIn}
+          setModeOut={setModeOut}
           cbBackBtnClicked={props.cbBackBtnClicked}
           handleSettingsNextBtnClicked={() => {
             setGameStarted(true);

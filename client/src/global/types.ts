@@ -210,6 +210,10 @@ export interface LocalMultiplayerSettingsProps {
   setSetsToWin: React.Dispatch<React.SetStateAction<number>>;
   legsForSet: number;
   setLegsForSet: React.Dispatch<React.SetStateAction<number>>;
+  modeIn: InAndOutMode;
+  setModeIn: React.Dispatch<React.SetStateAction<InAndOutMode>>;
+  modeOut: InAndOutMode;
+  setModeOut: React.Dispatch<React.SetStateAction<InAndOutMode>>;
   handleSettingsNextBtnClicked(): void;
   cbBackBtnClicked(): void;
 }
@@ -234,6 +238,10 @@ export interface OnlineMultiplayerSettingsProps {
   setsToWin: number;
   setSetsToWin: React.Dispatch<React.SetStateAction<number>>;
   legsForSet: number;
+  modeIn: InAndOutMode;
+  setModeIn: React.Dispatch<React.SetStateAction<InAndOutMode>>;
+  modeOut: InAndOutMode;
+  setModeOut: React.Dispatch<React.SetStateAction<InAndOutMode>>;
   setLegsForSet: React.Dispatch<React.SetStateAction<number>>;
   cbNextBtnClicked(): void;
 }
