@@ -27,6 +27,10 @@ function LocalMultiplayerSettings(props: LocalMultiplayerSettingsProps) {
           setLegsForSet={props.setLegsForSet}
           cbBackBtnClicked={settingsBackBtnClicked}
           cbNextBtnClicked={props.handleSettingsNextBtnClicked}
+          modeIn={props.modeIn}
+          setModeIn={props.setModeIn}
+          modeOut={props.modeOut}
+          setModeOut={props.setModeOut}
         />
       ) : (
         <div className="hero is-justify-content-center is-align-items-center is-fullheight">

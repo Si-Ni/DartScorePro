@@ -1,4 +1,4 @@
-import { GameSettingsProps } from "../../global/types";
+import { GameSettingsProps, InAndOutMode } from "../../global/types";
 
 function GameSettings(props: GameSettingsProps) {
   const handleInputChangeSets = (event: any) => {
@@ -11,8 +11,16 @@ function GameSettings(props: GameSettingsProps) {
     props.setLegsForSet(event.target.value);
   };
 
+  const handleCheckboxModeInChange = (mode: InAndOutMode) => {
+    props.setModeIn(mode);
+  };
+
+  const handleCheckboxModeOutChange = (mode: InAndOutMode) => {
+    props.setModeOut(mode);
+  };
+
   return (
-    <div className="">
+    <div style={{ minWidth: "300px" }}>
       <div className="column is-flex is-justify-content-center">
         <h1 className="is-size-4 mb-1">Settings</h1>
       </div>
@@ -68,6 +76,58 @@ function GameSettings(props: GameSettingsProps) {
           </p>
         )}
       </div>
+      {(props.selectedGamemode === "301" || props.selectedGamemode === "501") && (
+        <>
+          <div className="columns is-flex mt-3">
+            <div className="column ml-2">
+              <label className="checkbox">
+                <input
+                  className="checkbox mr-2"
+                  type="checkbox"
+                  checked={props.modeIn === "straight"}
+                  onChange={() => handleCheckboxModeInChange("straight")}
+                />
+                Straight In
+              </label>
+            </div>
+            <div className="column">
+              <label className="checkbox">
+                <input
+                  className="checkbox mr-2"
+                  type="checkbox"
+                  checked={props.modeIn === "double"}
+                  onChange={() => handleCheckboxModeInChange("double")}
+                />
+                Double In
+              </label>
+            </div>
+          </div>
+          <div className="columns is-flex">
+            <div className="column ml-2">
+              <label className="checkbox">
+                <input
+                  className="checkbox mr-2"
+                  type="checkbox"
+                  checked={props.modeOut === "straight"}
+                  onChange={() => handleCheckboxModeOutChange("straight")}
+                />
+                Straight Out
+              </label>
+            </div>
+            <div className="column">
+              <label className="checkbox">
+                <input
+                  className="checkbox mr-2"
+                  type="checkbox"
+                  checked={props.modeOut === "double"}
+                  onChange={() => handleCheckboxModeOutChange("double")}
+                />
+                Double Out
+              </label>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }
