@@ -1,16 +1,16 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Login from "./Login";
-import MainMenu from "./MainMenu";
+import Login from "./authentication/Login";
+import MainMenu from "./menus/MainMenu";
 import { useEffect, useRef, useState } from "react";
-import Register from "./Register";
-import RegisterVerify from "./RegisterVerify";
-import Singleplayer from "./Singleplayer";
-import PrivacyPolicy from "./PrivacyPolicy";
-import Multiplayer from "./Multiplayer";
+import Register from "./authentication/Register";
+import RegisterVerify from "./authentication/RegisterVerify";
+import Singleplayer from "./modes/Singleplayer";
+import PrivacyPolicy from "./information/PrivacyPolicy";
+import Multiplayer from "./modes/Multiplayer";
 import axios from "axios";
 import io from "socket.io-client";
-import OnlineMultiplayer from "./OnlineMultiplayer";
-import CheckoutCalculator from "./CheckoutCalculator";
+import OnlineMultiplayer from "./onlineMultiplayer/OnlineMultiplayer";
+import CheckoutCalculator from "./information/CheckoutCalculator";
 
 const socket = io("http://localhost:4000"); // Update with your server URL
 
