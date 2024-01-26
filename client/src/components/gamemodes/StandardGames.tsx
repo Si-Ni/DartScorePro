@@ -5,6 +5,7 @@ import { PlayerStats, PlayerToPlayerStats, StandardGamesProps } from "../../glob
 import PlayerScoreCard from "../playerScoreCards/PlayerScoreCard";
 import GameInputButtons from "../buttons/GameInputButtons";
 import { getAllOptions, sumRound } from "../../helpers/calcCheckouts";
+import GameMultiplierButtons from "../buttons/GameMultiplierButtons";
 
 const initializePlayerStats = (players: string[], gamemodeTotalScore: number): PlayerToPlayerStats => {
   const initialPoints: PlayerToPlayerStats = {};
@@ -236,12 +237,7 @@ function StandardGames({ currentPlayerIndex, throwsRemaining, ...props }: Standa
         </div>
       </div>
       <div className="columns is-centered">
-        <button className="button is-success m-1 is-size-5 uniformButton" onClick={() => handleMultiplierClick(2)}>
-          Double
-        </button>
-        <button className="button is-warning m-1 is-size-5 uniformButton" onClick={() => handleMultiplierClick(3)}>
-          Triple
-        </button>
+        <GameMultiplierButtons multiplier={multiplier} cbHandleMultiplierClicked={handleMultiplierClick} />
         <button className="button is-danger m-1 is-size-5 uniformButton" onClick={handleUndoClick}>
           Undo
         </button>

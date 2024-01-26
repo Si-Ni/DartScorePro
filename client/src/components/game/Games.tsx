@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { GamesProps, PlayerToPlayerTotalGameStats } from "../../global/types";
-import CricketGame from "../games/CricketGame";
-import RoundTheClockGame from "../games/RoundTheClockGame";
-import StandardGames from "../games/StandardGames";
+import CricketGame from "../gamemodes/CricketGame";
+import RoundTheClockGame from "../gamemodes/RoundTheClockGame";
+import StandardGames from "../gamemodes/StandardGames";
 import PopUp from "../popUps/PopUp";
 import YesNoPopUp from "../popUps/YesNoPopUp";
 import "../../styles/Games.css";
