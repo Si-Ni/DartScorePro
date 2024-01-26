@@ -2,6 +2,7 @@ import { useState } from "react";
 import { CricketGameProps, CricketStatus, PlayerToPlayerStatsCricket } from "../../global/types";
 import PlayerScoreCardCricket from "../playerScoreCards/PlayerScoreCardCricket";
 import GameInputButtons from "../buttons/GameInputButtons";
+import GameMultiplierButtons from "../buttons/GameMultiplierButtons";
 
 const initializePlayerStats = (players: string[]): PlayerToPlayerStatsCricket => {
   const initialPoints: PlayerToPlayerStatsCricket = {};
@@ -228,12 +229,7 @@ function CricketGame(props: CricketGameProps) {
         </div>
       </div>
       <div className="columns is-centered">
-        <button className="button is-success m-1 is-size-5 uniformButton" onClick={() => handleMultiplierClick(2)}>
-          Double
-        </button>
-        <button className="button is-warning m-1 is-size-5 uniformButton" onClick={() => handleMultiplierClick(3)}>
-          Triple
-        </button>
+        <GameMultiplierButtons multiplier={mulitplier} cbHandleMultiplierClicked={handleMultiplierClick} />
       </div>
     </>
   );
