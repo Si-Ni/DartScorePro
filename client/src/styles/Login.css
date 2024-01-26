@@ -26,26 +26,7 @@
 }
 
 .policy {
-  padding-top: 0 !important;
-  display: block !important;
   font-size: 12px;
-}
-
-input[type="checkbox"] {
-  width: 15px;
-  height: 15px;
-  vertical-align: bottom !important;
-  position: relative;
-  top: -1px;
-}
-
-input[type="checkbox"] {
-  margin-right: 10px !important;
-}
-
-input[type="checkbox"]:hover,
-.policyCheckbox:hover {
-  cursor: pointer;
 }
 
 .policyLink:hover {

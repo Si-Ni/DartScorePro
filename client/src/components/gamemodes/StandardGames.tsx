@@ -35,6 +35,7 @@ function StandardGames({ currentPlayerIndex, throwsRemaining, ...props }: Standa
 
   const handleScoreChange = (points: number): void => {
     if (multiplier === 3 && points === 25) return;
+    if (shouldSetPointsToZero()) points = 0;
 
     savePreviousPlayerStats(currentPlayerIndex);
     const beginningOfRound = throwsRemaining === 3;
@@ -46,6 +47,14 @@ function StandardGames({ currentPlayerIndex, throwsRemaining, ...props }: Standa
     addThrowToLastThrows(currentPlayerIndex, points, multiplier);
 
     updateScoreForPlayerAndContinueGame(currentPlayerIndex, points);
+  };
+
+  const shouldSetPointsToZero = () => {
+    const violatesDoubleInMode =
+      playerStats[players[currentPlayerIndex]].score === props.gamemodeTotalScore &&
+      props.modeIn === "double" &&
+      (multiplier === 1 || multiplier === 3);
+    return violatesDoubleInMode;
   };
 
   const savePreviousPlayerStats = (playerIndex: number): void => {
@@ -96,7 +105,9 @@ function StandardGames({ currentPlayerIndex, throwsRemaining, ...props }: Standa
     const thrownPoints = points * multiplier;
     const updatedScore = calculateUpdatedScore(playerIndex, thrownPoints);
 
-    const updatedScoreIsInvalid = updatedScore < 0 || updatedScore === 1 || (multiplier === 1 && updatedScore === 0);
+    const updatedScoreIsInvalid =
+      updatedScore < 0 ||
+      (props.modeOut === "double" && (updatedScore === 1 || (multiplier === 1 && updatedScore === 0)));
 
     if (updatedScoreIsInvalid) {
       resetScoreToBeginningOfRound(playerIndex);
@@ -118,7 +129,9 @@ function StandardGames({ currentPlayerIndex, throwsRemaining, ...props }: Standa
   };
 
   const checkIfPlayerHasWon = (updatedScore: number, playerIndex: number) => {
-    const playerWon = updatedScore === 0 && multiplier === 2;
+    const playerWon = updatedScore === 0 && (props.modeOut !== "double" || multiplier === 2);
+    console.log(updatedScore === 0);
+    console.log(props.modeOut !== "double" || multiplier === 2);
     if (playerWon) {
       props.cbPlayerHasWon(players[playerIndex]);
       setPlayerStats(initializePlayerStats(props.players, props.gamemodeTotalScore));

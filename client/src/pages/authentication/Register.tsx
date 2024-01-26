@@ -60,7 +60,7 @@ function Register(props: RegisterProps) {
         <div className="hero is-fullheight ">
           {isPwdDisabled && <BarLoader id="top-barloader" color={"#00d1b2"} width={"100%"} />}
           <div className="hero-body  is-justify-content-center is-align-items-center">
-            <div className="columns is-half is-flex-direction-column box">
+            <div className="columns is-half is-flex is-flex-direction-column box">
               <div className="column is-flex is-justify-content-center">
                 <h1 className="is-size-5">Register</h1>
               </div>
@@ -101,13 +101,15 @@ function Register(props: RegisterProps) {
                   {props.loginErrorMsg}
                 </p>
               </div>
-              <div className="column policy">
+              <div className="column policy pt-0">
                 <input
+                  className="checkbox mr-2"
                   type="checkbox"
                   defaultChecked={policyAccepted}
                   onChange={() => {
                     setPolicyAccepted(!policyAccepted);
                   }}
+                  style={{ verticalAlign: "bottom", height: "100%" }}
                 />
                 I agree to the{" "}
                 <a className="policyLink" href="client/src/components" target="_blank">

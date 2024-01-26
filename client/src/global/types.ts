@@ -46,6 +46,8 @@ export interface StandardGamesProps {
   playerTotalGameStats: PlayerToPlayerTotalGameStats;
   setsToWin: number;
   legsForSet: number;
+  modeIn: InAndOutMode;
+  modeOut: InAndOutMode;
   throwsRemaining: number;
   currentRound: number;
   startingPlayerIndex: number;
@@ -161,12 +163,18 @@ export interface GamemodeSelectionProps {
   setSelectedGamemode: React.Dispatch<React.SetStateAction<Gamemode>>;
 }
 
+export type InAndOutMode = "straight" | "double";
+
 export interface GameSettingsProps {
   selectedGamemode: Gamemode;
   setsToWin: number;
   setSetsToWin: React.Dispatch<React.SetStateAction<number>>;
   legsForSet: number;
   setLegsForSet: React.Dispatch<React.SetStateAction<number>>;
+  modeIn: InAndOutMode;
+  setModeIn: React.Dispatch<React.SetStateAction<InAndOutMode>>;
+  modeOut: InAndOutMode;
+  setModeOut: React.Dispatch<React.SetStateAction<InAndOutMode>>;
   isError: boolean;
   setIsError: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -183,6 +191,8 @@ export interface GamesProps {
   cbBackBtnClicked(): void;
   setsToWin: number;
   legsForSet: number;
+  modeIn: InAndOutMode;
+  modeOut: InAndOutMode;
 }
 
 export interface PlayerMenuProps {
@@ -262,6 +272,10 @@ export interface SettingsMenuProps {
   setSetsToWin: React.Dispatch<React.SetStateAction<number>>;
   legsForSet: number;
   setLegsForSet: React.Dispatch<React.SetStateAction<number>>;
+  modeIn: InAndOutMode;
+  setModeIn: React.Dispatch<React.SetStateAction<InAndOutMode>>;
+  modeOut: InAndOutMode;
+  setModeOut: React.Dispatch<React.SetStateAction<InAndOutMode>>;
   cbBackBtnClicked(): void;
   cbNextBtnClicked(): void;
 }

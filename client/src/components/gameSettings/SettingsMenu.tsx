@@ -33,6 +33,10 @@ function SettingsMenu(props: SettingsMenuProps) {
             setSetsToWin={props.setSetsToWin}
             legsForSet={props.legsForSet}
             setLegsForSet={props.setLegsForSet}
+            modeIn={props.modeIn}
+            setModeIn={props.setModeIn}
+            modeOut={props.modeOut}
+            setModeOut={props.setModeOut}
             isError={isError}
             setIsError={setIsError}
           />
