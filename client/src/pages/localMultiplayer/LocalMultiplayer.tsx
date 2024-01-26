@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Gamemode, LocalMultiplayerProps } from "../../global/types";
 import Games from "../../components/game/Games";
-import LocalMultiplayerMenu from "./LocalMultiplayerSettings";
+import LocalMultiplayerSettings from "./LocalMultiplayerSettings";
 
 function LocalMultiplayer(props: LocalMultiplayerProps) {
   const [players, setPlayers] = useState(["Player1"]);
@@ -26,7 +26,7 @@ function LocalMultiplayer(props: LocalMultiplayerProps) {
           legsForSet={legsForSet}
         />
       ) : (
-        <LocalMultiplayerMenu
+        <LocalMultiplayerSettings
           selectedGamemode={selectedGamemode}
           setSelectedGamemode={setSelectedGamemode}
           players={players}

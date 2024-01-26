@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Gamemode, OnlineMultiplayerProps } from "../../global/types";
 import Games from "../../components/game/Games";
-import OnlineMultiplayerMenu from "./OnlineMultiplayerSettings";
+import OnlineMultiplayerSettings from "./OnlineMultiplayerSettings";
 
 function OnlineMultiplayer(props: OnlineMultiplayerProps) {
   const [players, setPlayers] = useState([props.displayUserID]);
@@ -32,7 +32,7 @@ function OnlineMultiplayer(props: OnlineMultiplayerProps) {
           legsForSet={legsForSet}
         />
       ) : (
-        <OnlineMultiplayerMenu
+        <OnlineMultiplayerSettings
           selectedGamemode={selectedGamemode}
           setSelectedGamemode={setSelectedGamemode}
           players={players}

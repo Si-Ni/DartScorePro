@@ -1,10 +1,13 @@
 import axios from "axios";
 import React, { useState, useEffect, useCallback } from "react";
+import NavigationButtons from "../../components/buttons/NavigationButtons";
+import { useNavigate } from "react-router-dom";
 
 function CheckoutCalculator() {
   const [currentScore, setCurrentScore] = useState<string>("");
   const [mostCommonCheckout, setMostCommonCheckout] = useState<string[]>([]);
   const [showNotPossibleMsg, setShowNotPossibleMsg] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   const getMostCommonCheckout = useCallback(() => {
     setShowNotPossibleMsg(false);
@@ -55,6 +58,7 @@ function CheckoutCalculator() {
               </h1>
             </div>
           </div>
+          <NavigationButtons cbBackBtnClicked={() => navigate("/")} />
         </div>
       </div>
     </div>
