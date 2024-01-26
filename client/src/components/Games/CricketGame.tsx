@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { CricketGameProps, CricketStatus, PlayerToPlayerStatsCricket } from "../../global/types";
-import PlayerScoreCardCricket from "../PlayerScoreCards/PlayerScoreCardCricket";
-import GameInputButtons from "../Game/GameInputButtons";
+import PlayerScoreCardCricket from "../playerScoreCards/PlayerScoreCardCricket";
+import GameInputButtons from "../buttons/GameInputButtons";
 
 const initializePlayerStats = (players: string[]): PlayerToPlayerStatsCricket => {
   const initialPoints: PlayerToPlayerStatsCricket = {};

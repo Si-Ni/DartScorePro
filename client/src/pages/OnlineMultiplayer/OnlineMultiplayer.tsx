@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Gamemode, OnlineMultiplayerProps } from "../../global/types";
-import Games from "../../components/Game/Games";
+import Games from "../../components/game/Games";
 import OnlineMultiplayerMenu from "./OnlineMultiplayerSettings";
 
 function OnlineMultiplayer(props: OnlineMultiplayerProps) {

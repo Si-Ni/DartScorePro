@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { CreateLobbyProps } from "../../global/types";
+import NavigationButtons from "../../components/buttons/NavigationButtons";
 
 function CreateLobby({ socket, setIsLobbyLeader, cbBackBtnClicked, setLobbyCodeGlobal }: CreateLobbyProps) {
   const navigate = useNavigate();
@@ -72,14 +73,7 @@ function CreateLobby({ socket, setIsLobbyLeader, cbBackBtnClicked, setLobbyCodeG
                 Create Lobby
               </button>
             </div>
-            <div className="buttons is-centered mt-5">
-              <button className="button is-danger m-1" onClick={cbBackBtnClicked}>
-                Back
-              </button>
-              <button className="button is-primary m-1" onClick={handleNext}>
-                Next
-              </button>
-            </div>
+            <NavigationButtons cbBackBtnClicked={cbBackBtnClicked} cbNextBtnClicked={handleNext}></NavigationButtons>
           </div>
         </div>
       </div>

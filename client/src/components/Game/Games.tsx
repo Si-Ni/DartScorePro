@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { GamesProps, PlayerToPlayerTotalGameStats } from "../../global/types";
-import CricketGame from "../Games/CricketGame";
-import RoundTheClockGame from "../Games/RoundTheClockGame";
-import StandardGames from "../Games/StandardGames";
-import PopUp from "../PopUps/PopUp";
-import YesNoPopUp from "../PopUps/YesNoPopUp";
-import "../styles/Games.css";
+import CricketGame from "../games/CricketGame";
+import RoundTheClockGame from "../games/RoundTheClockGame";
+import StandardGames from "../games/StandardGames";
+import PopUp from "../popUps/PopUp";
+import YesNoPopUp from "../popUps/YesNoPopUp";
+import "../../styles/Games.css";
+import NavigationButtons from "../buttons/NavigationButtons";
 
 const initializePlayerTotalGameStats = (players: string[]): PlayerToPlayerTotalGameStats => {
   const initialStats: PlayerToPlayerTotalGameStats = {};
@@ -138,18 +139,7 @@ function Games(props: GamesProps) {
       )}
       {props.selectedGamemode === "rcl" && <RoundTheClockGame {...gameProps} />}
       {props.selectedGamemode === "cri" && <CricketGame {...gameProps} />}
-      <div className="columns is-centered">
-        <div className="column ">
-          <button
-            className="button is-danger m-0 is-size-5 uniformButton"
-            onClick={() => {
-              setShowGoToMainMenuPopUp(true);
-            }}
-          >
-            Back
-          </button>
-        </div>
-      </div>
+      <NavigationButtons cbBackBtnClicked={() => setShowGoToMainMenuPopUp(true)} marginTop={0} />
     </div>
   );
 }

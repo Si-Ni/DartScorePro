@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import PlayerMenu from "../../components/GameSettings/PlayerMenu";
+import PlayerMenu from "../../components/gameSettings/PlayerMenu";
 import { Gamemode, OnlineMultiplayerMenuProps } from "../../global/types";
 import { useNavigate, useParams } from "react-router-dom";
-import SettingsMenu from "../../components/GameSettings/SettingsMenu";
+import SettingsMenu from "../../components/gameSettings/SettingsMenu";
+import NavigationButtons from "../../components/buttons/NavigationButtons";
 
 function OnlineMultiplayerMenu(props: OnlineMultiplayerMenuProps) {
   const navigate = useNavigate();
@@ -16,6 +17,11 @@ function OnlineMultiplayerMenu(props: OnlineMultiplayerMenuProps) {
 
   const handleNext = () => {
     if (props.players.length > 1) setShowSettingsMenu(true);
+  };
+
+  const handleBack = () => {
+    props.socket.emit("leaveLobby");
+    navigate("/multiplayer");
   };
 
   useEffect(() => {
@@ -57,22 +63,11 @@ function OnlineMultiplayerMenu(props: OnlineMultiplayerMenuProps) {
           <div className="hero-body">
             <div className="container box">
               <PlayerMenu players={props.players} setPlayers={props.setPlayers} isEditable={false} />
-              <div className="buttons is-centered mt-5">
-                <button
-                  className="button is-danger m-1"
-                  onClick={() => {
-                    props.socket.emit("leaveLobby");
-                    navigate("/multiplayer");
-                  }}
-                >
-                  Back
-                </button>
-                {props.isLobbyLeader && (
-                  <button className="button is-primary m-1" onClick={handleNext} disabled={props.players.length <= 1}>
-                    Next
-                  </button>
-                )}
-              </div>
+              <NavigationButtons
+                cbBackBtnClicked={handleBack}
+                cbNextBtnClicked={props.isLobbyLeader ? handleNext : undefined}
+                nextBtnDisabled={props.players.length <= 1}
+              />
             </div>
           </div>
         </div>

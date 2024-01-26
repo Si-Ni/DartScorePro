@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { JoinLobbyProps } from "../../global/types";
+import NavigationButtons from "../../components/buttons/NavigationButtons";
 
 function JoinLobby({ socket, ...props }: JoinLobbyProps) {
   const navigate = useNavigate();
@@ -55,15 +56,11 @@ function JoinLobby({ socket, ...props }: JoinLobbyProps) {
                 {"Lobby not found"}
               </p>
             </div>
-
-            <div className="buttons is-centered mt-5">
-              <button className="button is-danger" onClick={props.cbBackBtnClicked}>
-                Back
-              </button>
-              <button className="button is-primary" type="submit" onClick={joinLobby}>
-                Join
-              </button>
-            </div>
+            <NavigationButtons
+              cbBackBtnClicked={props.cbBackBtnClicked}
+              cbNextBtnClicked={joinLobby}
+              contentNextBtn="Join"
+            />
           </div>
         </div>
       </div>

@@ -1,9 +1,9 @@
-import "../styles/Menu.css";
+import "../../styles/Menu.css";
 import { useState } from "react";
 import { Gamemode } from "../../global/types";
-import Games from "../../components/Game/Games";
+import Games from "../../components/game/Games";
 import { useNavigate } from "react-router-dom";
-import SettingsMenu from "../../components/GameSettings/SettingsMenu";
+import SettingsMenu from "../../components/gameSettings/SettingsMenu";
 
 function Singleplayer() {
   const navigate = useNavigate();

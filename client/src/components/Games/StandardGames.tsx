@@ -1,9 +1,9 @@
 import { useState } from "react";
-import "../styles/App.css";
-import "../styles/Games.css";
+import "../../styles/App.css";
+import "../../styles/Games.css";
 import { PlayerStats, PlayerToPlayerStats, StandardGamesProps } from "../../global/types";
-import PlayerScoreCard from "../PlayerScoreCards/PlayerScoreCard";
-import GameInputButtons from "../Game/GameInputButtons";
+import PlayerScoreCard from "../playerScoreCards/PlayerScoreCard";
+import GameInputButtons from "../buttons/GameInputButtons";
 import { getAllOptions, sumRound } from "../../helpers/calcCheckouts";
 
 const initializePlayerStats = (players: string[], gamemodeTotalScore: number): PlayerToPlayerStats => {

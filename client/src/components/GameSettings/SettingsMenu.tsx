@@ -1,7 +1,8 @@
 import { useState } from "react";
-import GameSettings from "./GameSettings";
-import GamemodeSelection from "./GamemodeSelection";
 import { SettingsMenuProps } from "../../global/types";
+import GamemodeSelection from "./GamemodeSelection";
+import GameSettings from "./GameSettings";
+import NavigationButtons from "../buttons/NavigationButtons";
 
 function SettingsMenu(props: SettingsMenuProps) {
   const [isError, setIsError] = useState<boolean>(false);
@@ -35,14 +36,7 @@ function SettingsMenu(props: SettingsMenuProps) {
             isError={isError}
             setIsError={setIsError}
           />
-          <div className="buttons is-centered mt-4">
-            <button className="button is-danger m-1 is-medium" onClick={props.cbBackBtnClicked}>
-              Back
-            </button>
-            <button className="button is-primary m-1 is-medium" onClick={handleNext}>
-              Next
-            </button>
-          </div>
+          <NavigationButtons cbBackBtnClicked={props.cbBackBtnClicked} cbNextBtnClicked={handleNext} />
         </div>
       </div>
     </div>

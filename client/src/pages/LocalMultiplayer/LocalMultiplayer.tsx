@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Gamemode, LocalMultiplayerProps } from "../../global/types";
-import Games from "../../components/Game/Games";
+import Games from "../../components/game/Games";
 import LocalMultiplayerMenu from "./LocalMultiplayerSettings";
 
 function LocalMultiplayer(props: LocalMultiplayerProps) {

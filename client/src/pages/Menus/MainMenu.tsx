@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
-import "../styles/Menu.css";
+import "../../styles/Menu.css";
 import { MainMenuProps } from "../../global/types";
-import logo from "../assets/logo.png";
+import logo from "../../assets/logo.png";
 
 function MainMenu(props: MainMenuProps) {
   const navigate = useNavigate();

@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { MultiplayerModeProps, MultiplayerMode } from "../../global/types";
+import NavigationButtons from "../../components/buttons/NavigationButtons";
 
 function MultiplayerMenu(props: MultiplayerModeProps) {
   const navigate = useNavigate();
@@ -30,11 +31,7 @@ function MultiplayerMenu(props: MultiplayerModeProps) {
               Join
             </button>
           </div>
-          <div className="buttons is-centered">
-            <button className="button is-danger m-1 is-large" onClick={() => navigate("/")}>
-              Back
-            </button>
-          </div>
+          <NavigationButtons cbBackBtnClicked={() => navigate("/")} />
         </div>
       </div>
     </div>
