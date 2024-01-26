@@ -1,4 +1,4 @@
-import { PlayerScoreCardProps } from "../global/types";
+import { PlayerScoreCardProps } from "../../global/types";
 import "../styles/Games.css";
 
 function PlayerScoreCard(props: PlayerScoreCardProps) {

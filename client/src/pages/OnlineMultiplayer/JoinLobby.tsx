@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { JoinLobbyProps } from "../global/types";
+import { JoinLobbyProps } from "../../global/types";
 
 function JoinLobby({ socket, ...props }: JoinLobbyProps) {
   const navigate = useNavigate();

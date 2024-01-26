@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { CreateLobbyProps } from "../global/types";
+import { CreateLobbyProps } from "../../global/types";
 
 function CreateLobby({ socket, setIsLobbyLeader, cbBackBtnClicked, setLobbyCodeGlobal }: CreateLobbyProps) {
   const navigate = useNavigate();

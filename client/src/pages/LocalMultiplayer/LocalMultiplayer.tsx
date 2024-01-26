@@ -1,20 +1,14 @@
 import { useState } from "react";
-import { Gamemode, OnlineMultiplayerProps } from "../global/types";
-import Games from "../components/Games";
-import OnlineMultiplayerMenu from "./OnlineMultiplayerMenu";
+import { Gamemode, LocalMultiplayerProps } from "../../global/types";
+import Games from "../../components/Game/Games";
+import LocalMultiplayerMenu from "./LocalMultiplayerSettings";
 
-function OnlineMultiplayer(props: OnlineMultiplayerProps) {
-  const [players, setPlayers] = useState([props.displayUserID]);
+function LocalMultiplayer(props: LocalMultiplayerProps) {
+  const [players, setPlayers] = useState(["Player1"]);
   const [selectedGamemode, setSelectedGamemode] = useState<Gamemode>("301");
   const [gameStarted, setGameStarted] = useState<boolean>(false);
   const [setsToWin, setSetsToWin] = useState<number>(1);
   const [legsForSet, setLegsForSet] = useState<number>(1);
-
-  const nextBtnClicked = () => {
-    if (props.isLobbyLeader)
-      props.socket.emit("gamemodeSelected", { lobbyCode: props.lobbyCode, gamemode: selectedGamemode });
-    setGameStarted(true);
-  };
 
   const handleBackToPlayerMenu = () => {
     setGameStarted(false);
@@ -32,23 +26,23 @@ function OnlineMultiplayer(props: OnlineMultiplayerProps) {
           legsForSet={legsForSet}
         />
       ) : (
-        <OnlineMultiplayerMenu
+        <LocalMultiplayerMenu
           selectedGamemode={selectedGamemode}
           setSelectedGamemode={setSelectedGamemode}
           players={players}
           setPlayers={setPlayers}
-          socket={props.socket}
-          lobbyCode={props.lobbyCode}
-          isLobbyLeader={props.isLobbyLeader}
-          setsToWin={setsToWin}
-          setSetsToWin={setSetsToWin}
           legsForSet={legsForSet}
           setLegsForSet={setLegsForSet}
-          cbNextBtnClicked={nextBtnClicked}
+          setsToWin={setsToWin}
+          setSetsToWin={setSetsToWin}
+          cbBackBtnClicked={props.cbBackBtnClicked}
+          handleSettingsNextBtnClicked={() => {
+            setGameStarted(true);
+          }}
         />
       )}
     </>
   );
 }
 
-export default OnlineMultiplayer;
+export default LocalMultiplayer;

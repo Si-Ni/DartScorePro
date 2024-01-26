@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { GamesProps, PlayerToPlayerTotalGameStats } from "../global/types";
-import CricketGame from "./CricketGame";
-import RoundTheClockGame from "./RoundTheClockGame";
-import StandardGames from "./StandardGames";
-import PopUp from "./PopUp";
-import YesNoPopUp from "./YesNoPopUp";
+import { GamesProps, PlayerToPlayerTotalGameStats } from "../../global/types";
+import CricketGame from "../Games/CricketGame";
+import RoundTheClockGame from "../Games/RoundTheClockGame";
+import StandardGames from "../Games/StandardGames";
+import PopUp from "../PopUps/PopUp";
+import YesNoPopUp from "../PopUps/YesNoPopUp";
 import "../styles/Games.css";
 
 const initializePlayerTotalGameStats = (players: string[]): PlayerToPlayerTotalGameStats => {

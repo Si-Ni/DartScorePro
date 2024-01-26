@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import PlayerMenu from "../components/PlayerMenu";
-import { Gamemode, OnlineMultiplayerMenuProps } from "../global/types";
+import PlayerMenu from "../../components/GameSettings/PlayerMenu";
+import { Gamemode, OnlineMultiplayerMenuProps } from "../../global/types";
 import { useNavigate, useParams } from "react-router-dom";
-import SettingsMenu from "./SettingsMenu";
+import SettingsMenu from "../../components/GameSettings/SettingsMenu";
 
 function OnlineMultiplayerMenu(props: OnlineMultiplayerMenuProps) {
   const navigate = useNavigate();

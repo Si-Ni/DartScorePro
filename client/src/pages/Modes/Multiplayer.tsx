@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { MultiplayerMode, MultiplayerProps } from "../global/types";
-import MultiplayerMenu from "./MultiplayerMenu";
-import LocalMultiplayer from "./LocalMultiplayer";
-import JoinLobby from "./JoinLobby";
-import CreateLobby from "./CreateLobby";
+import { MultiplayerMode, MultiplayerProps } from "../../global/types";
+import MultiplayerMenu from "../Menus/MultiplayerMenu";
+import LocalMultiplayer from "../LocalMultiplayer/LocalMultiplayer";
+import JoinLobby from "../OnlineMultiplayer/JoinLobby";
+import CreateLobby from "../OnlineMultiplayer/CreateLobby";
 
 function Multiplayer({ socket, setLobbyCode, setIsLobbyLeader }: MultiplayerProps) {
   const [selectedMultiplayerMode, setSelectedMultiplayerMode] = useState<MultiplayerMode | null>(null);

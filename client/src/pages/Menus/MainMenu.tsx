@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import "../styles/Menu.css";
-import { MainMenuProps } from "../global/types";
+import { MainMenuProps } from "../../global/types";
 import logo from "../assets/logo.png";
 
 function MainMenu(props: MainMenuProps) {

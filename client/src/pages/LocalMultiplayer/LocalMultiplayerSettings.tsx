@@ -1,7 +1,7 @@
 import { useState } from "react";
-import PlayerMenu from "../components/PlayerMenu";
-import { LocalMultiplayerMenuProps } from "../global/types";
-import SettingsMenu from "./SettingsMenu";
+import PlayerMenu from "../../components/GameSettings/PlayerMenu";
+import { LocalMultiplayerMenuProps } from "../../global/types";
+import SettingsMenu from "../../components/GameSettings/SettingsMenu";
 
 function LocalMultiplayerMenu(props: LocalMultiplayerMenuProps) {
   const [showSettingsMenu, setShowSettingsMenu] = useState<boolean>(false);

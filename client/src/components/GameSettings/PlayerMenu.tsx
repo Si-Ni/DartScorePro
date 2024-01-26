@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { PlayerMenuProps } from "../global/types";
+import { PlayerMenuProps } from "../../global/types";
 
 function PlayerMenu({ players, setPlayers, ...props }: PlayerMenuProps) {
   const [currentPlayer, setCurrentPlayer] = useState("");

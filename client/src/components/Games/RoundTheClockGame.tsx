@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { PlayerToPlayerStatsRCl, RoundTheClockGameProps } from "../global/types";
-import PlayerScoreCard from "./PlayerScoreCard";
+import { PlayerToPlayerStatsRCl, RoundTheClockGameProps } from "../../global/types";
+import PlayerScoreCard from "../PlayerScoreCards/PlayerScoreCard";
 
 const initializePlayerStats = (players: string[]): PlayerToPlayerStatsRCl => {
   const initialPoints: PlayerToPlayerStatsRCl = {};

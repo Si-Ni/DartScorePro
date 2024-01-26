@@ -1,4 +1,4 @@
-import { GameSettingsProps } from "../global/types";
+import { GameSettingsProps } from "../../global/types";
 
 function GameSettings(props: GameSettingsProps) {
   const handleInputChangeSets = (event: any) => {

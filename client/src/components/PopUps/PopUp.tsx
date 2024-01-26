@@ -1,4 +1,4 @@
-import { PopUpProps } from "../global/types";
+import { PopUpProps } from "../../global/types";
 
 function YesNoPopUp(props: PopUpProps) {
   return (

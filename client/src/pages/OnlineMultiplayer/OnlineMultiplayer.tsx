@@ -1,14 +1,20 @@
 import { useState } from "react";
-import { Gamemode, LocalMultiplayerProps } from "../global/types";
-import Games from "../components/Games";
-import LocalMultiplayerMenu from "./LocalMultiplayerMenu";
+import { Gamemode, OnlineMultiplayerProps } from "../../global/types";
+import Games from "../../components/Game/Games";
+import OnlineMultiplayerMenu from "./OnlineMultiplayerSettings";
 
-function LocalMultiplayer(props: LocalMultiplayerProps) {
-  const [players, setPlayers] = useState(["Player1"]);
+function OnlineMultiplayer(props: OnlineMultiplayerProps) {
+  const [players, setPlayers] = useState([props.displayUserID]);
   const [selectedGamemode, setSelectedGamemode] = useState<Gamemode>("301");
   const [gameStarted, setGameStarted] = useState<boolean>(false);
   const [setsToWin, setSetsToWin] = useState<number>(1);
   const [legsForSet, setLegsForSet] = useState<number>(1);
+
+  const nextBtnClicked = () => {
+    if (props.isLobbyLeader)
+      props.socket.emit("gamemodeSelected", { lobbyCode: props.lobbyCode, gamemode: selectedGamemode });
+    setGameStarted(true);
+  };
 
   const handleBackToPlayerMenu = () => {
     setGameStarted(false);
@@ -26,23 +32,23 @@ function LocalMultiplayer(props: LocalMultiplayerProps) {
           legsForSet={legsForSet}
         />
       ) : (
-        <LocalMultiplayerMenu
+        <OnlineMultiplayerMenu
           selectedGamemode={selectedGamemode}
           setSelectedGamemode={setSelectedGamemode}
           players={players}
           setPlayers={setPlayers}
-          legsForSet={legsForSet}
-          setLegsForSet={setLegsForSet}
+          socket={props.socket}
+          lobbyCode={props.lobbyCode}
+          isLobbyLeader={props.isLobbyLeader}
           setsToWin={setsToWin}
           setSetsToWin={setSetsToWin}
-          cbBackBtnClicked={props.cbBackBtnClicked}
-          handleSettingsNextBtnClicked={() => {
-            setGameStarted(true);
-          }}
+          legsForSet={legsForSet}
+          setLegsForSet={setLegsForSet}
+          cbNextBtnClicked={nextBtnClicked}
         />
       )}
     </>
   );
 }
 
-export default LocalMultiplayer;
+export default OnlineMultiplayer;
