@@ -1,10 +1,10 @@
 import { useState } from "react";
 import PlayerMenu from "../../components/gameSettings/PlayerMenu";
-import { LocalMultiplayerMenuProps } from "../../global/types";
+import { LocalMultiplayerSettingsProps } from "../../global/types";
 import SettingsMenu from "../../components/gameSettings/SettingsMenu";
 import NavigationButtons from "../../components/buttons/NavigationButtons";
 
-function LocalMultiplayerMenu(props: LocalMultiplayerMenuProps) {
+function LocalMultiplayerSettings(props: LocalMultiplayerSettingsProps) {
   const [showSettingsMenu, setShowSettingsMenu] = useState<boolean>(false);
 
   const handleNextForPlayerMenu = () => {
@@ -46,4 +46,4 @@ function LocalMultiplayerMenu(props: LocalMultiplayerMenuProps) {
   );
 }
 
-export default LocalMultiplayerMenu;
+export default LocalMultiplayerSettings;

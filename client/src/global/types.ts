@@ -191,7 +191,7 @@ export interface PlayerMenuProps {
   isEditable: boolean;
 }
 
-export interface LocalMultiplayerMenuProps {
+export interface LocalMultiplayerSettingsProps {
   players: string[];
   setPlayers: React.Dispatch<React.SetStateAction<string[]>>;
   selectedGamemode: Gamemode;
@@ -213,7 +213,7 @@ export interface MainMenuProps {
   setDisplayUserID: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export interface OnlineMultiplayerMenuProps {
+export interface OnlineMultiplayerSettingsProps {
   players: string[];
   setPlayers: React.Dispatch<React.SetStateAction<string[]>>;
   selectedGamemode: Gamemode;

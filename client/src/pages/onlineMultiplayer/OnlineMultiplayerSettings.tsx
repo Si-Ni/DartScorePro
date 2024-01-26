@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import PlayerMenu from "../../components/gameSettings/PlayerMenu";
-import { Gamemode, OnlineMultiplayerMenuProps } from "../../global/types";
+import { Gamemode, OnlineMultiplayerSettingsProps } from "../../global/types";
 import { useNavigate, useParams } from "react-router-dom";
 import SettingsMenu from "../../components/gameSettings/SettingsMenu";
 import NavigationButtons from "../../components/buttons/NavigationButtons";
 
-function OnlineMultiplayerMenu(props: OnlineMultiplayerMenuProps) {
+function OnlineMultiplayerSettings(props: OnlineMultiplayerSettingsProps) {
   const navigate = useNavigate();
   const [showSettingsMenu, setShowSettingsMenu] = useState<boolean>(false);
 
@@ -76,4 +76,4 @@ function OnlineMultiplayerMenu(props: OnlineMultiplayerMenuProps) {
   );
 }
 
-export default OnlineMultiplayerMenu;
+export default OnlineMultiplayerSettings;
