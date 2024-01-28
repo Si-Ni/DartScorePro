@@ -3,6 +3,7 @@
 const generateCode = require("../helpers/generateCode.helper");
 
 const lobbies = {};
+const lobbyCodeRegex = /^[A-Z0-9]{6}$/;
 
 const configureLobbyService = (io) => {
   io.on("connection", (socket) => {
@@ -22,9 +23,11 @@ const configureLobbyService = (io) => {
 
       const lobby = lobbies[lobbyCode];
 
-      if (!lobby) {
-        return socket.emit("lobbyNotFound");
-      }
+      const isLobbyCode = lobbyCodeRegex.test(lobbyCode);
+
+      if (!isLobbyCode) return socket.emit("invalidLobbyCode");
+
+      if (!lobby) return socket.emit("lobbyNotFound");
 
       const playerIndex = lobby.players.findIndex((player) => player.userID === userID);
 
