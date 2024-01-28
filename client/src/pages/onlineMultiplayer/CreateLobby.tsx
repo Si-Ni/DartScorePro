@@ -3,14 +3,20 @@ import { useNavigate } from "react-router-dom";
 import { CreateLobbyProps } from "../../global/types";
 import NavigationButtons from "../../components/buttons/NavigationButtons";
 
-function CreateLobby({ socket, setIsLobbyLeader, cbBackBtnClicked, setLobbyCodeGlobal }: CreateLobbyProps) {
+function CreateLobby({
+  socket,
+  setIsLobbyLeader,
+  cbBackBtnClicked,
+  setLobbyCodeGlobal,
+  displayUserID
+}: CreateLobbyProps) {
   const navigate = useNavigate();
   const [lobbyCode, setLobbyCode] = useState("");
   const lobbyCodeRef = useRef<HTMLInputElement | null>(null);
   const codeCopiedRef = useRef<HTMLInputElement | null>(null);
 
   const createLobby = () => {
-    socket.emit("createLobby");
+    socket.emit("createLobby", displayUserID);
 
     socket.once("lobbyCreated", (newLobbyCode: string) => {
       setLobbyCode(newLobbyCode);

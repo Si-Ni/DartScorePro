@@ -11,7 +11,7 @@ function JoinLobby({ socket, ...props }: JoinLobbyProps) {
 
   const joinLobby = () => {
     if (!lobbyCodeRef.current!.value.trim()) return;
-    socket.emit("joinLobby", lobbyCode);
+    socket.emit("joinLobby", { lobbyCode: lobbyCode, userID: props.displayUserID });
 
     socket.once("lobbyJoined", () => {
       navigate(`/multiplayer/lobby/${lobbyCode}`);

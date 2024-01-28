@@ -244,6 +244,7 @@ export interface OnlineMultiplayerSettingsProps {
   setModeOut: React.Dispatch<React.SetStateAction<InAndOutMode>>;
   setLegsForSet: React.Dispatch<React.SetStateAction<number>>;
   cbNextBtnClicked(): void;
+  displayUserID: string;
 }
 
 export interface OnlineMultiplayerProps {
@@ -265,12 +266,14 @@ export interface CreateLobbyProps {
   socket: Socket;
   setLobbyCodeGlobal: React.Dispatch<React.SetStateAction<string>>;
   setIsLobbyLeader: React.Dispatch<React.SetStateAction<boolean>>;
+  displayUserID: string;
 }
 
 export interface JoinLobbyProps {
   cbBackBtnClicked(): void;
   socket: Socket;
   setLobbyCodeGlobal: React.Dispatch<React.SetStateAction<string>>;
+  displayUserID: string;
 }
 
 export interface SettingsMenuProps {

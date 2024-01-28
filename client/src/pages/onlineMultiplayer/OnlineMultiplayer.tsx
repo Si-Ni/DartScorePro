@@ -49,6 +49,7 @@ function OnlineMultiplayer(props: OnlineMultiplayerProps) {
           setModeIn={setModeIn}
           setModeOut={setModeOut}
           cbNextBtnClicked={nextBtnClicked}
+          displayUserID={props.displayUserID}
         />
       )}
     </>

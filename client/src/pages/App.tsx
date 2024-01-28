@@ -63,7 +63,7 @@ function App() {
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/singleplayer" element={<Singleplayer />} />
           <Route
-            path="/multiplayer/lobby/:code"
+            path="/multiplayer/lobby/:lobbyCode"
             element={
               <OnlineMultiplayer
                 socket={socket}
@@ -76,7 +76,14 @@ function App() {
           />
           <Route
             path="/multiplayer"
-            element={<Multiplayer socket={socket} setLobbyCode={setLobbyCode} setIsLobbyLeader={setIsLobbyLeader} />}
+            element={
+              <Multiplayer
+                socket={socket}
+                setLobbyCode={setLobbyCode}
+                setIsLobbyLeader={setIsLobbyLeader}
+                displayUserID={displayUserID}
+              />
+            }
           />
           <Route path="/checkoutCalculator" element={<CheckoutCalculator />} />
         </Routes>
