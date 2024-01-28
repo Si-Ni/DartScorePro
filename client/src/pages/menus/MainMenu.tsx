@@ -2,14 +2,18 @@ import { useNavigate } from "react-router-dom";
 import "../../styles/Menu.css";
 import { MainMenuProps } from "../../global/types";
 import logo from "../../assets/logo.png";
+import { useContext } from "react";
+import AuthContext from "../../context/AuthProvider";
 
 function MainMenu(props: MainMenuProps) {
+  const { setAuth } = useContext(AuthContext);
   const navigate = useNavigate();
 
   function logout() {
     localStorage.removeItem("token");
     props.setLoggedIn(false);
     props.setDisplayUserID("");
+    setAuth({});
     navigate("/login");
   }
 

@@ -5,9 +5,13 @@ import { BarLoader } from "react-spinners";
 import { LoginProps } from "../../global/types";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import useAuth from "../../hooks/useAuth";
 vhCheck("vh-check");
 
 function Login(props: LoginProps) {
+  const { setAuth } = useAuth();
+  const from = location.state?.from?.pathname || "/";
+
   const invalidPwdMsgRef = useRef<HTMLInputElement | null>(null);
   const [isPwdDisabled, setPwdDisabled] = useState(false);
   const userIDorMailRef = useRef<HTMLInputElement | null>(null);
@@ -21,11 +25,14 @@ function Login(props: LoginProps) {
     axios
       .post("http://localhost:4000/login/", { userIDorMail, userPWD })
       .then((res) => {
-        navigate("/");
+        const token = res.data.token;
         setPwdDisabled(false);
         props.setLoggedIn(true);
         props.setDisplayUserID(`${res.data.userID}`);
-        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("token", token);
+        setAuth({ userIDorMail, userPWD, token });
+
+        navigate(from, { replace: true });
       })
       .catch((error) => {
         setPwdDisabled(false);
