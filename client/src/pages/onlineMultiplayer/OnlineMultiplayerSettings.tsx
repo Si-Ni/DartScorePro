@@ -15,8 +15,6 @@ function OnlineMultiplayerSettings(props: OnlineMultiplayerSettingsProps) {
 
   useEffect(() => {
     if (lobbyCode && props.displayUserID) {
-      console.log(props.displayUserID);
-
       props.socket.emit("joinLobby", { lobbyCode: lobbyCode, userID: props.displayUserID });
     }
   }, [lobbyCode, props.socket, props.displayUserID]);
@@ -34,7 +32,6 @@ function OnlineMultiplayerSettings(props: OnlineMultiplayerSettingsProps) {
     props.socket.emit("joinedSuccessfully", props.lobbyCode);
 
     const handleSetPlayerList = (players: string[]) => {
-      console.log("updateplayerlist", players);
       props.setPlayers(players);
     };
 

@@ -11,6 +11,7 @@ import axios from "axios";
 import io from "socket.io-client";
 import OnlineMultiplayer from "./onlineMultiplayer/OnlineMultiplayer";
 import CheckoutCalculator from "./information/CheckoutCalculator";
+import RequireAuth from "../utils/RequireAuth";
 
 const socket = io("http://localhost:4000"); // Update with your server URL
 
@@ -40,54 +41,53 @@ function App() {
   return (
     <>
       {isLoggedIn && <div className="fixed-bottom-left">Logged in as {displayUserID}</div>}
-      <Router>
-        <Routes>
-          <Route path="/" element={<MainMenu setDisplayUserID={setDisplayUserID} setLoggedIn={setLoggedIn} />} />
-          <Route
-            path="/login"
-            element={
-              <Login
-                loginErrorMsg={loginErrorMsg}
-                pwdRef={pwdRef}
-                setLoginErrorMsg={setLoginErrorMsg}
-                setLoggedIn={setLoggedIn}
-                setDisplayUserID={setDisplayUserID}
-              />
-            }
-          />
-          <Route
-            path="/register"
-            element={<Register loginErrorMsg={loginErrorMsg} pwdRef={pwdRef} setLoginErrorMsg={setLoginErrorMsg} />}
-          />
-          <Route path="/register/verify" element={<RegisterVerify />} />
-          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-          <Route path="/singleplayer" element={<Singleplayer />} />
-          <Route
-            path="/multiplayer/lobby/:lobbyCode"
-            element={
-              <OnlineMultiplayer
-                socket={socket}
-                displayUserID={displayUserID}
-                lobbyCode={lobbyCode}
-                isLobbyLeader={isLobbyLeader}
-                cbBackBtnClicked={() => {}}
-              />
-            }
-          />
-          <Route
-            path="/multiplayer"
-            element={
-              <Multiplayer
-                socket={socket}
-                setLobbyCode={setLobbyCode}
-                setIsLobbyLeader={setIsLobbyLeader}
-                displayUserID={displayUserID}
-              />
-            }
-          />
-          <Route path="/checkoutCalculator" element={<CheckoutCalculator />} />
-        </Routes>
-      </Router>
+      <Routes>
+        <Route path="/" element={<MainMenu setDisplayUserID={setDisplayUserID} setLoggedIn={setLoggedIn} />} />
+        <Route
+          path="/login"
+          element={
+            <Login
+              loginErrorMsg={loginErrorMsg}
+              pwdRef={pwdRef}
+              setLoginErrorMsg={setLoginErrorMsg}
+              setLoggedIn={setLoggedIn}
+              setDisplayUserID={setDisplayUserID}
+            />
+          }
+        />
+        <Route
+          path="/register"
+          element={<Register loginErrorMsg={loginErrorMsg} pwdRef={pwdRef} setLoginErrorMsg={setLoginErrorMsg} />}
+        />
+        <Route path="/register/verify" element={<RegisterVerify />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/singleplayer" element={<Singleplayer />} />
+        <Route
+          path="/multiplayer/lobby/:lobbyCode"
+          element={
+            <OnlineMultiplayer
+              socket={socket}
+              displayUserID={displayUserID}
+              lobbyCode={lobbyCode}
+              isLobbyLeader={isLobbyLeader}
+              cbBackBtnClicked={() => {}}
+            />
+          }
+        />
+
+        <Route
+          path="/multiplayer"
+          element={
+            <Multiplayer
+              socket={socket}
+              setLobbyCode={setLobbyCode}
+              setIsLobbyLeader={setIsLobbyLeader}
+              displayUserID={displayUserID}
+            />
+          }
+        />
+        <Route path="/checkoutCalculator" element={<CheckoutCalculator />} />
+      </Routes>
     </>
   );
 }
