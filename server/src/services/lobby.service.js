@@ -9,37 +9,27 @@ const configureLobbyService = (io) => {
 
     socket.on("createLobby", (userID) => {
       const lobbyCode = generateCode();
-      lobbies[lobbyCode] = { players: [{ userID: userID, socketId: socket.id, isLeader: true }] };
+      lobbies[lobbyCode] = { players: [{ userID, socketId: socket.id, isLeader: true }] };
       socket.join(lobbyCode);
       socket.emit("lobbyCreated", lobbyCode);
     });
 
     socket.on("joinLobby", ({ lobbyCode, userID }) => {
       const socketId = socket.id;
-
       const lobby = lobbies[lobbyCode];
 
-      const isLobbyCode = lobbyCodeRegex.test(lobbyCode);
-
-      if (!isLobbyCode) return socket.emit("invalidLobbyCode");
-
-      if (!lobby) return socket.emit("lobbyNotFound");
+      if (!lobbyCodeRegex.test(lobbyCode) || !lobby)
+        return socket.emit(lobbyCode ? "lobbyNotFound" : "invalidLobbyCode");
 
       const playerIndex = lobby.players.findIndex((player) => player.userID === userID);
 
-      if (playerIndex !== -1) {
-        lobby.players[playerIndex].socketId = socketId;
-      } else {
-        lobby.players.push({ userID, socketId, isLeader: false });
-      }
-      socket.join(lobbyCode);
+      if (playerIndex !== -1) lobby.players[playerIndex].socketId = socketId;
+      else lobby.players.push({ userID, socketId, isLeader: false });
 
+      socket.join(lobbyCode);
       socket.emit("lobbyJoined", lobbyCode);
 
-      const updatedPlayers = lobbies[lobbyCode].players
-        .filter((player) => player.socketId !== "")
-        .map((player) => player.userID);
-      socket.emit("updatePlayersList", updatedPlayers);
+      const updatedPlayers = lobby.players.filter((player) => player.socketId !== "").map((player) => player.userID);
       io.to(lobbyCode).emit("updatePlayersList", updatedPlayers);
     });
 
@@ -55,14 +45,11 @@ const configureLobbyService = (io) => {
     socket.on("gamemodeSelected", ({ lobbyCode, gamemode }) => {
       const isLeader = lobbies[lobbyCode]?.players.find((player) => player.socketId === socket.id)?.isLeader ?? false;
       const isValidGamemode = ["301", "501", "rcl", "cri"].includes(gamemode);
-      if (lobbies[lobbyCode] && isLeader && isValidGamemode) {
+      if (lobbies[lobbyCode] && isLeader && isValidGamemode)
         socket.to(lobbyCode).emit("leaderSelectedGamemode", gamemode);
-      }
     });
 
-    socket.on("leaveLobby", () => {
-      leaveLobby(io, socket.id);
-    });
+    socket.on("leaveLobby", () => leaveLobby(io, socket.id));
 
     socket.on("disconnect", () => {
       console.log("User disconnected:", socket.id);
@@ -74,14 +61,11 @@ const configureLobbyService = (io) => {
 const leaveLobby = (io, socketId) => {
   Object.keys(lobbies).forEach((lobbyCode) => {
     const lobby = lobbies[lobbyCode];
-
     const disconnectedPlayer = lobby.players.find((player) => player.socketId === socketId);
 
     if (disconnectedPlayer) {
       disconnectedPlayer.socketId = "";
-
       const updatedPlayers = lobby.players.filter((player) => player.socketId !== "").map((player) => player.userID);
-
       io.to(lobbyCode).emit("updatePlayersList", updatedPlayers);
     }
   });
