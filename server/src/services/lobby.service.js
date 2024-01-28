@@ -1,5 +1,3 @@
-// lobbyService.js
-
 const generateCode = require("../helpers/generateCode.helper");
 
 const lobbies = {};
@@ -10,7 +8,6 @@ const configureLobbyService = (io) => {
     console.log("New connection:", socket.id);
 
     socket.on("createLobby", (userID) => {
-      console.log(userID);
       const lobbyCode = generateCode();
       lobbies[lobbyCode] = { players: [{ userID: userID, socketId: socket.id, isLeader: true }] };
       socket.join(lobbyCode);
@@ -18,7 +15,6 @@ const configureLobbyService = (io) => {
     });
 
     socket.on("joinLobby", ({ lobbyCode, userID }) => {
-      console.log(lobbyCode, userID);
       const socketId = socket.id;
 
       const lobby = lobbies[lobbyCode];
@@ -31,15 +27,13 @@ const configureLobbyService = (io) => {
 
       const playerIndex = lobby.players.findIndex((player) => player.userID === userID);
 
-      console.log(playerIndex);
       if (playerIndex !== -1) {
         lobby.players[playerIndex].socketId = socketId;
       } else {
-        console.log("else");
-        socket.join(lobbyCode);
         lobby.players.push({ userID, socketId, isLeader: false });
       }
-      console.log(lobby);
+      socket.join(lobbyCode);
+
       socket.emit("lobbyJoined", lobbyCode);
 
       const updatedPlayers = lobbies[lobbyCode].players
@@ -51,7 +45,7 @@ const configureLobbyService = (io) => {
 
     socket.on("joinedSuccessfully", (lobbyCode) => {
       if (lobbies[lobbyCode]) {
-        socket.emit(
+        io.to(lobbyCode).emit(
           "updatePlayersList",
           lobbies[lobbyCode].players.map((player) => player.userID)
         );
@@ -84,19 +78,11 @@ const leaveLobby = (io, socketId) => {
     const disconnectedPlayer = lobby.players.find((player) => player.socketId === socketId);
 
     if (disconnectedPlayer) {
-      const isLeader = disconnectedPlayer.isLeader;
-
       disconnectedPlayer.socketId = "";
 
       const updatedPlayers = lobby.players.filter((player) => player.socketId !== "").map((player) => player.userID);
 
-      console.log(updatedPlayers);
       io.to(lobbyCode).emit("updatePlayersList", updatedPlayers);
-
-      if (isLeader) {
-        const newLeader = lobby.players.find((player) => player.isLeader)?.userID || null;
-        io.to(lobbyCode).emit("leaderChanged", newLeader);
-      }
     }
   });
 };
