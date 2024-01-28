@@ -3,6 +3,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import NavigationButtons from "../../components/buttons/NavigationButtons";
 import { useNavigate } from "react-router-dom";
 
+const COMMON_CHECKOUTS = "/api/commonCheckout?";
 function CheckoutCalculator() {
   const [currentScore, setCurrentScore] = useState<string>("");
   const [mostCommonCheckout, setMostCommonCheckout] = useState<string[]>([]);
@@ -13,7 +14,7 @@ function CheckoutCalculator() {
     setShowNotPossibleMsg(false);
     if (currentScore.trim() !== "") {
       axios
-        .get(`http://localhost:4000/api/commonCheckout?` + new URLSearchParams({ score: currentScore }))
+        .get(COMMON_CHECKOUTS + new URLSearchParams({ score: currentScore }))
         .then((res) => {
           const checkout = res.data as string[];
           if (checkout.length === 0) setShowNotPossibleMsg(true);

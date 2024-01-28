@@ -1,7 +1,8 @@
 import { useRef, useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import axios from "../../api/axios";
 
+const REGISTER_VERIFY_LOGIN = "/register/verify";
 function RegisterVerify() {
   const RegisterCodeRef = useRef<HTMLInputElement | null>(null);
   const [inputDisabled, setInputDisabled] = useState(false);
@@ -13,7 +14,7 @@ function RegisterVerify() {
     const registerCode = RegisterCodeRef.current!.value;
     const userMail = userMailRef.current!.value;
     axios
-      .post("http://localhost:4000/register/verify", { userMail, registerCode })
+      .post(REGISTER_VERIFY_LOGIN, { userMail, registerCode })
       .then(() => {
         setInputDisabled(false);
         navigate("/login");

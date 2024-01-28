@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Login from "./authentication/Login";
 import MainMenu from "./menus/MainMenu";
 import { useEffect, useRef, useState } from "react";
@@ -7,14 +7,14 @@ import RegisterVerify from "./authentication/RegisterVerify";
 import Singleplayer from "./modes/Singleplayer";
 import PrivacyPolicy from "./information/PrivacyPolicy";
 import Multiplayer from "./modes/Multiplayer";
-import axios from "axios";
+import axios from "../api/axios";
 import io from "socket.io-client";
 import OnlineMultiplayer from "./onlineMultiplayer/OnlineMultiplayer";
 import CheckoutCalculator from "./information/CheckoutCalculator";
-import RequireAuth from "../utils/RequireAuth";
 
-const socket = io("http://localhost:4000"); // Update with your server URL
+const socket = io("http://localhost:4000");
 
+const GENERAL_AUTH = "/generalAuth";
 function App() {
   const pwdRef = useRef<HTMLInputElement | null>(null);
   const [loginErrorMsg, setLoginErrorMsg] = useState<string>("This password or username is invalid");
@@ -26,7 +26,7 @@ function App() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     axios
-      .get("http://localhost:4000/generalAuth", {
+      .get(GENERAL_AUTH, {
         headers: {
           Authorization: `Bearer ${token}`
         }

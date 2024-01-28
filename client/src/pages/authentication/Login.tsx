@@ -4,9 +4,11 @@ import "../../styles/Login.css";
 import { BarLoader } from "react-spinners";
 import { LoginProps } from "../../global/types";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import axios from "../../api/axios";
 import useAuth from "../../hooks/useAuth";
 vhCheck("vh-check");
+
+const LOGIN_URL = "/login";
 
 function Login(props: LoginProps) {
   const { setAuth } = useAuth();
@@ -23,7 +25,7 @@ function Login(props: LoginProps) {
     const userIDorMail = userIDorMailRef.current!.value;
     setPwdDisabled(true);
     axios
-      .post("http://localhost:4000/login/", { userIDorMail, userPWD })
+      .post(LOGIN_URL, { userIDorMail, userPWD })
       .then((res) => {
         const token = res.data.token;
         setPwdDisabled(false);
