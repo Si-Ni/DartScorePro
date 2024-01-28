@@ -1,3 +1,5 @@
+// OnlineMultiplayerSettings.js
+
 import { useEffect, useState } from "react";
 import PlayerMenu from "../../components/gameSettings/PlayerMenu";
 import { Gamemode, OnlineMultiplayerSettingsProps } from "../../global/types";
@@ -9,11 +11,15 @@ function OnlineMultiplayerSettings(props: OnlineMultiplayerSettingsProps) {
   const navigate = useNavigate();
   const [showSettingsMenu, setShowSettingsMenu] = useState<boolean>(false);
 
-  const { code } = useParams();
+  const { lobbyCode } = useParams();
 
   useEffect(() => {
-    code && props.socket.emit("joinLobby", code);
-  }, [code]);
+    if (lobbyCode && props.displayUserID) {
+      console.log(props.displayUserID);
+
+      props.socket.emit("joinLobby", { lobbyCode: lobbyCode, userID: props.displayUserID });
+    }
+  }, [lobbyCode, props.socket, props.displayUserID]);
 
   const handleNext = () => {
     if (props.players.length > 1) setShowSettingsMenu(true);
@@ -28,6 +34,7 @@ function OnlineMultiplayerSettings(props: OnlineMultiplayerSettingsProps) {
     props.socket.emit("joinedSuccessfully", props.lobbyCode);
 
     const handleSetPlayerList = (players: string[]) => {
+      console.log("updateplayerlist", players);
       props.setPlayers(players);
     };
 

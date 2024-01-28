@@ -1,3 +1,5 @@
+// lobbyService.js
+
 const generateCode = require("../helpers/generateCode.helper");
 
 const lobbies = {};
@@ -6,37 +8,49 @@ const configureLobbyService = (io) => {
   io.on("connection", (socket) => {
     console.log("New connection:", socket.id);
 
-    socket.on("createLobby", () => {
+    socket.on("createLobby", (userID) => {
+      console.log(userID);
       const lobbyCode = generateCode();
-      lobbies[lobbyCode] = { players: [{ socketId: socket.id, isLeader: true }] };
+      lobbies[lobbyCode] = { players: [{ userID: userID, socketId: socket.id, isLeader: true }] };
       socket.join(lobbyCode);
       socket.emit("lobbyCreated", lobbyCode);
     });
 
-    socket.on("joinLobby", (lobbyCode) => {
+    socket.on("joinLobby", ({ lobbyCode, userID }) => {
+      console.log(lobbyCode, userID);
       const socketId = socket.id;
+
       const lobby = lobbies[lobbyCode];
 
       if (!lobby) {
         return socket.emit("lobbyNotFound");
       }
 
-      if (lobby.players.some((player) => player.socketId === socketId)) return;
+      const playerIndex = lobby.players.findIndex((player) => player.userID === userID);
 
-      socket.join(lobbyCode);
-      lobby.players.push({ socketId, isLeader: false });
+      console.log(playerIndex);
+      if (playerIndex !== -1) {
+        lobby.players[playerIndex].socketId = socketId;
+      } else {
+        console.log("else");
+        socket.join(lobbyCode);
+        lobby.players.push({ userID, socketId, isLeader: false });
+      }
+      console.log(lobby);
       socket.emit("lobbyJoined", lobbyCode);
-      io.to(lobbyCode).emit(
-        "updatePlayersList",
-        lobby.players.map((player) => player.socketId)
-      );
+
+      const updatedPlayers = lobbies[lobbyCode].players
+        .filter((player) => player.socketId !== "")
+        .map((player) => player.userID);
+      socket.emit("updatePlayersList", updatedPlayers);
+      io.to(lobbyCode).emit("updatePlayersList", updatedPlayers);
     });
 
     socket.on("joinedSuccessfully", (lobbyCode) => {
       if (lobbies[lobbyCode]) {
         socket.emit(
           "updatePlayersList",
-          lobbies[lobbyCode].players.map((player) => player.socketId)
+          lobbies[lobbyCode].players.map((player) => player.userID)
         );
       }
     });
@@ -62,12 +76,25 @@ const configureLobbyService = (io) => {
 
 const leaveLobby = (io, socketId) => {
   Object.keys(lobbies).forEach((lobbyCode) => {
-    lobbies[lobbyCode].players = lobbies[lobbyCode].players.filter((player) => player.socketId !== socketId);
+    const lobby = lobbies[lobbyCode];
 
-    io.to(lobbyCode).emit(
-      "updatePlayersList",
-      lobbies[lobbyCode].players.map((player) => player.socketId)
-    );
+    const disconnectedPlayer = lobby.players.find((player) => player.socketId === socketId);
+
+    if (disconnectedPlayer) {
+      const isLeader = disconnectedPlayer.isLeader;
+
+      disconnectedPlayer.socketId = "";
+
+      const updatedPlayers = lobby.players.filter((player) => player.socketId !== "").map((player) => player.userID);
+
+      console.log(updatedPlayers);
+      io.to(lobbyCode).emit("updatePlayersList", updatedPlayers);
+
+      if (isLeader) {
+        const newLeader = lobby.players.find((player) => player.isLeader)?.userID || null;
+        io.to(lobbyCode).emit("leaderChanged", newLeader);
+      }
+    }
   });
 };
 
