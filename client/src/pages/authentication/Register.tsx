@@ -4,8 +4,10 @@ import "../../styles/Login.css";
 import { BarLoader } from "react-spinners";
 import { RegisterProps } from "../../global/types";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import axios from "../../api/axios";
 vhCheck("vh-check");
+
+const REGISTER_URL = "/register";
 
 function Register(props: RegisterProps) {
   const invalidPwdMsgRef = useRef<HTMLInputElement | null>(null);
@@ -28,7 +30,7 @@ function Register(props: RegisterProps) {
 
     setPwdDisabled(true);
     axios
-      .post("http://localhost:4000/register/", { userMail, userID, userPWD })
+      .post(REGISTER_URL, { userMail, userID, userPWD })
       .then(() => {
         setPwdDisabled(false);
         navigate("/register/verify");
