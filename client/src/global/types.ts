@@ -193,16 +193,20 @@ export interface GamesProps {
   legsForSet: number;
   modeIn: InAndOutMode;
   modeOut: InAndOutMode;
+  cbPlayerWon?(player: string): void;
 }
 
 export interface PlayerMenuProps {
   players: string[];
+  maxPlayers: number;
   setPlayers: React.Dispatch<React.SetStateAction<string[]>>;
   isEditable: boolean;
 }
 
-export interface LocalMultiplayerSettingsProps {
+export interface PlayersAndSettingsProps {
   players: string[];
+  maxPlayers: number;
+  validNumberOfPlayers: boolean;
   setPlayers: React.Dispatch<React.SetStateAction<string[]>>;
   selectedGamemode: Gamemode;
   setSelectedGamemode: React.Dispatch<React.SetStateAction<Gamemode>>;

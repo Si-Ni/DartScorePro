@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Gamemode, InAndOutMode, LocalMultiplayerProps } from "../../global/types";
 import Games from "../../components/game/Games";
-import LocalMultiplayerSettings from "./LocalMultiplayerSettings";
+import PlayersAndSettings from "../../components/gameSettings/PlayersAndSettings";
 
 function LocalMultiplayer(props: LocalMultiplayerProps) {
   const [players, setPlayers] = useState(["Player1"]);
@@ -15,6 +15,10 @@ function LocalMultiplayer(props: LocalMultiplayerProps) {
   const handleBackToPlayerMenu = () => {
     setGameStarted(false);
     setSelectedGamemode("301");
+  };
+
+  const numberOfPlayersCondition = (): boolean => {
+    return players.length > 1;
   };
 
   const gameProps = {
@@ -31,8 +35,10 @@ function LocalMultiplayer(props: LocalMultiplayerProps) {
       {gameStarted ? (
         <Games {...gameProps} cbBackBtnClicked={handleBackToPlayerMenu} />
       ) : (
-        <LocalMultiplayerSettings
+        <PlayersAndSettings
           {...gameProps}
+          maxPlayers={4}
+          validNumberOfPlayers={numberOfPlayersCondition()}
           setSelectedGamemode={setSelectedGamemode}
           setPlayers={setPlayers}
           setLegsForSet={setLegsForSet}

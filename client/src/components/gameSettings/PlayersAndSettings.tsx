@@ -1,14 +1,14 @@
 import { useState } from "react";
-import PlayerMenu from "../../components/gameSettings/PlayerMenu";
-import { LocalMultiplayerSettingsProps } from "../../global/types";
-import SettingsMenu from "../../components/gameSettings/SettingsMenu";
-import NavigationButtons from "../../components/buttons/NavigationButtons";
+import PlayerMenu from "./PlayerMenu";
+import { PlayersAndSettingsProps } from "../../global/types";
+import SettingsMenu from "./SettingsMenu";
+import NavigationButtons from "../buttons/NavigationButtons";
 
-function LocalMultiplayerSettings(props: LocalMultiplayerSettingsProps) {
+function PlayersAndSettings(props: PlayersAndSettingsProps) {
   const [showSettingsMenu, setShowSettingsMenu] = useState<boolean>(false);
 
   const handleNextForPlayerMenu = () => {
-    if (props.players.length > 1) setShowSettingsMenu(true);
+    if (props.validNumberOfPlayers) setShowSettingsMenu(true);
   };
 
   const settingsBackBtnClicked = () => {
@@ -36,11 +36,16 @@ function LocalMultiplayerSettings(props: LocalMultiplayerSettingsProps) {
         <div className="hero is-justify-content-center is-align-items-center is-fullheight">
           <div className="hero-body">
             <div className="container box">
-              <PlayerMenu players={props.players} setPlayers={props.setPlayers} isEditable={true} />
+              <PlayerMenu
+                players={props.players}
+                maxPlayers={props.maxPlayers}
+                setPlayers={props.setPlayers}
+                isEditable={true}
+              />
               <NavigationButtons
                 cbBackBtnClicked={props.cbBackBtnClicked}
                 cbNextBtnClicked={handleNextForPlayerMenu}
-                nextBtnDisabled={props.players.length <= 1}
+                nextBtnDisabled={!props.validNumberOfPlayers}
               />
             </div>
           </div>
@@ -50,4 +55,4 @@ function LocalMultiplayerSettings(props: LocalMultiplayerSettingsProps) {
   );
 }
 
-export default LocalMultiplayerSettings;
+export default PlayersAndSettings;

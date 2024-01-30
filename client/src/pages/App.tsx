@@ -11,6 +11,7 @@ import axios from "../api/axios";
 import io from "socket.io-client";
 import OnlineMultiplayer from "./onlineMultiplayer/OnlineMultiplayer";
 import CheckoutCalculator from "./information/CheckoutCalculator";
+import Tournament from "./tournament/Tournament";
 
 const socket = io("http://localhost:4000");
 
@@ -86,6 +87,7 @@ function App() {
             />
           }
         />
+        <Route path="/tournament" element={<Tournament />} />
         <Route path="/checkoutCalculator" element={<CheckoutCalculator />} />
       </Routes>
     </>
