@@ -10,7 +10,7 @@ function PlayerMenu({ players, setPlayers, ...props }: PlayerMenuProps) {
   };
 
   const addPlayer = () => {
-    if (currentPlayer.trim() !== "" && players.length < 4) {
+    if (currentPlayer.trim() !== "" && players.length < props.maxPlayers) {
       const truncatedPlayer = currentPlayer.substring(0, 20);
 
       if (players.includes(truncatedPlayer)) {
@@ -39,7 +39,7 @@ function PlayerMenu({ players, setPlayers, ...props }: PlayerMenuProps) {
         <h1 className="is-size-4 mb-3">Player List</h1>
       </div>
       <hr></hr>
-      <ul className="mb-6 mt-4">
+      <ul className="mb-6 mt-4" style={{ maxHeight: "30vh", overflowY: "scroll" }}>
         {players.map((player, index) => (
           <li key={index}>
             <div className="mb-2 is-flex">
@@ -70,11 +70,15 @@ function PlayerMenu({ players, setPlayers, ...props }: PlayerMenuProps) {
                 onChange={handleInputChange}
                 onKeyUp={onKeyPressed}
                 placeholder="Enter player name"
-                disabled={players.length === 4}
+                disabled={players.length === props.maxPlayers}
               />
             </div>
             <div className="control">
-              <button className="button is-primary ml-2" onClick={addPlayer} disabled={players.length === 4}>
+              <button
+                className="button is-primary ml-2"
+                onClick={addPlayer}
+                disabled={players.length === props.maxPlayers}
+              >
                 Add Player
               </button>
             </div>

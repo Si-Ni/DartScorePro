@@ -49,10 +49,18 @@ function Games(props: GamesProps) {
     }));
 
     if (currentSets === Number(props.setsToWin)) {
-      setWinningPlayer(playerKey);
+      handlePlayerWon(playerKey);
     }
 
     resetRoundStatsForNextGame();
+  };
+
+  const handlePlayerWon = (playerKey: string) => {
+    if (props.cbPlayerWon) {
+      props.cbPlayerWon(playerKey);
+    } else {
+      setWinningPlayer(playerKey);
+    }
   };
 
   const resetRoundStatsForNextGame = () => {
@@ -85,7 +93,7 @@ function Games(props: GamesProps) {
     if (props.players.length === 1) {
       return "You have won!";
     }
-    return `Player: ${winningPlayer} has won!`;
+    return `Player: ${winningPlayer} has won this game!`;
   };
 
   const gameProps = {
@@ -113,7 +121,7 @@ function Games(props: GamesProps) {
   return (
     <div className="App hero is-flex is-justify-content-center is-align-items-center is-fullheight">
       {winningPlayer && (
-        <PopUp content={getWinnerPopUpText()} btnContent={"Back"} cbBtnClicked={props.cbBackBtnClicked} />
+        <PopUp content={getWinnerPopUpText()} btnContent="End game" cbBtnClicked={props.cbBackBtnClicked} />
       )}
       {showGoToMainMenuPopUp && (
         <YesNoPopUp
@@ -140,7 +148,7 @@ function Games(props: GamesProps) {
         </p>
       </div>
       {props.selectedGamemode === "301" && (
-        <StandardGames {...gameProps} {...standardGamesProps} gamemodeTotalScore={301} />
+        <StandardGames {...gameProps} {...standardGamesProps} gamemodeTotalScore={4} />
       )}
       {props.selectedGamemode === "501" && (
         <StandardGames {...gameProps} {...standardGamesProps} gamemodeTotalScore={501} />
