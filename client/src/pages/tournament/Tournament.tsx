@@ -33,11 +33,7 @@ function Tournament() {
   };
 
   const startGame = (): void => {
-    const randomPlayers = chooseTwoRandomPlayers(allPlayers);
-    setCurrentPlayers(randomPlayers);
-    const waitingPlayers = allPlayers.filter((player) => !randomPlayers.includes(player));
-    setWaitingPlayers(waitingPlayers);
-    setWinners([]);
+    setRemainingPlayersForNewRound(allPlayers);
     setGameStarted(true);
   };
 
@@ -66,28 +62,40 @@ function Tournament() {
     setWaitingPlayers(updatedPlayers);
   };
 
-  const playerWon = (player: string): void => {
+  const playerWon = (winner: string): void => {
     setGameStarted(false);
-    console.log(waitingPlayers);
-    if (waitingPlayers.length === 0 && winners.length === 0) {
-      console.log("test4");
-      setEndPopUpContent(`Player: ${player} has won the tournament!`);
-      setShowWinnerPopUp(true);
+    const endOfTournament = waitingPlayers.length === 0 && winners.length === 0;
+    const endOfRound = waitingPlayers.length === 0;
+    if (endOfTournament) {
+      endTournamentAnnounceWinner(winner);
       return;
-    } else if (waitingPlayers.length === 0) {
-      const playersInNextRound = [...winners, player];
-      const randomPlayers = chooseTwoRandomPlayers(playersInNextRound);
-      setWaitingPlayers(playersInNextRound.filter((player) => !randomPlayers.includes(player)));
-      setCurrentPlayers(randomPlayers);
-      setWinners([]);
+    } else if (endOfRound) {
+      setRemainingPlayersForNewRound([...winners, winner]);
     } else {
-      setWinners([...winners, player]);
-      const randomPlayers = chooseTwoRandomPlayers(waitingPlayers);
-      setCurrentPlayers(randomPlayers);
-      removePlayersFromWaitingPlayers(randomPlayers);
+      setWinnerAndNextPlayers(winner);
     }
     setShowEndOfRoundPopUp(true);
-    setEndOfRoundPopUpContent(`Player: ${player} has won this round!`);
+    setEndOfRoundPopUpContent(`Player: ${winner} has won this round!`);
+  };
+
+  const endTournamentAnnounceWinner = (winner: string) => {
+    setEndPopUpContent(`Player: ${winner} has won the tournament!`);
+    setShowWinnerPopUp(true);
+  };
+
+  const setRemainingPlayersForNewRound = (remainingPlayers: string[]) => {
+    const randomPlayers = chooseTwoRandomPlayers(remainingPlayers);
+    setCurrentPlayers(randomPlayers);
+    const waitingPlayers = remainingPlayers.filter((player) => !randomPlayers.includes(player));
+    setWaitingPlayers(waitingPlayers);
+    setWinners([]);
+  };
+
+  const setWinnerAndNextPlayers = (winner: string) => {
+    setWinners([...winners, winner]);
+    const randomPlayers = chooseTwoRandomPlayers(waitingPlayers);
+    setCurrentPlayers(randomPlayers);
+    removePlayersFromWaitingPlayers(randomPlayers);
   };
 
   const handleEndPopUpClicked = (): void => {

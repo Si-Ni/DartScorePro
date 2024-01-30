@@ -148,7 +148,7 @@ function Games(props: GamesProps) {
         </p>
       </div>
       {props.selectedGamemode === "301" && (
-        <StandardGames {...gameProps} {...standardGamesProps} gamemodeTotalScore={4} />
+        <StandardGames {...gameProps} {...standardGamesProps} gamemodeTotalScore={301} />
       )}
       {props.selectedGamemode === "501" && (
         <StandardGames {...gameProps} {...standardGamesProps} gamemodeTotalScore={501} />
