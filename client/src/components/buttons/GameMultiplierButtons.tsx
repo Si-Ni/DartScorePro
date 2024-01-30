@@ -1,7 +1,19 @@
+import { useEffect } from "react";
 import { GameMultiplierButtonsProps } from "../../global/types";
 import "../../styles/Games.css";
 
 function GameMultiplierButtons(props: GameMultiplierButtonsProps) {
+  useEffect(() => {
+    const handleKeyDown = (event: any) => {
+      const validMultiplier = ["1", "2", "3"].includes(event.key);
+      if (validMultiplier) props.cbHandleMultiplierClicked(Number(event.key));
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
   const isCurrentlySelected = (multiplier: number): boolean => {
     return props.multiplier === multiplier;
   };
