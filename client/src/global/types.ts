@@ -39,7 +39,7 @@ export interface PlayerStatsRCl {
 
 export type PlayerToPlayerStatsRCl = { [player: string]: PlayerStatsRCl };
 
-export interface StandardGamesProps {
+export interface LocalStandardGamesProps {
   gamemodeTotalScore: number;
   players: string[];
   cbPlayerHasWon(playerKey: string): void;
@@ -185,7 +185,7 @@ export interface MultiplayerModeProps {
   cbMultiplayerModeSelected(multiplayerMode: MultiplayerMode): void;
 }
 
-export interface GamesProps {
+export interface LocalGamesProps {
   selectedGamemode: Gamemode;
   players: string[];
   cbBackBtnClicked(): void;
@@ -309,3 +309,53 @@ export interface GameMultiplierButtonsProps {
   cbHandleMultiplierClicked(multiplier: number): void;
   multiplier: number;
 }
+
+interface GameViewProps {
+  currentRound: number;
+  players: string[];
+  startingPlayerIndex: number;
+  currentPlayerIndex: number;
+  playerTotalGameStats: PlayerToPlayerTotalGameStats;
+}
+
+interface GameViewWithScoreProps extends GameViewProps {
+  cbHandleScoreBtnClicked(number: number): void;
+  multiplier: number;
+  cbHandleMultiplierClicked(multiplier: number): void;
+}
+
+export interface StandardGamesViewProps extends GameViewWithScoreProps {
+  playerStats: PlayerToPlayerStats;
+  cbHandlUndoClicked(): void;
+}
+
+export interface RoundTheClockGameViewProps extends GameViewProps {
+  playerStats: PlayerToPlayerStatsRCl;
+  cbHandleHitClicked(): void;
+  cbHandleMissClicked(): void;
+  cbHandleNextClicked(): void;
+}
+
+export interface CricketGameViewProps extends GameViewWithScoreProps {
+  playerStats: PlayerToPlayerStatsCricket;
+}
+
+export interface GameInformationHeaderProps {
+  throwsRemaining: number;
+  setsToWin: number;
+  legsForSet: number;
+  modeIn: InAndOutMode;
+  modeOut: InAndOutMode;
+}
+
+export interface OnlineGamesProps {
+  selectedGamemode: Gamemode;
+  players: string[];
+  cbBackBtnClicked(): void;
+  setsToWin: number;
+  legsForSet: number;
+  modeIn: InAndOutMode;
+  modeOut: InAndOutMode;
+}
+
+export interface OnlineStandardGamesProps {}

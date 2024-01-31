@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { CricketGameProps, CricketStatus, PlayerToPlayerStatsCricket } from "../../global/types";
-import PlayerScoreCardCricket from "../playerScoreCards/PlayerScoreCardCricket";
-import GameInputButtons from "../buttons/GameInputButtons";
-import GameMultiplierButtons from "../buttons/GameMultiplierButtons";
+import CricketGameView from "../gamemodeViews/CricketGameView";
 
 const initializePlayerStats = (players: string[]): PlayerToPlayerStatsCricket => {
   const initialPoints: PlayerToPlayerStatsCricket = {};
@@ -24,14 +22,14 @@ const initializePlayerStats = (players: string[]): PlayerToPlayerStatsCricket =>
 };
 
 function CricketGame(props: CricketGameProps) {
-  const [mulitplier, setMultiplier] = useState<number>(1);
+  const [multiplier, setMultiplier] = useState<number>(1);
   const [players] = useState<string[]>(props.players);
   const [playerStats, setPlayerStats] = useState<PlayerToPlayerStatsCricket>(() =>
     initializePlayerStats(props.players)
   );
 
   const handleScoreBtnClicked = (points: number): void => {
-    const validThrow = !(points === 25 && mulitplier === 3);
+    const validThrow = !(points === 25 && multiplier === 3);
     if (validThrow) {
       updatePlayerStats(props.currentPlayerIndex, points);
       props.updateRemainingThrows();
@@ -49,8 +47,8 @@ function CricketGame(props: CricketGameProps) {
     if (currentCricketStatusValue < 3) {
       updateCricketStatusAndScore(playerKey, points);
     } else if (currentCricketStatusValue === 3) {
-      increasePlayerScore(playerKey, points * mulitplier);
-      checkIfPlayerHasWon(playerKey, points * mulitplier, statsKey, currentCricketStatusValue);
+      increasePlayerScore(playerKey, points * multiplier);
+      checkIfPlayerHasWon(playerKey, points * multiplier, statsKey, currentCricketStatusValue);
     }
   };
 
@@ -61,7 +59,7 @@ function CricketGame(props: CricketGameProps) {
   const updateCricketStatusAndScore = (playerKey: string, points: number): void => {
     const statsKey = getCricketStatsKey(points);
 
-    let timesHitted = mulitplier;
+    let timesHitted = multiplier;
     let updatedCricketStatus = playerStats[playerKey].cricketStats[statsKey];
 
     while (updatedCricketStatus < 3 && timesHitted > 0) {
@@ -194,44 +192,17 @@ function CricketGame(props: CricketGameProps) {
   };
 
   return (
-    <>
-      <div className="is-centered">
-        <p className="is-size-3 mb-3" style={{ textAlign: "center" }}>
-          Round: {props.currentRound}
-        </p>
-      </div>
-      <div className="columns is-centered">
-        {players.map((player) => (
-          <PlayerScoreCardCricket
-            key={player}
-            playerName={player}
-            isStartingPlayer={players[props.startingPlayerIndex] === player}
-            isCurrentPlayer={players[props.currentPlayerIndex] === player}
-            score={playerStats[player].score}
-            cricketStats={playerStats[player].cricketStats}
-            sets={props.playerTotalGameStats[player].sets}
-            legs={props.playerTotalGameStats[player].legs}
-          />
-        ))}
-      </div>
-      <div className="columns is-centered">
-        <div className="column">
-          <div className="box">
-            {
-              <GameInputButtons
-                values={[...Array(6).keys()].map((num) => 20 - num).concat(25)}
-                cbHandleButtonClicked={handleScoreBtnClicked}
-                showMissButton={true}
-                btnSize={60}
-              />
-            }
-          </div>
-        </div>
-      </div>
-      <div className="columns is-centered">
-        <GameMultiplierButtons multiplier={mulitplier} cbHandleMultiplierClicked={handleMultiplierClick} />
-      </div>
-    </>
+    <CricketGameView
+      currentRound={props.currentRound}
+      players={players}
+      startingPlayerIndex={props.startingPlayerIndex}
+      currentPlayerIndex={props.currentPlayerIndex}
+      playerTotalGameStats={props.playerTotalGameStats}
+      cbHandleScoreBtnClicked={handleScoreBtnClicked}
+      multiplier={multiplier}
+      cbHandleMultiplierClicked={handleMultiplierClick}
+      playerStats={playerStats}
+    />
   );
 }
 

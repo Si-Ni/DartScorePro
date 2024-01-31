@@ -1,12 +1,13 @@
 import { useState } from "react";
-import { GamesProps, PlayerToPlayerTotalGameStats } from "../../global/types";
-import CricketGame from "../gamemodes/CricketGame";
-import RoundTheClockGame from "../gamemodes/RoundTheClockGame";
-import StandardGames from "../gamemodes/StandardGames";
+import { LocalGamesProps, PlayerToPlayerTotalGameStats } from "../../global/types";
+import CricketGame from "../localGamemodes/CricketGame";
+import RoundTheClockGame from "../localGamemodes/RoundTheClockGame";
+import LocalStandardGames from "../localGamemodes/LocalStandardGames";
 import PopUp from "../popUps/PopUp";
 import YesNoPopUp from "../popUps/YesNoPopUp";
 import "../../styles/Games.css";
 import NavigationButtons from "../buttons/NavigationButtons";
+import GameInformationHeader from "../GameInformationHeader/GameInformationHeader";
 
 const initializePlayerTotalGameStats = (players: string[]): PlayerToPlayerTotalGameStats => {
   const initialStats: PlayerToPlayerTotalGameStats = {};
@@ -19,7 +20,7 @@ const initializePlayerTotalGameStats = (players: string[]): PlayerToPlayerTotalG
   return initialStats;
 };
 
-function Games(props: GamesProps) {
+function LocalGames(props: LocalGamesProps) {
   const [showGoToMainMenuPopUp, setShowGoToMainMenuPopUp] = useState<boolean>(false);
   const [playerTotalGameStats, setPlayerTotalGameStats] = useState<PlayerToPlayerTotalGameStats>(() =>
     initializePlayerTotalGameStats(props.players)
@@ -130,28 +131,18 @@ function Games(props: GamesProps) {
           cbNoClicked={() => setShowGoToMainMenuPopUp(false)}
         />
       )}
-      <div className="is-flex is-justify-content-center m-0 pt-2 pb-2 gameInfo">
-        <p className="is-size-6 mr-4" style={{ textAlign: "center" }}>
-          <strong>Remaining throws:</strong> {throwsRemaining}
-        </p>
-        <p className="is-size-6 mr-4" style={{ textAlign: "center" }}>
-          <strong>First to:</strong> {props.setsToWin} {props.setsToWin > 1 ? "Sets" : "Set"}
-        </p>
-        <p className="is-size-6 mr-4" style={{ textAlign: "center" }}>
-          <strong>Legs per set:</strong> {props.legsForSet}
-        </p>
-        <p className="is-size-6 mr-4" style={{ textAlign: "center" }}>
-          <strong>{props.modeIn} in</strong>
-        </p>
-        <p className="is-size-6 mr-0" style={{ textAlign: "center" }}>
-          <strong>{props.modeOut} out</strong>
-        </p>
-      </div>
+      <GameInformationHeader
+        throwsRemaining={throwsRemaining}
+        setsToWin={props.setsToWin}
+        legsForSet={props.legsForSet}
+        modeIn={props.modeIn}
+        modeOut={props.modeOut}
+      />
       {props.selectedGamemode === "301" && (
-        <StandardGames {...gameProps} {...standardGamesProps} gamemodeTotalScore={301} />
+        <LocalStandardGames {...gameProps} {...standardGamesProps} gamemodeTotalScore={301} />
       )}
       {props.selectedGamemode === "501" && (
-        <StandardGames {...gameProps} {...standardGamesProps} gamemodeTotalScore={501} />
+        <LocalStandardGames {...gameProps} {...standardGamesProps} gamemodeTotalScore={501} />
       )}
       {props.selectedGamemode === "rcl" && <RoundTheClockGame {...gameProps} />}
       {props.selectedGamemode === "cri" && <CricketGame {...gameProps} />}
@@ -160,4 +151,4 @@ function Games(props: GamesProps) {
   );
 }
 
-export default Games;
+export default LocalGames;

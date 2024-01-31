@@ -1,7 +1,7 @@
 import "../../styles/Menu.css";
 import { useState } from "react";
 import { Gamemode, InAndOutMode } from "../../global/types";
-import Games from "../../components/game/Games";
+import LocalGames from "../../components/game/LocalGames";
 import { useNavigate } from "react-router-dom";
 import SettingsMenu from "../../components/gameSettings/SettingsMenu";
 
@@ -31,7 +31,7 @@ function Singleplayer() {
   return (
     <>
       {gameStarted ? (
-        <Games {...gameProps} players={["Player1"]} cbBackBtnClicked={backBtnGameClicked} />
+        <LocalGames {...gameProps} players={["Player1"]} cbBackBtnClicked={backBtnGameClicked} />
       ) : (
         <SettingsMenu
           {...gameProps}

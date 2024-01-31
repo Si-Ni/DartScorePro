@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Gamemode, InAndOutMode } from "../../global/types";
-import Games from "../../components/game/Games";
+import LocalGames from "../../components/game/LocalGames";
 import PlayersAndSettings from "../../components/gameSettings/PlayersAndSettings";
 import { useNavigate } from "react-router-dom";
 import PopUp from "../../components/popUps/PopUp";
@@ -125,7 +125,7 @@ function Tournament() {
         <PopUp content={endPopUpContent} btnContent="End tournament" cbBtnClicked={handleEndPopUpClicked} />
       )}
       {gameStarted ? (
-        <Games
+        <LocalGames
           {...gameProps}
           players={currentPlayers}
           cbBackBtnClicked={handleBackToPlayerMenu}
