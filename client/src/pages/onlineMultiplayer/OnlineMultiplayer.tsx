@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Gamemode, InAndOutMode, OnlineMultiplayerProps } from "../../global/types";
-import Games from "../../components/game/Games";
+import OnlineGames from "../../components/game/LocalGames";
 import OnlineMultiplayerSettings from "./OnlineMultiplayerSettings";
 
 function OnlineMultiplayer(props: OnlineMultiplayerProps) {
@@ -35,7 +35,7 @@ function OnlineMultiplayer(props: OnlineMultiplayerProps) {
   return (
     <>
       {gameStarted ? (
-        <Games {...gameProps} cbBackBtnClicked={handleBackToPlayerMenu} />
+        <OnlineGames {...gameProps} cbBackBtnClicked={handleBackToPlayerMenu} />
       ) : (
         <OnlineMultiplayerSettings
           {...gameProps}

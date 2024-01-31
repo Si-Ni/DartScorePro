@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Gamemode, InAndOutMode, LocalMultiplayerProps } from "../../global/types";
-import Games from "../../components/game/Games";
+import LocalGames from "../../components/game/LocalGames";
 import PlayersAndSettings from "../../components/gameSettings/PlayersAndSettings";
 
 function LocalMultiplayer(props: LocalMultiplayerProps) {
@@ -33,7 +33,7 @@ function LocalMultiplayer(props: LocalMultiplayerProps) {
   return (
     <>
       {gameStarted ? (
-        <Games {...gameProps} cbBackBtnClicked={handleBackToPlayerMenu} />
+        <LocalGames {...gameProps} cbBackBtnClicked={handleBackToPlayerMenu} />
       ) : (
         <PlayersAndSettings
           {...gameProps}

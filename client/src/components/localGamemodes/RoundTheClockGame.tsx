@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { PlayerToPlayerStatsRCl, RoundTheClockGameProps } from "../../global/types";
-import PlayerScoreCard from "../playerScoreCards/PlayerScoreCard";
+import RoundTheClockGameView from "../gamemodeViews/RoundTheClockGameView";
 
 const initializePlayerStats = (players: string[]): PlayerToPlayerStatsRCl => {
   const initialPoints: PlayerToPlayerStatsRCl = {};
@@ -74,42 +74,17 @@ function RoundTheClockGame({ throwsRemaining, currentPlayerIndex, ...props }: Ro
   };
 
   return (
-    <>
-      <div className="is-centered">
-        <p className="is-size-3 mb-6" style={{ textAlign: "center" }}>
-          Round: {props.currentRound}
-        </p>
-      </div>
-      <div className="columns is-centered">
-        {players.map((player) => (
-          <PlayerScoreCard
-            key={player}
-            playerName={player}
-            isStartingPlayer={players[props.startingPlayerIndex] === player}
-            isCurrentPlayer={players[currentPlayerIndex] === player}
-            score={playerStats[player].currentTarget}
-            lastThrows={playerStats[player].lastThrows}
-            sets={props.playerTotalGameStats[player].sets}
-            legs={props.playerTotalGameStats[player].legs}
-          />
-        ))}
-      </div>
-      <div className="columns is-centered mt-6">
-        <button className="button is-success m-1 is-size-5 uniformButton" onClick={handleHitClicked}>
-          Hit
-        </button>
-        <button className="button is-danger m-1 is-size-5 uniformButton" onClick={handleMissClicked}>
-          Miss
-        </button>
-      </div>
-      <div className="columns is-centered">
-        <div className="column ">
-          <button className="button is-warning m-1 is-size-5" style={{ width: "150px" }} onClick={handleNextClicked}>
-            Skip Player
-          </button>
-        </div>
-      </div>
-    </>
+    <RoundTheClockGameView
+      currentRound={props.currentRound}
+      players={players}
+      startingPlayerIndex={props.startingPlayerIndex}
+      currentPlayerIndex={currentPlayerIndex}
+      playerStats={playerStats}
+      playerTotalGameStats={props.playerTotalGameStats}
+      cbHandleHitClicked={handleHitClicked}
+      cbHandleMissClicked={handleMissClicked}
+      cbHandleNextClicked={handleNextClicked}
+    />
   );
 }
 

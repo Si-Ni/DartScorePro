@@ -1,11 +1,9 @@
 import { useState } from "react";
 import "../../styles/App.css";
 import "../../styles/Games.css";
-import { PlayerStats, PlayerToPlayerStats, StandardGamesProps } from "../../global/types";
-import PlayerScoreCard from "../playerScoreCards/PlayerScoreCard";
-import GameInputButtons from "../buttons/GameInputButtons";
+import { PlayerStats, PlayerToPlayerStats, LocalStandardGamesProps } from "../../global/types";
 import { getAllOptions, sumRound } from "../../helpers/calcCheckouts";
-import GameMultiplierButtons from "../buttons/GameMultiplierButtons";
+import StandardGamesView from "../gamemodeViews/StandardGamesView";
 
 const initializePlayerStats = (players: string[], gamemodeTotalScore: number): PlayerToPlayerStats => {
   const initialPoints: PlayerToPlayerStats = {};
@@ -25,7 +23,7 @@ const initializePlayerStats = (players: string[], gamemodeTotalScore: number): P
   return initialPoints;
 };
 
-function StandardGames({ currentPlayerIndex, throwsRemaining, ...props }: StandardGamesProps) {
+function LocalStandardGames({ currentPlayerIndex, throwsRemaining, ...props }: LocalStandardGamesProps) {
   const [players] = useState<string[]>(props.players);
   const [multiplier, setMultiplier] = useState<number>(1);
   const [previousPlayerStats, setPreviousPlayerStats] = useState<PlayerStats | Record<string, never>>({});
@@ -211,50 +209,19 @@ function StandardGames({ currentPlayerIndex, throwsRemaining, ...props }: Standa
   };
 
   return (
-    <>
-      <div className="is-centered">
-        <p className="is-size-3 mb-3" style={{ textAlign: "center" }}>
-          Round: {props.currentRound}
-        </p>
-      </div>
-      <div className="columns is-centered">
-        {players.map((player) => (
-          <PlayerScoreCard
-            key={player}
-            playerName={player}
-            isStartingPlayer={players[props.startingPlayerIndex] === player}
-            isCurrentPlayer={players[currentPlayerIndex] === player}
-            score={playerStats[player].score}
-            average={playerStats[player].average}
-            lastThrows={playerStats[player].lastThrows}
-            checkoutOptions={playerStats[player].checkoutOptions}
-            sets={props.playerTotalGameStats[player].sets}
-            legs={props.playerTotalGameStats[player].legs}
-          />
-        ))}
-      </div>
-      <div className="columns is-centered">
-        <div className="column">
-          <div className="box">
-            {
-              <GameInputButtons
-                values={[...Array(21).keys()].map((num) => num).concat(25)}
-                cbHandleButtonClicked={handleScoreChange}
-                showMissButton={false}
-                btnSize={20}
-              />
-            }
-          </div>
-        </div>
-      </div>
-      <div className="columns is-centered">
-        <GameMultiplierButtons multiplier={multiplier} cbHandleMultiplierClicked={handleMultiplierClick} />
-        <button className="button is-danger m-1 is-size-5 uniformButton" onClick={handleUndoClick}>
-          Undo
-        </button>
-      </div>
-    </>
+    <StandardGamesView
+      currentRound={props.currentRound}
+      players={players}
+      startingPlayerIndex={props.startingPlayerIndex}
+      currentPlayerIndex={currentPlayerIndex}
+      playerStats={playerStats}
+      playerTotalGameStats={props.playerTotalGameStats}
+      cbHandleScoreBtnClicked={handleScoreChange}
+      multiplier={multiplier}
+      cbHandleMultiplierClicked={handleMultiplierClick}
+      cbHandlUndoClicked={handleUndoClick}
+    />
   );
 }
 
-export default StandardGames;
+export default LocalStandardGames;
