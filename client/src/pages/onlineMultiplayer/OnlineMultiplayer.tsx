@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { DGameSettings, Gamemode, InAndOutMode, OnlineMultiplayerProps } from "../../global/types";
 import OnlineGames from "../../components/game/OnlineGames";
 import OnlineMultiplayerSettings from "./OnlineMultiplayerSettings";
+import { useParams } from "react-router-dom";
 
 function OnlineMultiplayer(props: OnlineMultiplayerProps) {
   const [players, setPlayers] = useState([props.displayUserID]);
@@ -11,6 +12,8 @@ function OnlineMultiplayer(props: OnlineMultiplayerProps) {
   const [legsForSet, setLegsForSet] = useState<number>(1);
   const [modeIn, setModeIn] = useState<InAndOutMode>("straight");
   const [modeOut, setModeOut] = useState<InAndOutMode>("double");
+
+  const { lobbyCode } = useParams();
 
   useEffect(() => {
     const handleGameStarted = (gameSettings: DGameSettings) => {
@@ -39,8 +42,11 @@ function OnlineMultiplayer(props: OnlineMultiplayerProps) {
         modeOut: modeOut
       };
 
-      console.log(props.lobbyCode);
-      props.socket.emit("gameStarted", { lobbyCode: props.lobbyCode, gameSettings: gameSettings });
+      console.log(Boolean(props.lobbyCode), lobbyCode);
+      props.socket.emit("gameStarted", {
+        lobbyCode: props.lobbyCode || lobbyCode,
+        gameSettings: gameSettings
+      });
     }
     setGameStarted(true);
   };
