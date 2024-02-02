@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { PlayerMenuProps } from "../../global/types";
+import React, { ChangeEvent, useState } from "react";
+import { PlayerMenuProps } from "../../types/PlayerMenu";
 
 function PlayerMenu({ players, setPlayers, ...props }: PlayerMenuProps) {
   const [currentPlayer, setCurrentPlayer] = useState("");
@@ -29,7 +29,7 @@ function PlayerMenu({ players, setPlayers, ...props }: PlayerMenuProps) {
     setError("");
   };
 
-  const handleInputChange = (event: any) => {
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setCurrentPlayer(event.target.value);
     setError("");
   };

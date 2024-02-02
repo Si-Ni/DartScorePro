@@ -1,4 +1,5 @@
-import { GameSettingsProps, InAndOutMode } from "../../global/types";
+import { InAndOutMode } from "../../types/global";
+import { GameSettingsProps } from "../../types/GameSettings";
 
 function GameSettings(props: GameSettingsProps) {
   const handleInputChangeSets = (event: any) => {

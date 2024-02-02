@@ -1,9 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import "../../styles/Menu.css";
-import { MainMenuProps } from "../../global/types";
 import logo from "../../assets/logo.png";
 import { useContext } from "react";
 import AuthContext from "../../context/AuthProvider";
+import { MainMenuProps } from "../../types/MainMenu";
 
 function MainMenu(props: MainMenuProps) {
   const { setAuth } = useContext(AuthContext);

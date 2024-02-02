@@ -1,6 +1,12 @@
 import { useState } from "react";
-import { CricketGameProps, CricketStatus, PlayerToPlayerStatsCricket } from "../../global/types";
+
 import CricketGameView from "../gamemodeViews/CricketGameView";
+import {
+  CricketGameProps,
+  CricketStatus,
+  PlayerStatsCricket,
+  PlayerToPlayerStatsCricket
+} from "../../types/CricketGame";
 
 const initializePlayerStats = (players: string[]): PlayerToPlayerStatsCricket => {
   const initialPoints: PlayerToPlayerStatsCricket = {};
@@ -108,7 +114,7 @@ function CricketGame(props: CricketGameProps) {
             ...updatedPlayerStats[playerKey].cricketStats,
             [statsKey]: 4
           }
-        };
+        } as PlayerStatsCricket;
       });
 
       return updatedPlayerStats;

@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { DGameSettings, Gamemode, InAndOutMode, OnlineMultiplayerProps } from "../../global/types";
+import { DGameSettings, Gamemode, InAndOutMode } from "../../types/global";
 import OnlineGames from "../../components/game/OnlineGames";
 import OnlineMultiplayerSettings from "./OnlineMultiplayerSettings";
 import { useParams } from "react-router-dom";
+import { OnlineMultiplayerProps } from "../../types/OnlineMultiplayer";
 
 function OnlineMultiplayer(props: OnlineMultiplayerProps) {
   const [players, setPlayers] = useState([props.displayUserID]);

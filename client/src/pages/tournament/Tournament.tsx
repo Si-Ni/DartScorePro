@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Gamemode, InAndOutMode } from "../../global/types";
+import { Gamemode, InAndOutMode } from "../../types/global";
 import LocalGames from "../../components/game/LocalGames";
 import PlayersAndSettings from "../../components/gameSettings/PlayersAndSettings";
 import { useNavigate } from "react-router-dom";
@@ -43,7 +43,7 @@ function Tournament() {
     const rangeMin = 0;
     const rangeMax = players.length - 1;
 
-    let player1Index = getRandomNumber(rangeMin, rangeMax);
+    const player1Index = getRandomNumber(rangeMin, rangeMax);
     let player2Index;
 
     do {

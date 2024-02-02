@@ -1,8 +1,8 @@
 import { useState } from "react";
 import PlayerMenu from "./PlayerMenu";
-import { PlayersAndSettingsProps } from "../../global/types";
 import SettingsMenu from "./SettingsMenu";
 import NavigationButtons from "../buttons/NavigationButtons";
+import { PlayersAndSettingsProps } from "../../types/PlayerAndSettings";
 
 function PlayersAndSettings(props: PlayersAndSettingsProps) {
   const [showSettingsMenu, setShowSettingsMenu] = useState<boolean>(false);

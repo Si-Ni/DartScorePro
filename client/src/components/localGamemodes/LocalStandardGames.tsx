@@ -1,9 +1,10 @@
 import { useState } from "react";
 import "../../styles/App.css";
 import "../../styles/Games.css";
-import { PlayerStats, PlayerToPlayerStats, LocalStandardGamesProps } from "../../global/types";
+import { PlayerStats, PlayerToPlayerStats } from "../../types/global";
 import { getAllOptions, sumRound } from "../../helpers/calcCheckouts";
 import StandardGamesView from "../gamemodeViews/StandardGamesView";
+import { LocalStandardGamesProps } from "../../types/LocalStandardGames";
 
 const initializePlayerStats = (players: string[], gamemodeTotalScore: number): PlayerToPlayerStats => {
   const initialPoints: PlayerToPlayerStats = {};

@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from "react";
 import PlayerMenu from "../../components/gameSettings/PlayerMenu";
-import { OnlineMultiplayerSettingsProps } from "../../global/types";
 import { useNavigate, useParams } from "react-router-dom";
 import SettingsMenu from "../../components/gameSettings/SettingsMenu";
 import NavigationButtons from "../../components/buttons/NavigationButtons";
+import { OnlineMultiplayerSettingsProps } from "../../types/OnlineMultiplayerSettings";
 
 function OnlineMultiplayerSettings(props: OnlineMultiplayerSettingsProps) {
   const navigate = useNavigate();

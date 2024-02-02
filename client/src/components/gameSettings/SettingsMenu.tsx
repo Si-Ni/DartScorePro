@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { SettingsMenuProps } from "../../global/types";
 import GamemodeSelection from "./GamemodeSelection";
 import GameSettings from "./GameSettings";
 import NavigationButtons from "../buttons/NavigationButtons";
+import { SettingsMenuProps } from "../../types/SettingsMenu";
 
 function SettingsMenu(props: SettingsMenuProps) {
   const [isError, setIsError] = useState<boolean>(false);

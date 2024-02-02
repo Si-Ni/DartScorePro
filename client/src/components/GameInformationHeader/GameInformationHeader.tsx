@@ -1,4 +1,4 @@
-import { GameInformationHeaderProps } from "../../global/types";
+import { GameInformationHeaderProps } from "../../types/GamesInformation";
 
 function GameInformationHeader(props: GameInformationHeaderProps) {
   return (

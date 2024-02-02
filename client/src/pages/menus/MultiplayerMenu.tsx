@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
-import { MultiplayerModeProps, MultiplayerMode } from "../../global/types";
+import { MultiplayerMode } from "../../types/global";
 import NavigationButtons from "../../components/buttons/NavigationButtons";
+import { MultiplayerModeProps } from "../../types/MultiplayerMenu";
 
 function MultiplayerMenu(props: MultiplayerModeProps) {
   const navigate = useNavigate();

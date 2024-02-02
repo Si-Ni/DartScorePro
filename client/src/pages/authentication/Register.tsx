@@ -2,9 +2,9 @@ import React, { useRef, useState } from "react";
 import vhCheck from "vh-check";
 import "../../styles/Login.css";
 import { BarLoader } from "react-spinners";
-import { RegisterProps } from "../../global/types";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "../../api/axios";
+import { RegisterProps } from "../../types/Register";
 vhCheck("vh-check");
 
 const REGISTER_URL = "/register";

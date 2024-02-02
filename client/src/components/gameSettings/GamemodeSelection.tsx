@@ -1,4 +1,5 @@
-import { Gamemode, GamemodeSelectionProps } from "../../global/types";
+import { Gamemode } from "../../types/global";
+import { GamemodeSelectionProps } from "../../types/GamemodeSelection";
 
 function GamemodeSelection(props: GamemodeSelectionProps) {
   const handleMenuClick = (gamemode: Gamemode) => {

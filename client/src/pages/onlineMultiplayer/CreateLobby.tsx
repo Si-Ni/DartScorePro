@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { CreateLobbyProps } from "../../global/types";
 import NavigationButtons from "../../components/buttons/NavigationButtons";
+import { CreateLobbyProps } from "../../types/CreateLobby";
 
 function CreateLobby({
   socket,
@@ -40,8 +40,8 @@ function CreateLobby({
   };
 
   const hideCodeCopied = () => {
-    if (codeCopiedRef.current && codeCopiedRef.current.style.display === "block") {
-      codeCopiedRef.current.style.display = "none";
+    if (codeCopiedRef.current && codeCopiedRef.current!.style.display === "block") {
+      codeCopiedRef.current!.style.display = "none";
     }
   };
 

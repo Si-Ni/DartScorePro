@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { LocalGamesProps, PlayerToPlayerTotalGameStats } from "../../global/types";
+import { PlayerToPlayerTotalGameStats } from "../../types/global";
 import CricketGame from "../localGamemodes/CricketGame";
 import RoundTheClockGame from "../localGamemodes/RoundTheClockGame";
 import LocalStandardGames from "../localGamemodes/LocalStandardGames";
@@ -8,6 +8,7 @@ import YesNoPopUp from "../popUps/YesNoPopUp";
 import "../../styles/Games.css";
 import NavigationButtons from "../buttons/NavigationButtons";
 import GameInformationHeader from "../GameInformationHeader/GameInformationHeader";
+import { LocalGamesProps } from "../../types/LocalGameProps";
 
 const initializePlayerTotalGameStats = (players: string[]): PlayerToPlayerTotalGameStats => {
   const initialStats: PlayerToPlayerTotalGameStats = {};
