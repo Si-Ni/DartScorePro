@@ -372,4 +372,3 @@ export interface DGameSettings {
   modeIn: InAndOutMode;
   modeOut: InAndOutMode;
 }
-

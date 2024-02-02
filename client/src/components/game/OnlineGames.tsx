@@ -54,7 +54,9 @@ function OnlineGames(props: OnlineGamesProps) {
         modeIn={props.modeIn}
         modeOut={props.modeOut}
       />
-      {props.selectedGamemode === "301" && <OnlineStandardGames currentRound={0} players={props.players} multiplier={1}/>}
+      {props.selectedGamemode === "301" && (
+        <OnlineStandardGames currentRound={0} players={props.players} multiplier={1} />
+      )}
       <NavigationButtons
         cbBackBtnClicked={() => {
           /* ToDo */

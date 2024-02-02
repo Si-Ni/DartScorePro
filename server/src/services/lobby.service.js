@@ -32,7 +32,6 @@ const configureLobbyService = (io) => {
       const updatedPlayers = lobby.players.filter((player) => player.socketId !== "").map((player) => player.userID);
 
       io.to(lobbyCode).emit("updatePlayersList", updatedPlayers);
-
     });
 
     socket.on("joinedSuccessfully", (lobbyCode) => {
