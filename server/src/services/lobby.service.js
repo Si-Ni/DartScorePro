@@ -29,26 +29,21 @@ const configureLobbyService = (io) => {
       socket.join(lobbyCode);
       socket.emit("lobbyJoined", lobbyCode);
 
-      const updatedPlayers = lobby.players.filter((player) => player.socketId !== "").map((player) => player.userID);
+      const updatedPlayers = lobby.players
+        .filter((player) => player.socketId !== "")
+        .map((player) => ({ userID: player.userID, isLeader: player.isLeader }));
 
       io.to(lobbyCode).emit("updatePlayersList", updatedPlayers);
-    });
 
-    socket.on("joinedSuccessfully", (lobbyCode) => {
-      if (lobbies[lobbyCode]) {
-        io.to(lobbyCode).emit(
-          "updatePlayersList",
-          lobbies[lobbyCode].players.map((player) => player.userID)
-        );
-      }
+      lobby.gameSettings && io.to(lobbyCode).emit("isGameStarted");
     });
 
     socket.on("gameStarted", ({ lobbyCode, gameSettings }) => {
       const isLeader = lobbies[lobbyCode]?.players.find((player) => player.socketId === socket.id)?.isLeader ?? false;
       const isValidGamemode = ["301", "501", "rcl", "cri"].includes(gameSettings.selectedGamemode);
+
       if (lobbies[lobbyCode] && isLeader && isValidGamemode) {
         lobbies[lobbyCode].gameSettings = gameSettings;
-
         socket.to(lobbyCode).emit("leaderStartedGame", gameSettings);
       }
     });
@@ -69,7 +64,7 @@ const leaveLobby = (io, socketId) => {
 
     if (disconnectedPlayer) {
       disconnectedPlayer.socketId = "";
-      const updatedPlayers = lobby.players.filter((player) => player.socketId !== "").map((player) => player.userID);
+      const updatedPlayers = lobby.players.filter((player) => player.socketId !== "").map((player) => player);
       io.to(lobbyCode).emit("updatePlayersList", updatedPlayers);
     }
   });

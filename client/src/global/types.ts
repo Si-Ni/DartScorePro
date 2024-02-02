@@ -240,6 +240,7 @@ export interface OnlineMultiplayerSettingsProps {
   lobbyCode: string;
   isLobbyLeader: boolean;
   setsToWin: number;
+  setIsLobbyLeader: React.Dispatch<React.SetStateAction<boolean>>;
   setSetsToWin: React.Dispatch<React.SetStateAction<number>>;
   legsForSet: number;
   modeIn: InAndOutMode;
@@ -249,6 +250,7 @@ export interface OnlineMultiplayerSettingsProps {
   setLegsForSet: React.Dispatch<React.SetStateAction<number>>;
   cbNextBtnClicked(): void;
   displayUserID: string;
+  setGameStarted: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface OnlineMultiplayerProps {
@@ -257,6 +259,7 @@ export interface OnlineMultiplayerProps {
   socket: Socket;
   lobbyCode: string;
   isLobbyLeader: boolean;
+  setIsLobbyLeader: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface MultiplayerProps {
