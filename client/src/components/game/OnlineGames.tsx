@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { PlayerToPlayerTotalGameStats } from "../../global/types";
+import { OnlineGamesProps, PlayerToPlayerTotalGameStats } from "../../global/types";
 import YesNoPopUp from "../popUps/YesNoPopUp";
 import "../../styles/Games.css";
 import NavigationButtons from "../buttons/NavigationButtons";
@@ -54,7 +54,9 @@ function OnlineGames(props: OnlineGamesProps) {
         modeIn={props.modeIn}
         modeOut={props.modeOut}
       />
-      {props.selectedGamemode === "301" && <OnlineStandardGames />}
+      {props.selectedGamemode === "301" && (
+        <OnlineStandardGames currentRound={0} players={props.players} multiplier={1} />
+      )}
       <NavigationButtons
         cbBackBtnClicked={() => {
           /* ToDo */

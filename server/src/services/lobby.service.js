@@ -30,6 +30,7 @@ const configureLobbyService = (io) => {
       socket.emit("lobbyJoined", lobbyCode);
 
       const updatedPlayers = lobby.players.filter((player) => player.socketId !== "").map((player) => player.userID);
+
       io.to(lobbyCode).emit("updatePlayersList", updatedPlayers);
     });
 
@@ -42,11 +43,11 @@ const configureLobbyService = (io) => {
       }
     });
 
-    socket.on("gamemodeSelected", ({ lobbyCode, gamemode }) => {
+    socket.on("gameStarted", ({ lobbyCode, gameSettings }) => {
       const isLeader = lobbies[lobbyCode]?.players.find((player) => player.socketId === socket.id)?.isLeader ?? false;
-      const isValidGamemode = ["301", "501", "rcl", "cri"].includes(gamemode);
+      const isValidGamemode = ["301", "501", "rcl", "cri"].includes(gameSettings.selectedGamemode);
       if (lobbies[lobbyCode] && isLeader && isValidGamemode)
-        socket.to(lobbyCode).emit("leaderSelectedGamemode", gamemode);
+        socket.to(lobbyCode).emit("leaderStartedGame", gameSettings);
     });
 
     socket.on("leaveLobby", () => leaveLobby(io, socket.id));

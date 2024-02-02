@@ -46,9 +46,11 @@ function StandardGamesView(props: StandardGamesViewProps) {
           multiplier={props.multiplier}
           cbHandleMultiplierClicked={props.cbHandleMultiplierClicked}
         />
-        <button className="button is-danger m-1 is-size-5 uniformButton" onClick={props.cbHandlUndoClicked}>
-          Undo
-        </button>
+        {props.cbHandleUndoClicked && (
+          <button className="button is-danger m-1 is-size-5 uniformButton" onClick={props.cbHandleUndoClicked}>
+            Undo
+          </button>
+        )}
       </div>
     </>
   );

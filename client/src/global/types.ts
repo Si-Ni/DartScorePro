@@ -327,7 +327,7 @@ interface GameViewWithScoreProps extends GameViewProps {
 
 export interface StandardGamesViewProps extends GameViewWithScoreProps {
   playerStats: PlayerToPlayerStats;
-  cbHandlUndoClicked(): void;
+  cbHandleUndoClicked?(): void;
 }
 
 export interface RoundTheClockGameViewProps extends GameViewProps {
@@ -359,4 +359,16 @@ export interface OnlineGamesProps {
   modeOut: InAndOutMode;
 }
 
-export interface OnlineStandardGamesProps {}
+export interface OnlineStandardGamesProps {
+  currentRound: number;
+  players: string[];
+  multiplier: number;
+}
+
+export interface DGameSettings {
+  selectedGamemode: Gamemode;
+  setsToWin: number;
+  legsForSet: number;
+  modeIn: InAndOutMode;
+  modeOut: InAndOutMode;
+}

@@ -219,7 +219,7 @@ function LocalStandardGames({ currentPlayerIndex, throwsRemaining, ...props }: L
       cbHandleScoreBtnClicked={handleScoreChange}
       multiplier={multiplier}
       cbHandleMultiplierClicked={handleMultiplierClick}
-      cbHandlUndoClicked={handleUndoClick}
+      cbHandleUndoClicked={handleUndoClick}
     />
   );
 }

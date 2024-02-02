@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import PlayerMenu from "../../components/gameSettings/PlayerMenu";
-import { Gamemode, OnlineMultiplayerSettingsProps } from "../../global/types";
+import { OnlineMultiplayerSettingsProps } from "../../global/types";
 import { useNavigate, useParams } from "react-router-dom";
 import SettingsMenu from "../../components/gameSettings/SettingsMenu";
 import NavigationButtons from "../../components/buttons/NavigationButtons";
@@ -29,23 +29,14 @@ function OnlineMultiplayerSettings(props: OnlineMultiplayerSettingsProps) {
   };
 
   useEffect(() => {
-    props.socket.emit("joinedSuccessfully", props.lobbyCode);
-
     const handleSetPlayerList = (players: string[]) => {
       props.setPlayers(players);
     };
 
-    const handleGamemodeSelected = (gamemode: Gamemode) => {
-      props.setSelectedGamemode(gamemode);
-    };
-
     props.socket.on("updatePlayersList", handleSetPlayerList);
-
-    props.socket.on("leaderSelectedGamemode", handleGamemodeSelected);
 
     return () => {
       props.socket.off("updatePlayersList", handleSetPlayerList);
-      props.socket.off("leaderSelectedGamemode", handleGamemodeSelected);
     };
   }, [props.socket, props.setPlayers]);
 
@@ -59,6 +50,10 @@ function OnlineMultiplayerSettings(props: OnlineMultiplayerSettingsProps) {
           setSetsToWin={props.setSetsToWin}
           legsForSet={props.legsForSet}
           setLegsForSet={props.setLegsForSet}
+          modeIn={props.modeIn}
+          setModeIn={props.setModeIn}
+          modeOut={props.modeOut}
+          setModeOut={props.setModeOut}
           cbBackBtnClicked={() => setShowSettingsMenu(false)}
           cbNextBtnClicked={props.cbNextBtnClicked}
         />
@@ -66,7 +61,7 @@ function OnlineMultiplayerSettings(props: OnlineMultiplayerSettingsProps) {
         <div className="hero is-justify-content-center is-align-items-center is-fullheight">
           <div className="hero-body">
             <div className="container box">
-              <PlayerMenu players={props.players} setPlayers={props.setPlayers} isEditable={false} />
+              <PlayerMenu players={props.players} maxPlayers={4} setPlayers={props.setPlayers} isEditable={false} />
               <NavigationButtons
                 cbBackBtnClicked={handleBack}
                 cbNextBtnClicked={props.isLobbyLeader ? handleNext : undefined}
