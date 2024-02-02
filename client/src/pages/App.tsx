@@ -73,6 +73,7 @@ function App() {
               lobbyCode={lobbyCode}
               isLobbyLeader={isLobbyLeader}
               cbBackBtnClicked={() => {}}
+              setIsLobbyLeader={setIsLobbyLeader}
             />
           }
         />

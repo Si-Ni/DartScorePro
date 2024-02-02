@@ -13,8 +13,6 @@ function OnlineMultiplayer(props: OnlineMultiplayerProps) {
   const [modeOut, setModeOut] = useState<InAndOutMode>("double");
 
   useEffect(() => {
-    props.socket.emit("joinedSuccessfully", props.lobbyCode);
-
     const handleGameStarted = (gameSettings: DGameSettings) => {
       setSelectedGamemode(gameSettings.selectedGamemode);
       setSetsToWin(gameSettings.setsToWin);
@@ -40,6 +38,8 @@ function OnlineMultiplayer(props: OnlineMultiplayerProps) {
         modeIn: modeIn,
         modeOut: modeOut
       };
+
+      console.log(props.lobbyCode);
       props.socket.emit("gameStarted", { lobbyCode: props.lobbyCode, gameSettings: gameSettings });
     }
     setGameStarted(true);
@@ -77,6 +77,7 @@ function OnlineMultiplayer(props: OnlineMultiplayerProps) {
           setModeOut={setModeOut}
           cbNextBtnClicked={nextBtnClicked}
           displayUserID={props.displayUserID}
+          setIsLobbyLeader={props.setIsLobbyLeader}
         />
       )}
     </>
