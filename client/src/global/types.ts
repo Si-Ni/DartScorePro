@@ -250,6 +250,7 @@ export interface OnlineMultiplayerSettingsProps {
   setLegsForSet: React.Dispatch<React.SetStateAction<number>>;
   cbNextBtnClicked(): void;
   displayUserID: string;
+  setGameStarted: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface OnlineMultiplayerProps {

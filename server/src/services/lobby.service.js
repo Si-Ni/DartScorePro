@@ -35,6 +35,8 @@ const configureLobbyService = (io) => {
 
       console.log(lobby);
       io.to(lobbyCode).emit("updatePlayersList", updatedPlayers);
+
+      lobby.gameSettings && io.to(lobbyCode).emit("isGameStarted");
     });
 
     socket.on("gameStarted", ({ lobbyCode, gameSettings }) => {

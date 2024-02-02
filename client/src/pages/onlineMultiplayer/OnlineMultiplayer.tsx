@@ -84,6 +84,7 @@ function OnlineMultiplayer(props: OnlineMultiplayerProps) {
           cbNextBtnClicked={nextBtnClicked}
           displayUserID={props.displayUserID}
           setIsLobbyLeader={props.setIsLobbyLeader}
+          setGameStarted={setGameStarted}
         />
       )}
     </>
