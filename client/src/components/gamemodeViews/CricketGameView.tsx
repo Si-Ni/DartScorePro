@@ -1,7 +1,7 @@
-import { CricketGameViewProps } from "../../global/types";
 import GameInputButtons from "../buttons/GameInputButtons";
 import GameMultiplierButtons from "../buttons/GameMultiplierButtons";
 import PlayerScoreCardCricket from "../playerScoreCards/PlayerScoreCardCricket";
+import { CricketGameViewProps } from "../../types/CricketGame";
 
 function CricketGameView(props: CricketGameViewProps) {
   return (

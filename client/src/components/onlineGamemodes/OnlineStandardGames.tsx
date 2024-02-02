@@ -1,5 +1,6 @@
-import { OnlineStandardGamesProps, PlayerToPlayerStats, PlayerToPlayerTotalGameStats } from "../../global/types";
+import { PlayerToPlayerStats, PlayerToPlayerTotalGameStats } from "../../types/global";
 import StandardGamesView from "../gamemodeViews/StandardGamesView";
+import { OnlineStandardGamesProps } from "../../types/OnlineStandardGames";
 
 const initializePlayerStats = (players: string[], gamemodeTotalScore: number): PlayerToPlayerStats => {
   const initialPoints: PlayerToPlayerStats = {};

@@ -1,7 +1,7 @@
 import GameInputButtons from "../buttons/GameInputButtons";
 import GameMultiplierButtons from "../buttons/GameMultiplierButtons";
 import PlayerScoreCard from "../playerScoreCards/PlayerScoreCard";
-import { StandardGamesViewProps } from "../../global/types";
+import { StandardGamesViewProps } from "../../types/StandardGamesView";
 
 function StandardGamesView(props: StandardGamesViewProps) {
   return (

@@ -1,4 +1,4 @@
-import { GameInputButtonsProps } from "../../global/types";
+import { GameInputButtonsProps } from "../../types/GameInputButtons";
 
 function GameInputButtons(props: GameInputButtonsProps) {
   return (

@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { Gamemode, InAndOutMode, LocalMultiplayerProps } from "../../global/types";
+import { Gamemode, InAndOutMode } from "../../types/global";
 import LocalGames from "../../components/game/LocalGames";
 import PlayersAndSettings from "../../components/gameSettings/PlayersAndSettings";
+import { LocalMultiplayerProps } from "../../types/LocalMultiplayer";
 
 function LocalMultiplayer(props: LocalMultiplayerProps) {
   const [players, setPlayers] = useState(["Player1"]);

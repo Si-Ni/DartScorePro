@@ -1,5 +1,5 @@
-import { RoundTheClockGameViewProps } from "../../global/types";
 import PlayerScoreCard from "../playerScoreCards/PlayerScoreCard";
+import { RoundTheClockGameViewProps } from "../../types/RoundTheClockGame";
 
 function RoundTheClockGameView(props: RoundTheClockGameViewProps) {
   return (

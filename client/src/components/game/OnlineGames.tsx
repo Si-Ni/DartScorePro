@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { OnlineGamesProps, PlayerToPlayerTotalGameStats } from "../../global/types";
+import { PlayerToPlayerTotalGameStats } from "../../types/global";
 import YesNoPopUp from "../popUps/YesNoPopUp";
 import "../../styles/Games.css";
 import NavigationButtons from "../buttons/NavigationButtons";
 import OnlineStandardGames from "../onlineGamemodes/OnlineStandardGames";
 import GameInformationHeader from "../GameInformationHeader/GameInformationHeader";
+import { OnlineGamesProps } from "../../types/OnlineGames";
 
 function OnlineGames(props: OnlineGamesProps) {
   const [showGoToMainMenuPopUp, setShowGoToMainMenuPopUp] = useState<boolean>(false);

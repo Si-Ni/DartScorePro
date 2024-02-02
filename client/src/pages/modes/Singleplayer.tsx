@@ -1,6 +1,6 @@
 import "../../styles/Menu.css";
 import { useState } from "react";
-import { Gamemode, InAndOutMode } from "../../global/types";
+import { Gamemode, InAndOutMode } from "../../types/global";
 import LocalGames from "../../components/game/LocalGames";
 import { useNavigate } from "react-router-dom";
 import SettingsMenu from "../../components/gameSettings/SettingsMenu";

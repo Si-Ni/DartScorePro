@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { PlayerToPlayerStatsRCl, RoundTheClockGameProps } from "../../global/types";
 import RoundTheClockGameView from "../gamemodeViews/RoundTheClockGameView";
+import { PlayerToPlayerStatsRCl, RoundTheClockGameProps } from "../../types/RoundTheClockGame";
 
 const initializePlayerStats = (players: string[]): PlayerToPlayerStatsRCl => {
   const initialPoints: PlayerToPlayerStatsRCl = {};

@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { JoinLobbyProps } from "../../global/types";
 import NavigationButtons from "../../components/buttons/NavigationButtons";
+import { JoinLobbyProps } from "../../types/JoinLobby";
 
 function JoinLobby({ socket, ...props }: JoinLobbyProps) {
   const navigate = useNavigate();
@@ -25,8 +25,8 @@ function JoinLobby({ socket, ...props }: JoinLobbyProps) {
   };
 
   const onChangeHideInvalidCodeMsg = () => {
-    if (invalidPwdMsgRef.current && invalidPwdMsgRef.current.style.display === "block") {
-      invalidPwdMsgRef.current.style.display = "none";
+    if (invalidPwdMsgRef.current && invalidPwdMsgRef.current?.style.display === "block") {
+      invalidPwdMsgRef.current!.style.display = "none";
     }
   };
 

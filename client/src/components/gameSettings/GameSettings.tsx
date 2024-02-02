@@ -1,14 +1,16 @@
-import { GameSettingsProps, InAndOutMode } from "../../global/types";
+import { InAndOutMode } from "../../types/global";
+import { GameSettingsProps } from "../../types/GameSettings";
+import { ChangeEvent } from "react";
 
 function GameSettings(props: GameSettingsProps) {
-  const handleInputChangeSets = (event: any) => {
+  const handleInputChangeSets = (event: ChangeEvent<HTMLInputElement>) => {
     props.setIsError(false);
-    props.setSetsToWin(event.target.value);
+    props.setSetsToWin(parseInt(event.target.value, 10));
   };
 
-  const handleInputChangeLegs = (event: any) => {
+  const handleInputChangeLegs = (event: ChangeEvent<HTMLInputElement>) => {
     props.setIsError(false);
-    props.setLegsForSet(event.target.value);
+    props.setLegsForSet(parseInt(event.target.value, 10));
   };
 
   const handleCheckboxModeInChange = (mode: InAndOutMode) => {
