@@ -12,6 +12,8 @@ import io from "socket.io-client";
 import OnlineMultiplayer from "./onlineMultiplayer/OnlineMultiplayer";
 import CheckoutCalculator from "./information/CheckoutCalculator";
 import Tournament from "./tournament/Tournament";
+import Impressum from "./information/Impressum";
+import Settings from "./settings/Settings";
 
 const socket = io("http://localhost:4000");
 
@@ -61,7 +63,6 @@ function App() {
           element={<Register loginErrorMsg={loginErrorMsg} pwdRef={pwdRef} setLoginErrorMsg={setLoginErrorMsg} />}
         />
         <Route path="/register/verify" element={<RegisterVerify />} />
-        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/singleplayer" element={<Singleplayer />} />
         <Route
           path="/multiplayer/lobby/:lobbyCode"
@@ -89,6 +90,9 @@ function App() {
         />
         <Route path="/tournament" element={<Tournament />} />
         <Route path="/checkoutCalculator" element={<CheckoutCalculator />} />
+        <Route path="/settings" element={<Settings />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/impressum" element={<Impressum />} />
       </Routes>
     </>
   );

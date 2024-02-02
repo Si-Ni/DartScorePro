@@ -12,7 +12,7 @@ const LOGIN_URL = "/login";
 
 function Login(props: LoginProps) {
   const { setAuth } = useAuth();
-  const from = location.state?.from?.pathname || "/";
+  const navigateTo = "/";
 
   const invalidPwdMsgRef = useRef<HTMLInputElement | null>(null);
   const [isPwdDisabled, setPwdDisabled] = useState(false);
@@ -34,7 +34,7 @@ function Login(props: LoginProps) {
         localStorage.setItem("token", token);
         setAuth({ userIDorMail, userPWD, token });
 
-        navigate(from, { replace: true });
+        navigate(navigateTo, { replace: true });
       })
       .catch((error) => {
         setPwdDisabled(false);
