@@ -46,8 +46,11 @@ const configureLobbyService = (io) => {
     socket.on("gameStarted", ({ lobbyCode, gameSettings }) => {
       const isLeader = lobbies[lobbyCode]?.players.find((player) => player.socketId === socket.id)?.isLeader ?? false;
       const isValidGamemode = ["301", "501", "rcl", "cri"].includes(gameSettings.selectedGamemode);
-      if (lobbies[lobbyCode] && isLeader && isValidGamemode)
+      if (lobbies[lobbyCode] && isLeader && isValidGamemode) {
+        lobbies[lobbyCode].gameSettings = gameSettings;
+        
         socket.to(lobbyCode).emit("leaderStartedGame", gameSettings);
+      }
     });
 
     socket.on("leaveLobby", () => leaveLobby(io, socket.id));
