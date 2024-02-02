@@ -33,7 +33,6 @@ const configureLobbyService = (io) => {
         .filter((player) => player.socketId !== "")
         .map((player) => ({ userID: player.userID, isLeader: player.isLeader }));
 
-      console.log(lobby);
       io.to(lobbyCode).emit("updatePlayersList", updatedPlayers);
 
       lobby.gameSettings && io.to(lobbyCode).emit("isGameStarted");

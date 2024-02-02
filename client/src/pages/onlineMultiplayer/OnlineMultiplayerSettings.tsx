@@ -35,9 +35,6 @@ function OnlineMultiplayerSettings(props: OnlineMultiplayerSettingsProps) {
       props.setPlayers(players.map((player) => player.userID));
 
       isLeader && props.setIsLobbyLeader(true);
-
-      console.log(players);
-      // props.setGameStarted(true)
     };
 
     props.socket.on("updatePlayersList", handleSetPlayerList);
