@@ -48,7 +48,7 @@ const configureLobbyService = (io) => {
       const isValidGamemode = ["301", "501", "rcl", "cri"].includes(gameSettings.selectedGamemode);
       if (lobbies[lobbyCode] && isLeader && isValidGamemode) {
         lobbies[lobbyCode].gameSettings = gameSettings;
-        
+
         socket.to(lobbyCode).emit("leaderStartedGame", gameSettings);
       }
     });
