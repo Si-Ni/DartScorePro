@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { Gamemode, InAndOutMode, OnlineMultiplayerProps } from "../../global/types";
-import OnlineGames from "../../components/game/LocalGames";
+import { useEffect, useState } from "react";
+import { DGameSettings, Gamemode, InAndOutMode, OnlineMultiplayerProps } from "../../global/types";
+import OnlineGames from "../../components/game/OnlineGames";
 import OnlineMultiplayerSettings from "./OnlineMultiplayerSettings";
 
 function OnlineMultiplayer(props: OnlineMultiplayerProps) {
@@ -12,9 +12,36 @@ function OnlineMultiplayer(props: OnlineMultiplayerProps) {
   const [modeIn, setModeIn] = useState<InAndOutMode>("straight");
   const [modeOut, setModeOut] = useState<InAndOutMode>("double");
 
+  useEffect(() => {
+    props.socket.emit("joinedSuccessfully", props.lobbyCode);
+
+    const handleGameStarted = (gameSettings: DGameSettings) => {
+      setSelectedGamemode(gameSettings.selectedGamemode);
+      setSetsToWin(gameSettings.setsToWin);
+      setLegsForSet(gameSettings.legsForSet);
+      setModeIn(gameSettings.modeIn);
+      setModeOut(gameSettings.modeOut);
+      setGameStarted(true);
+    };
+
+    props.socket.on("leaderStartedGame", handleGameStarted);
+
+    return () => {
+      props.socket.off("leaderStartedGame", handleGameStarted);
+    };
+  }, [props.socket]);
+
   const nextBtnClicked = () => {
-    if (props.isLobbyLeader)
-      props.socket.emit("gamemodeSelected", { lobbyCode: props.lobbyCode, gamemode: selectedGamemode });
+    if (props.isLobbyLeader) {
+      const gameSettings: DGameSettings = {
+        selectedGamemode: selectedGamemode,
+        setsToWin: setsToWin,
+        legsForSet: legsForSet,
+        modeIn: modeIn,
+        modeOut: modeOut
+      };
+      props.socket.emit("gameStarted", { lobbyCode: props.lobbyCode, gameSettings: gameSettings });
+    }
     setGameStarted(true);
   };
 
