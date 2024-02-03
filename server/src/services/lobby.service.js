@@ -40,12 +40,10 @@ const configureLobbyService = (io) => {
 
     socket.on("gameStarted", ({ lobbyCode, gameSettings }) => {
       const isLeader = lobbies[lobbyCode]?.players.find((player) => player.socketId === socket.id)?.isLeader ?? false;
-      const validGamemodes = ["301", "501", "rcl", "cri"];
+      const isValidGamemode = ["301", "501", "rcl", "cri"].includes(gameSettings.selectedGamemode);
 
-      const isValidGamemode = validGamemodes.includes(gameSettings.selectedGamemode);
-
-      if (lobbies.has(lobbyCode) && isLeader && isValidGamemode) {
-        lobbies.get(lobbyCode).gameSettings = gameSettings;
+      if (lobbies[lobbyCode] && isLeader && isValidGamemode && !gameSettings.hasOwnProperty("__proto__")) {
+        lobbies[lobbyCode].gameSettings = gameSettings;
         socket.to(lobbyCode).emit("leaderStartedGame", gameSettings);
       }
     });
