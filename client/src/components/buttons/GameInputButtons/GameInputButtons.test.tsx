@@ -2,7 +2,7 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
 import GameInputButtons from "./GameInputButtons.tsx";
 
-describe("GameInputButtons Component", () => {
+describe("GameInputButtons", () => {
   const mockValues = [1, 2, 3];
   const mockBtnSize = 40;
   const mockCallback = vi.fn();
