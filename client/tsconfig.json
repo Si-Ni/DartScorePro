@@ -19,8 +19,14 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+
   },
-  "include": ["src"],
+  "include": [
+    "vite.config.ts",
+    ".eslintrc.cjs",
+    "src"
+
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
