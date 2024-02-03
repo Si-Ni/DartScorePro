@@ -1,4 +1,5 @@
 const generateCode = require("../helpers/generateCode.helper");
+const { initialiseForNewGame } = require("./game.service");
 
 const lobbies = {};
 const lobbyCodeRegex = /^[A-Z0-9]{6}$/;
@@ -9,7 +10,7 @@ const configureLobbyService = (io) => {
 
     socket.on("createLobby", (userID) => {
       const lobbyCode = generateCode();
-      lobbies[lobbyCode] = { players: [{ userID, socketId: socket.id, isLeader: true }] };
+      lobbies[lobbyCode] = { gameStarted: false, players: [{ userID, socketId: socket.id, isLeader: true }] };
       socket.join(lobbyCode);
       socket.emit("lobbyCreated", lobbyCode);
     });
@@ -46,7 +47,10 @@ const configureLobbyService = (io) => {
 
       if (lobbies[lobbyCode] && isLeader && isValidGamemode && !gameSettings.hasOwnProperty("__proto__")) {
         lobbies[lobbyCode].gameSettings = gameSettings;
-        socket.to(lobbyCode).emit("leaderStartedGame", gameSettings);
+        initialiseForNewGame(lobbies[lobbyCode]);
+        const responseData = { gameSettings: lobbies[lobbyCode].gameSettings, game: lobbies[lobbyCode].game };
+        console.log(lobbies[lobbyCode].game.playerStats);
+        io.to(lobbyCode).emit("leaderStartedGame", responseData);
       }
     });
 

@@ -4,6 +4,7 @@ import PlayerScoreCard from "../playerScoreCards/PlayerScoreCard";
 import { StandardGamesViewProps } from "../../types/StandardGamesView";
 
 function StandardGamesView(props: StandardGamesViewProps) {
+  console.log(props);
   return (
     <>
       <div className="is-centered">

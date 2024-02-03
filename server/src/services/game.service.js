@@ -1,9 +1,10 @@
 const initialisePlayerStats = (players) => {
   const initialStats = {};
-  initialStats.forEach((index, player) => {
-    initialPoints[player] = {
-      score: gamemodeTotalScore,
-      scoreAtBeginningOfRound: gamemodeTotalScore,
+  players.forEach((player, index) => {
+    console.log(player);
+    initialStats[player.userID] = {
+      score: 301,
+      scoreAtBeginningOfRound: 301,
       average: 0,
       dartsThrown: 0,
       totalScore: 0,
@@ -19,7 +20,7 @@ const initialisePlayerStats = (players) => {
 const initialiseTotalGameStats = (players) => {
   const initialStats = {};
   players.forEach((player) => {
-    initialStats[player] = {
+    initialStats[player.userID] = {
       sets: 0,
       legs: 0
     };
@@ -27,16 +28,19 @@ const initialiseTotalGameStats = (players) => {
   return initialStats;
 };
 
-const initialiseForNewRound = (lobbies, lobbyCode) => {
-  lobbies[lobbyCode].currentRound = 0;
-  lobbies[lobbyCode].startingPlayer = 0;
-  lobbies[lobbyCode].currentPlayer = 0;
-  lobbies[lobbyCode].playerStats = initialisePlayerStats(lobbies[lobbyCode].players);
+const initialiseForNewRound = (lobby) => {
+  lobby.game.currentRound = 0;
+  lobby.game.startingPlayer = 0;
+  lobby.game.currentPlayer = 0;
+  lobby.game.throwsRemaining = 3;
+  lobby.game.playerStats = initialisePlayerStats(lobby.players);
 };
 
-const initialiseForNewGame = (lobbies, lobbyCode) => {
-  initialiseForNewRound(lobbies, lobbyCode);
-  lobbies[lobbyCode].totalGameStats = initialiseTotalGameStats(lobbies[lobbyCode].players);
+const initialiseForNewGame = (lobby) => {
+  lobby.game = {};
+  lobby.game.totalGameStats = initialiseTotalGameStats(lobby.players);
+  lobby.gameStarted = true;
+  initialiseForNewRound(lobby);
 };
 
 module.exports = { initialiseForNewGame };

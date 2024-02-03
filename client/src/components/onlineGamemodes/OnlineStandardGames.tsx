@@ -1,48 +1,21 @@
-import { PlayerToPlayerStats, PlayerToPlayerTotalGameStats } from "../../types/global";
 import StandardGamesView from "../gamemodeViews/StandardGamesView";
 import { OnlineStandardGamesProps } from "../../types/OnlineStandardGames";
-
-const initializePlayerStats = (players: string[], gamemodeTotalScore: number): PlayerToPlayerStats => {
-  const initialPoints: PlayerToPlayerStats = {};
-  players.forEach((player) => {
-    initialPoints[player] = {
-      score: gamemodeTotalScore,
-      scoreAtBeginningOfRound: gamemodeTotalScore,
-      average: 0,
-      dartsThrown: 0,
-      totalScore: 0,
-      turns: 0,
-      lastThrows: [],
-      throwsRemaining: 0,
-      checkoutOptions: []
-    };
-  });
-  return initialPoints;
-};
-
-const initializePlayerTotalGameStats = (players: string[]): PlayerToPlayerTotalGameStats => {
-  const initialStats: PlayerToPlayerTotalGameStats = {};
-  players.forEach((player) => {
-    initialStats[player] = {
-      sets: 0,
-      legs: 0
-    };
-  });
-  return initialStats;
-};
+import { useState } from "react";
 
 function OnlineStandardGames(props: OnlineStandardGamesProps) {
+  const [multiplier, setMultiplier] = useState<number>(1);
+
   return (
     <StandardGamesView
       currentRound={props.currentRound}
       players={props.players}
-      startingPlayerIndex={0}
-      currentPlayerIndex={0}
-      playerTotalGameStats={initializePlayerTotalGameStats(props.players)}
-      playerStats={initializePlayerStats(props.players, 301)}
+      startingPlayerIndex={props.currentPlayerIndex}
+      currentPlayerIndex={props.currentPlayerIndex}
+      playerTotalGameStats={props.playerTotalGameStats}
+      playerStats={props.playerStats}
       cbHandleScoreBtnClicked={() => {}}
-      multiplier={props.multiplier}
-      cbHandleMultiplierClicked={() => {}}
+      multiplier={multiplier}
+      cbHandleMultiplierClicked={setMultiplier}
     />
   );
 }

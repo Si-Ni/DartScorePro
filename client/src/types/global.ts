@@ -40,11 +40,3 @@ export interface GameViewWithScoreProps extends GameViewProps {
   multiplier: number;
   cbHandleMultiplierClicked(multiplier: number): void;
 }
-
-export interface DGameSettings {
-  selectedGamemode: Gamemode;
-  setsToWin: number;
-  legsForSet: number;
-  modeIn: InAndOutMode;
-  modeOut: InAndOutMode;
-}
