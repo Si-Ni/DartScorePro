@@ -1,3 +1,4 @@
+import { DGameData } from "./OnlineMultiplayerDTOs";
 import { Gamemode, InAndOutMode } from "./global";
 
 export interface OnlineGamesProps {
@@ -8,4 +9,5 @@ export interface OnlineGamesProps {
   legsForSet: number;
   modeIn: InAndOutMode;
   modeOut: InAndOutMode;
+  initialGameStats: DGameData;
 }

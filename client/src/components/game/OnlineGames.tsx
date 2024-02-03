@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { PlayerToPlayerTotalGameStats } from "../../types/global";
+import { PlayerToPlayerStats, PlayerToPlayerTotalGameStats } from "../../types/global";
 import YesNoPopUp from "../popUps/YesNoPopUp";
 import "../../styles/Games.css";
 import NavigationButtons from "../buttons/NavigationButtons";
@@ -9,34 +9,23 @@ import { OnlineGamesProps } from "../../types/OnlineGames";
 
 function OnlineGames(props: OnlineGamesProps) {
   const [showGoToMainMenuPopUp, setShowGoToMainMenuPopUp] = useState<boolean>(false);
-  const [playerTotalGameStats, setPlayerTotalGameStats] = useState<PlayerToPlayerTotalGameStats>();
-  const [winningPlayer, setWinningPlayer] = useState<string | null>(null);
-  const [throwsRemaining, setThrowsRemaining] = useState<number>(3);
-  const [currentRound, setCurrentRound] = useState<number>(1);
-  const [startingPlayerIndex, setStartingPlayerIndex] = useState<number>(0);
-  const [currentPlayerIndex, setCurrentPlayerIndex] = useState<number>(startingPlayerIndex);
-  const [turns, setTurns] = useState<number>(0);
-
-  const switchToNextPlayer = (): void => {};
+  const [playerTotalGameStats, setPlayerTotalGameStats] = useState<PlayerToPlayerTotalGameStats>(
+    props.initialGameStats.totalGameStats
+  );
+  const [throwsRemaining, setThrowsRemaining] = useState<number>(props.initialGameStats.throwsRemaining);
+  const [currentRound, setCurrentRound] = useState<number>(props.initialGameStats.currentRound);
+  const [startingPlayerIndex, setStartingPlayerIndex] = useState<number>(props.initialGameStats.startingPlayer);
+  const [currentPlayerIndex, setCurrentPlayerIndex] = useState<number>(props.initialGameStats.currentPlayer);
+  const [playerStats, setPlayerStats] = useState<PlayerToPlayerStats>(props.initialGameStats.playerStats);
 
   const gameProps = {
     players: props.players,
     playerTotalGameStats: playerTotalGameStats,
-    setsToWin: props.setsToWin,
-    legsForSet: props.legsForSet,
+    playerStats: playerStats,
     throwsRemaining: throwsRemaining,
     currentRound: currentRound,
     startingPlayerIndex: startingPlayerIndex,
-    currentPlayerIndex: currentPlayerIndex,
-    switchToNextPlayer: switchToNextPlayer
-  };
-
-  const standardGamesProps = {
-    modeIn: props.modeIn,
-    modeOut: props.modeOut,
-    setThrowsRemaining: setThrowsRemaining,
-    setCurrentPlayerIndex: setCurrentPlayerIndex,
-    setCurrentRound: setCurrentRound
+    currentPlayerIndex: currentPlayerIndex
   };
 
   return (
@@ -55,9 +44,7 @@ function OnlineGames(props: OnlineGamesProps) {
         modeIn={props.modeIn}
         modeOut={props.modeOut}
       />
-      {props.selectedGamemode === "301" && (
-        <OnlineStandardGames currentRound={0} players={props.players} multiplier={1} />
-      )}
+      {props.selectedGamemode === "301" && <OnlineStandardGames {...gameProps} />}
       <NavigationButtons
         cbBackBtnClicked={() => {
           /* ToDo */

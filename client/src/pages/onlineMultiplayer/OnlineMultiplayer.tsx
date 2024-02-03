@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { DGameSettings, Gamemode, InAndOutMode } from "../../types/global";
+import { Gamemode, InAndOutMode } from "../../types/global";
 import OnlineGames from "../../components/game/OnlineGames";
 import OnlineMultiplayerSettings from "./OnlineMultiplayerSettings";
 import { useParams } from "react-router-dom";
 import { OnlineMultiplayerProps } from "../../types/OnlineMultiplayer";
+import { DGameSettings, DSettingsAndGameData } from "../../types/OnlineMultiplayerDTOs";
 
 function OnlineMultiplayer(props: OnlineMultiplayerProps) {
   const [players, setPlayers] = useState([props.displayUserID]);
@@ -13,17 +14,22 @@ function OnlineMultiplayer(props: OnlineMultiplayerProps) {
   const [legsForSet, setLegsForSet] = useState<number>(1);
   const [modeIn, setModeIn] = useState<InAndOutMode>("straight");
   const [modeOut, setModeOut] = useState<InAndOutMode>("double");
+  const [initialGameStats, setInitialGameStats] = useState<any>();
 
   const { lobbyCode } = useParams();
 
   useEffect(() => {
-    const handleGameStarted = (gameSettings: DGameSettings) => {
+    const setGameSettings = (gameSettings: DGameSettings) => {
       setSelectedGamemode(gameSettings.selectedGamemode);
       setSetsToWin(gameSettings.setsToWin);
       setLegsForSet(gameSettings.legsForSet);
       setModeIn(gameSettings.modeIn);
       setModeOut(gameSettings.modeOut);
-      setGameStarted(true);
+    };
+
+    const handleGameStarted = (data: DSettingsAndGameData) => {
+      setGameSettings(data.gameSettings);
+      setInitialGameStats(data.game);
     };
 
     props.socket.on("leaderStartedGame", handleGameStarted);
@@ -32,6 +38,10 @@ function OnlineMultiplayer(props: OnlineMultiplayerProps) {
       props.socket.off("leaderStartedGame", handleGameStarted);
     };
   }, [props.socket]);
+
+  useEffect(() => {
+    if (initialGameStats) setGameStarted(true);
+  }, [initialGameStats]);
 
   const nextBtnClicked = () => {
     if (props.isLobbyLeader) {
@@ -48,7 +58,6 @@ function OnlineMultiplayer(props: OnlineMultiplayerProps) {
         gameSettings: gameSettings
       });
     }
-    setGameStarted(true);
   };
 
   const handleBackToPlayerMenu = () => {
@@ -68,7 +77,7 @@ function OnlineMultiplayer(props: OnlineMultiplayerProps) {
   return (
     <>
       {gameStarted ? (
-        <OnlineGames {...gameProps} cbBackBtnClicked={handleBackToPlayerMenu} />
+        <OnlineGames {...gameProps} initialGameStats={initialGameStats} cbBackBtnClicked={handleBackToPlayerMenu} />
       ) : (
         <OnlineMultiplayerSettings
           {...gameProps}
