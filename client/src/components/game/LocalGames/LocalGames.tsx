@@ -2,7 +2,7 @@ import { useState } from "react";
 import { PlayerToPlayerTotalGameStats } from "../../../types/global";
 
 import "../../../styles/Games.css";
-import NavigationButtons from "../../buttons/NavigationButtons/NavigationButtons";
+import NavigationButtons from "../../buttons/NavigationButtons/NavigationButtons.tsx";
 import GameInformationHeader from "../../GameInformationHeader/GameInformationHeader";
 import { LocalGamesProps } from "./LocalGames";
 import LocalStandardGames from "../../localGamemodes/LocalStandardGames/LocalStandardGames.tsx";

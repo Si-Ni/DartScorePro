@@ -2,7 +2,7 @@ import { useState } from "react";
 import { PlayerToPlayerStats, PlayerToPlayerTotalGameStats } from "../../../types/global";
 import YesNoPopUp from "../../popUps/YesNoPopUp/YesNoPopUp.tsx";
 import "../../../styles/Games.css";
-import NavigationButtons from "../../buttons/NavigationButtons/NavigationButtons";
+import NavigationButtons from "../../buttons/NavigationButtons/NavigationButtons.tsx";
 import OnlineStandardGames from "../../onlineGamemodes/OnlineStandardGames/OnlineStandardGames.tsx";
 import GameInformationHeader from "../../GameInformationHeader/GameInformationHeader";
 import { OnlineGamesProps } from "./OnlineGames";
