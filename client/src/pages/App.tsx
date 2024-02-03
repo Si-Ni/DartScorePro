@@ -1,18 +1,18 @@
 import { Route, Routes } from "react-router-dom";
-import Login from "./authentication/Login";
-import MainMenu from "./menus/MainMenu";
+import Login from "./authentication/Login/Login.tsx";
+import MainMenu from "./menus/MainMenu/MainMenu.tsx";
 import { useEffect, useRef, useState } from "react";
-import Register from "./authentication/Register";
-import RegisterVerify from "./authentication/RegisterVerify";
-import Singleplayer from "./modes/Singleplayer";
-import PrivacyPolicy from "./information/PrivacyPolicy";
-import Multiplayer from "./modes/Multiplayer";
+import Register from "./authentication/Register/Register.tsx";
+import RegisterVerify from "./authentication/RegisterVerify/RegisterVerify";
+import Singleplayer from "./modes/SinglePlayer/Singleplayer";
+import PrivacyPolicy from "./information/PrivacyPolicy/PrivacyPolicy";
+import Multiplayer from "./modes/Multiplayer/Multiplayer.tsx";
 import axios from "../api/axios";
 import io from "socket.io-client";
-import OnlineMultiplayer from "./onlineMultiplayer/OnlineMultiplayer";
-import CheckoutCalculator from "./information/CheckoutCalculator";
+import OnlineMultiplayer from "./onlineMultiplayer/OnlineMultiplayer/OnlineMultiplayer.tsx";
+import CheckoutCalculator from "./information/CheckoutCalculator/CheckoutCalculator";
 import Tournament from "./tournament/Tournament";
-import Impressum from "./information/Impressum";
+import Impressum from "./information/Impressum/Impressum";
 import Settings from "./settings/Settings";
 
 const socket = io("http://localhost:4000");
