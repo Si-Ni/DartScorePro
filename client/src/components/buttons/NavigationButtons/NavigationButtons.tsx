@@ -1,4 +1,4 @@
-import { NavigationButtonsProps } from "./NavigationButton";
+import { NavigationButtonsProps } from "./NavigationButtons";
 import "../../../styles/Games.css";
 
 function NavigationButtons(props: NavigationButtonsProps) {
