@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Gamemode, InAndOutMode } from "../../types/global";
-import LocalGames from "../../components/game/LocalGames";
-import PlayersAndSettings from "../../components/gameSettings/PlayersAndSettings";
+import LocalGames from "../../components/game/LocalGames/LocalGames.tsx";
+import PlayersAndSettings from "../../components/gameSettings/PlayersAndSettings/PlayersAndSettings.tsx";
 import { useNavigate } from "react-router-dom";
-import PopUp from "../../components/popUps/PopUp";
+import PopUp from "../../components/popUps/PopUp/PopUp.tsx";
 
 function Tournament() {
   const [allPlayers, setAllPlayers] = useState(["Player1"]);
