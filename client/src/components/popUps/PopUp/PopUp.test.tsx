@@ -8,8 +8,8 @@ const mockProps = {
   cbBtnClicked: vi.fn()
 };
 
-describe("PopUp Component", () => {
-  it("renders content and button with correct labels and classes", () => {
+describe("PopUp", () => {
+  it("renders content and button with correct classes and labels", () => {
     render(<PopUp {...mockProps} />);
 
     const contentElement = screen.getByText("Test Content");
