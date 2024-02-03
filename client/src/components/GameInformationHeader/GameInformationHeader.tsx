@@ -1,4 +1,4 @@
-import { GameInformationHeaderProps } from "./GamesInformationHeader";
+import { GameInformationHeaderProps } from "./GameInformationHeader";
 
 function GameInformationHeader(props: GameInformationHeaderProps) {
   return (
