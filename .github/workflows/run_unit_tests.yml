@@ -18,8 +18,10 @@ jobs:
 
       - name: Install dependencies
         run: |
-            cd ./client
+          cd ./client
             npm ci
 
       - name: Run tests
-        run: npm test
+        run: |
+          cd ./client
+          npm test
