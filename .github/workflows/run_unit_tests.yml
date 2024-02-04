@@ -3,7 +3,7 @@ name: Run Unit Tests
 on: [push, pull_request]
 
 jobs:
-  test:
+  run-unit-tests:
     runs-on: ubuntu-latest
 
     steps:
@@ -12,8 +12,9 @@ jobs:
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
+
         with:
-          node-version: 14
+          node-version: latest
 
       - name: Install dependencies
         run: |
