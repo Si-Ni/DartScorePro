@@ -3,4 +3,5 @@ import { GameViewWithScoreProps, PlayerToPlayerStats } from "../../../types/glob
 export interface StandardGamesViewProps extends GameViewWithScoreProps {
   playerStats: PlayerToPlayerStats;
   cbHandleUndoClicked?(): void;
+  isPlayersTurn?: boolean;
 }

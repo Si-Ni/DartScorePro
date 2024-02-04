@@ -9,6 +9,7 @@ function GameInputButtons(props: GameInputButtonsProps) {
           className="button is-primary m-1 is-size-5"
           onClick={() => props.cbHandleButtonClicked(number)}
           style={{ width: `${props.btnSize}px` }}
+          disabled={props.disabled}
         >
           {number}
         </button>
@@ -19,6 +20,7 @@ function GameInputButtons(props: GameInputButtonsProps) {
           className="button is-danger m-1 is-size-5"
           onClick={() => props.cbHandleButtonClicked(0)}
           style={{ width: `${props.btnSize}px` }}
+          disabled={props.disabled}
         >
           Miss
         </button>

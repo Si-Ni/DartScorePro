@@ -4,8 +4,8 @@ import YesNoPopUp from "../../popUps/YesNoPopUp/YesNoPopUp.tsx";
 import "../../../styles/Games.css";
 import NavigationButtons from "../../buttons/NavigationButtons/NavigationButtons.tsx";
 import OnlineStandardGames from "../../onlineGamemodes/OnlineStandardGames/OnlineStandardGames.tsx";
-import GameInformationHeader from "../../GameInformationHeader/GameInformationHeader";
 import { OnlineGamesProps } from "./OnlineGames";
+import GameInformationHeader from "../../GameInformationHeader/GameInformationHeader.tsx";
 
 function OnlineGames(props: OnlineGamesProps) {
   const [showGoToMainMenuPopUp, setShowGoToMainMenuPopUp] = useState<boolean>(false);
@@ -18,6 +18,11 @@ function OnlineGames(props: OnlineGamesProps) {
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState<number>(props.initialGameStats.currentPlayer);
   const [playerStats, setPlayerStats] = useState<PlayerToPlayerStats>(props.initialGameStats.playerStats);
 
+  const checkIsPlayersTurn = (currentPlayerIndex: number): boolean => {
+    return props.players[currentPlayerIndex] === props.userID;
+  };
+  const [isPlayersTurn, setIsPlayersTurn] = useState<boolean>(checkIsPlayersTurn(props.initialGameStats.currentPlayer));
+
   const gameProps = {
     players: props.players,
     playerTotalGameStats: playerTotalGameStats,
@@ -25,7 +30,8 @@ function OnlineGames(props: OnlineGamesProps) {
     throwsRemaining: throwsRemaining,
     currentRound: currentRound,
     startingPlayerIndex: startingPlayerIndex,
-    currentPlayerIndex: currentPlayerIndex
+    currentPlayerIndex: currentPlayerIndex,
+    isPlayersTurn: isPlayersTurn
   };
 
   return (

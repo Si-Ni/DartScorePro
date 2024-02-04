@@ -8,4 +8,5 @@ export interface OnlineStandardGamesProps {
   throwsRemaining: number;
   startingPlayerIndex: number;
   currentPlayerIndex: number;
+  isPlayersTurn: boolean;
 }

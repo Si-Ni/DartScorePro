@@ -1,7 +1,7 @@
 import { useState } from "react";
 import GamemodeSelection from "../GamemodeSelection/GamemodeSelection.tsx";
 import GameSettings from "../GameSettings/GameSettings.tsx";
-import NavigationButtons from "../../buttons/NavigationButtons/NavigationButtons";
+import NavigationButtons from "../../buttons/NavigationButtons/NavigationButtons.tsx";
 import { SettingsMenuProps } from "./SettingsMenu";
 
 function SettingsMenu(props: SettingsMenuProps) {

@@ -16,6 +16,7 @@ function OnlineStandardGames(props: OnlineStandardGamesProps) {
       cbHandleScoreBtnClicked={() => {}}
       multiplier={multiplier}
       cbHandleMultiplierClicked={setMultiplier}
+      isPlayersTurn={props.isPlayersTurn}
     />
   );
 }

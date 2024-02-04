@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useState, useEffect, useCallback } from "react";
-import NavigationButtons from "../../../components/buttons/NavigationButtons/NavigationButtons";
+import NavigationButtons from "../../../components/buttons/NavigationButtons/NavigationButtons.tsx";
 import { useNavigate } from "react-router-dom";
 
 const COMMON_CHECKOUTS = "/api/commonCheckout?";

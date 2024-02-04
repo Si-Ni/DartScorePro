@@ -37,6 +37,7 @@ function StandardGamesView(props: StandardGamesViewProps) {
                 cbHandleButtonClicked={props.cbHandleScoreBtnClicked}
                 showMissButton={false}
                 btnSize={20}
+                disabled={props.isPlayersTurn === false}
               />
             }
           </div>

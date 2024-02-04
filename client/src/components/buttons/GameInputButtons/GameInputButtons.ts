@@ -3,4 +3,5 @@ export interface GameInputButtonsProps {
   cbHandleButtonClicked(number: number): void;
   showMissButton: boolean;
   btnSize: number;
+  disabled?: boolean;
 }
