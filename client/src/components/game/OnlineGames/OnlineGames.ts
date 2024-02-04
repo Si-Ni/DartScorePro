@@ -2,6 +2,7 @@ import { DGameData } from "../../../pages/onlineMultiplayer/OnlineMultiplayer/On
 import { Gamemode, InAndOutMode } from "../../../types/global";
 
 export interface OnlineGamesProps {
+  userID: string;
   selectedGamemode: Gamemode;
   players: string[];
   cbBackBtnClicked(): void;

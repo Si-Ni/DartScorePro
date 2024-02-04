@@ -1,7 +1,7 @@
 import { useState } from "react";
 import PlayerMenu from "../PlayerMenu/PlayerMenu.tsx";
 import SettingsMenu from "../SettingsMenu/SettingsMenu.tsx";
-import NavigationButtons from "../../buttons/NavigationButtons/NavigationButtons";
+import NavigationButtons from "../../buttons/NavigationButtons/NavigationButtons.tsx";
 import { PlayersAndSettingsProps } from "./PlayersAndSettings";
 
 function PlayersAndSettings(props: PlayersAndSettingsProps) {

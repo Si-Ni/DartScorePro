@@ -77,7 +77,12 @@ function OnlineMultiplayer(props: OnlineMultiplayerProps) {
   return (
     <>
       {gameStarted ? (
-        <OnlineGames {...gameProps} initialGameStats={initialGameStats} cbBackBtnClicked={handleBackToPlayerMenu} />
+        <OnlineGames
+          {...gameProps}
+          initialGameStats={initialGameStats}
+          cbBackBtnClicked={handleBackToPlayerMenu}
+          userID={props.displayUserID}
+        />
       ) : (
         <OnlineMultiplayerSettings
           {...gameProps}

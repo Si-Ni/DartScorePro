@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import NavigationButtons from "../../../components/buttons/NavigationButtons/NavigationButtons";
+import NavigationButtons from "../../../components/buttons/NavigationButtons/NavigationButtons.tsx";
 import { JoinLobbyProps } from "./JoinLobby";
 
 function JoinLobby({ socket, ...props }: JoinLobbyProps) {
