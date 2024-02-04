@@ -1,7 +1,6 @@
 const initialisePlayerStats = (players) => {
   const initialStats = {};
   players.forEach((player, index) => {
-    console.log(player);
     initialStats[player.userID] = {
       score: 301,
       scoreAtBeginningOfRound: 301,
