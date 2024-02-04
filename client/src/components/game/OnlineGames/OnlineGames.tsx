@@ -14,17 +14,20 @@ function OnlineGames(props: OnlineGamesProps) {
   );
   const [throwsRemaining, setThrowsRemaining] = useState<number>(props.initialGameStats.throwsRemaining);
   const [currentRound, setCurrentRound] = useState<number>(props.initialGameStats.currentRound);
-  const [startingPlayerIndex, setStartingPlayerIndex] = useState<number>(props.initialGameStats.startingPlayer);
-  const [currentPlayerIndex, setCurrentPlayerIndex] = useState<number>(props.initialGameStats.currentPlayer);
+  const [startingPlayerIndex, setStartingPlayerIndex] = useState<number>(props.initialGameStats.startingPlayerIndex);
+  const [currentPlayerIndex, setCurrentPlayerIndex] = useState<number>(props.initialGameStats.currentPlayerIndex);
   const [playerStats, setPlayerStats] = useState<PlayerToPlayerStats>(props.initialGameStats.playerStats);
 
   const checkIsPlayersTurn = (currentPlayerIndex: number): boolean => {
     return props.players[currentPlayerIndex] === props.userID;
   };
-  const [isPlayersTurn, setIsPlayersTurn] = useState<boolean>(checkIsPlayersTurn(props.initialGameStats.currentPlayer));
+  const [isPlayersTurn, setIsPlayersTurn] = useState<boolean>(
+    checkIsPlayersTurn(props.initialGameStats.currentPlayerIndex)
+  );
 
   const gameProps = {
     socket: props.socket,
+    lobbyCode: props.lobbyCode,
     players: props.players,
     playerTotalGameStats: playerTotalGameStats,
     playerStats: playerStats,
