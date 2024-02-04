@@ -82,6 +82,7 @@ function OnlineMultiplayer(props: OnlineMultiplayerProps) {
           initialGameStats={initialGameStats}
           cbBackBtnClicked={handleBackToPlayerMenu}
           userID={props.displayUserID}
+          socket={props.socket}
         />
       ) : (
         <OnlineMultiplayerSettings

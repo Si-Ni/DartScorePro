@@ -1,5 +1,5 @@
 const generateCode = require("../helpers/generateCode.helper");
-const { initialiseForNewGame } = require("./game.service");
+const { initialiseForNewGame, handlePointsThrown } = require("./game.service");
 
 const lobbies = {};
 const lobbyCodeRegex = /^[A-Z0-9]{6}$/;
@@ -53,6 +53,8 @@ const configureLobbyService = (io) => {
         io.to(lobbyCode).emit("leaderStartedGame", responseData);
       }
     });
+
+    socket.on("game:sendThrownPoints", handlePointsThrown);
 
     socket.on("leaveLobby", () => leaveLobby(io, socket.id));
 

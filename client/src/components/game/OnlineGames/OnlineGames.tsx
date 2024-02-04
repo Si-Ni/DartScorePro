@@ -24,6 +24,7 @@ function OnlineGames(props: OnlineGamesProps) {
   const [isPlayersTurn, setIsPlayersTurn] = useState<boolean>(checkIsPlayersTurn(props.initialGameStats.currentPlayer));
 
   const gameProps = {
+    socket: props.socket,
     players: props.players,
     playerTotalGameStats: playerTotalGameStats,
     playerStats: playerStats,
