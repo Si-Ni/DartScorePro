@@ -4,7 +4,6 @@ import PlayerScoreCard from "../../playerScoreCards/PlayerScoreCard/PlayerScoreC
 import { StandardGamesViewProps } from "./StandardGamesView";
 
 function StandardGamesView(props: StandardGamesViewProps) {
-  console.log(props);
   return (
     <>
       <div className="is-centered">
@@ -47,6 +46,7 @@ function StandardGamesView(props: StandardGamesViewProps) {
         <GameMultiplierButtons
           multiplier={props.multiplier}
           cbHandleMultiplierClicked={props.cbHandleMultiplierClicked}
+          disabled={props.isPlayersTurn === false}
         />
         {props.cbHandleUndoClicked && (
           <button className="button is-danger m-1 is-size-5 uniformButton" onClick={props.cbHandleUndoClicked}>

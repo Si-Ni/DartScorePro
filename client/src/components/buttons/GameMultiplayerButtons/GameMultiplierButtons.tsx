@@ -21,20 +21,29 @@ function GameMultiplierButtons(props: GameMultiplierButtonsProps) {
   return (
     <>
       <button
-        className={`button is-info m-1 is-size-5 uniformButton ${isCurrentlySelected(1) ? "selectedButton" : ""}`}
+        className={`button is-info m-1 is-size-5 uniformButton ${
+          isCurrentlySelected(1) && !props.disabled ? "selectedButton" : ""
+        }`}
         onClick={() => props.cbHandleMultiplierClicked(1)}
+        disabled={props.disabled}
       >
         Single
       </button>
       <button
-        className={`button is-success m-1 is-size-5 uniformButton ${isCurrentlySelected(2) ? "selectedButton" : ""}`}
+        className={`button is-success m-1 is-size-5 uniformButton ${
+          isCurrentlySelected(2) && !props.disabled ? "selectedButton" : ""
+        }`}
         onClick={() => props.cbHandleMultiplierClicked(2)}
+        disabled={props.disabled}
       >
         Double
       </button>
       <button
-        className={`button is-warning m-1 is-size-5 uniformButton ${isCurrentlySelected(3) ? "selectedButton" : ""}`}
+        className={`button is-warning m-1 is-size-5 uniformButton ${
+          isCurrentlySelected(3) && !props.disabled ? "selectedButton" : ""
+        }`}
         onClick={() => props.cbHandleMultiplierClicked(3)}
+        disabled={props.disabled}
       >
         Triple
       </button>
