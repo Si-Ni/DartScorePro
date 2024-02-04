@@ -29,8 +29,8 @@ const initialiseTotalGameStats = (players) => {
 
 const initialiseForNewRound = (lobby) => {
   lobby.game.currentRound = 0;
-  lobby.game.startingPlayer = 0;
-  lobby.game.currentPlayer = 0;
+  lobby.game.startingPlayerIndex = 0;
+  lobby.game.currentPlayerIndex = 0;
   lobby.game.throwsRemaining = 3;
   lobby.game.playerStats = initialisePlayerStats(lobby.players);
 };
@@ -42,8 +42,16 @@ const initialiseForNewGame = (lobby) => {
   initialiseForNewRound(lobby);
 };
 
-const handlePointsThrown = ({ multiplier, points }) => {
-  console.log(multiplier, points);
+const findPlayerIndexBySocketId = (socketId, players) => {
+  const index = players.findIndex((player) => player.socketId === socketId);
+  return index;
+};
+
+const handlePointsThrown = (socketId, lobby, multiplier, points) => {
+  const playerIndex = findPlayerIndexBySocketId(socketId, lobby.players);
+  if (playerIndex === lobby.game.currentPlayerIndex) {
+    console.log(multiplier, points);
+  }
 };
 
 module.exports = { initialiseForNewGame, handlePointsThrown };

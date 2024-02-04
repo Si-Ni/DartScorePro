@@ -83,6 +83,7 @@ function OnlineMultiplayer(props: OnlineMultiplayerProps) {
           cbBackBtnClicked={handleBackToPlayerMenu}
           userID={props.displayUserID}
           socket={props.socket}
+          lobbyCode={props.lobbyCode}
         />
       ) : (
         <OnlineMultiplayerSettings

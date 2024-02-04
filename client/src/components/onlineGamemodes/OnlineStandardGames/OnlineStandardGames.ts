@@ -3,6 +3,7 @@ import { PlayerToPlayerStats, PlayerToPlayerTotalGameStats } from "../../../type
 
 export interface OnlineStandardGamesProps {
   socket: Socket;
+  lobbyCode: string;
   playerTotalGameStats: PlayerToPlayerTotalGameStats;
   playerStats: PlayerToPlayerStats;
   currentRound: number;

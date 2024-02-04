@@ -49,12 +49,15 @@ const configureLobbyService = (io) => {
         lobbies[lobbyCode].gameSettings = gameSettings;
         initialiseForNewGame(lobbies[lobbyCode]);
         const responseData = { gameSettings: lobbies[lobbyCode].gameSettings, game: lobbies[lobbyCode].game };
-        console.log(lobbies[lobbyCode].game.playerStats);
         io.to(lobbyCode).emit("leaderStartedGame", responseData);
       }
     });
 
-    socket.on("game:sendThrownPoints", handlePointsThrown);
+    socket.on("game:sendThrownPoints", ({ lobbyCode, multiplier, points }) => {
+      if (lobbies[lobbyCode] && lobbies[lobbyCode].gameStarted) {
+        handlePointsThrown(socket.id, lobbies[lobbyCode], multiplier, points);
+      }
+    });
 
     socket.on("leaveLobby", () => leaveLobby(io, socket.id));
 

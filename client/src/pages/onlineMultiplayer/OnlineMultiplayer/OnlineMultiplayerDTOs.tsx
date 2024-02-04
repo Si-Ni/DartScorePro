@@ -10,8 +10,8 @@ export interface DGameSettings {
 
 export interface DGameData {
   currentRound: number;
-  startingPlayer: number;
-  currentPlayer: number;
+  startingPlayerIndex: number;
+  currentPlayerIndex: number;
   throwsRemaining: number;
   playerStats: PlayerToPlayerStats;
   totalGameStats: PlayerToPlayerTotalGameStats;
