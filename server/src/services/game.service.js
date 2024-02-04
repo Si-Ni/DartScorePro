@@ -42,4 +42,8 @@ const initialiseForNewGame = (lobby) => {
   initialiseForNewRound(lobby);
 };
 
-module.exports = { initialiseForNewGame };
+const handlePointsThrown = ({ multiplier, points }) => {
+  console.log(multiplier, points);
+};
+
+module.exports = { initialiseForNewGame, handlePointsThrown };
