@@ -1,5 +1,5 @@
 import GameInputButtons from "../../buttons/GameInputButtons/GameInputButtons.tsx";
-import GameMultiplierButtons from "../../buttons/GameMultiplayerButtons/GameMultiplierButtons.tsx";
+import GameMultiplierButtons from "../../buttons/GmeMultiplierButtons/GameMultiplierButtons.tsx";
 import PlayerScoreCard from "../../playerScoreCards/PlayerScoreCard/PlayerScoreCard.tsx";
 import { StandardGamesViewProps } from "./StandardGamesView";
 

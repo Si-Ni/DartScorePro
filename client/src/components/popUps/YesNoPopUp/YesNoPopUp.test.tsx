@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
 import YesNoPopUp from "./YesNoPopUp.tsx";
 
 const mockProps = {
@@ -9,9 +9,10 @@ const mockProps = {
 };
 
 describe("YesNoPopUp", () => {
-  it("renders content and buttons with correct classes and labels", () => {
+  beforeEach(() => {
     render(<YesNoPopUp {...mockProps} />);
-
+  });
+  it("renders content and buttons with correct classes and labels", () => {
     const contentElement = screen.getByText("Test Content");
     const yesButton = screen.getByText("Yes");
     const noButton = screen.getByText("No");
@@ -25,8 +26,6 @@ describe("YesNoPopUp", () => {
   });
 
   it("calls cbYesClicked when the Yes button is clicked", () => {
-    render(<YesNoPopUp {...mockProps} />);
-
     const yesButton = screen.getByText("Yes");
 
     fireEvent.click(yesButton);
@@ -35,8 +34,6 @@ describe("YesNoPopUp", () => {
   });
 
   it("calls cbNoClicked when the No button is clicked", () => {
-    render(<YesNoPopUp {...mockProps} />);
-
     const noButton = screen.getByText("No");
 
     fireEvent.click(noButton);
