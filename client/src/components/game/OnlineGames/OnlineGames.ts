@@ -3,7 +3,7 @@ import { DGameData } from "../../../pages/onlineMultiplayer/OnlineMultiplayer/On
 import { Gamemode, InAndOutMode } from "../../../types/global";
 
 export interface OnlineGamesProps {
-  userID: string;
+  displayUserID: string;
   socket: Socket;
   lobbyCode: string;
   selectedGamemode: Gamemode;

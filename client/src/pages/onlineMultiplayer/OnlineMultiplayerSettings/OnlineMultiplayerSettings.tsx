@@ -13,11 +13,6 @@ function OnlineMultiplayerSettings(props: OnlineMultiplayerSettingsProps) {
     if (props.players.length > 1) setShowSettingsMenu(true);
   };
 
-  const handleBack = () => {
-    props.socket.emit("lobby:leave");
-    navigate("/multiplayer");
-  };
-
   return (
     <>
       {showSettingsMenu ? (
@@ -41,7 +36,7 @@ function OnlineMultiplayerSettings(props: OnlineMultiplayerSettingsProps) {
             <div className="container box">
               <PlayerMenu players={props.players} maxPlayers={4} setPlayers={props.setPlayers} isEditable={false} />
               <NavigationButtons
-                cbBackBtnClicked={handleBack}
+                cbBackBtnClicked={props.cbBackBtnClicked}
                 cbNextBtnClicked={props.isLobbyLeader ? handleNext : undefined}
                 nextBtnDisabled={props.players.length <= 1}
               />
