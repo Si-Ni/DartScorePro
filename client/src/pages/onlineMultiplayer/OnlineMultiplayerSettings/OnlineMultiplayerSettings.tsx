@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import PlayerMenu from "../../../components/gameSettings/PlayerMenu/PlayerMenu.tsx";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import SettingsMenu from "../../../components/gameSettings/SettingsMenu/SettingsMenu.tsx";
 import NavigationButtons from "../../../components/buttons/NavigationButtons/NavigationButtons.tsx";
 import { OnlineMultiplayerSettingsProps } from "./OnlineMultiplayerSettings";
@@ -8,14 +8,6 @@ import { OnlineMultiplayerSettingsProps } from "./OnlineMultiplayerSettings";
 function OnlineMultiplayerSettings(props: OnlineMultiplayerSettingsProps) {
   const navigate = useNavigate();
   const [showSettingsMenu, setShowSettingsMenu] = useState<boolean>(false);
-
-  const { lobbyCode } = useParams();
-
-  useEffect(() => {
-    if (lobbyCode && props.displayUserID) {
-      props.socket.emit("lobby:join", { lobbyCode: lobbyCode, userID: props.displayUserID });
-    }
-  }, [lobbyCode, props.socket, props.displayUserID]);
 
   const handleNext = () => {
     if (props.players.length > 1) setShowSettingsMenu(true);
@@ -25,24 +17,6 @@ function OnlineMultiplayerSettings(props: OnlineMultiplayerSettingsProps) {
     props.socket.emit("lobby:leave");
     navigate("/multiplayer");
   };
-
-  useEffect(() => {
-    const handleSetPlayerList = (players: { userID: string; isLeader: boolean }[]) => {
-      const isLeader = players.find((player) => player.userID === props.displayUserID && player.isLeader);
-
-      props.setPlayers(players.map((player) => player.userID));
-
-      isLeader && props.setIsLobbyLeader(true);
-    };
-
-    props.socket.on("updatePlayersList", handleSetPlayerList);
-
-    props.socket.on("isGameStarted", () => props.setGameStarted(true));
-
-    return () => {
-      props.socket.off("updatePlayersList", handleSetPlayerList);
-    };
-  }, [props.socket, props.setPlayers, props.displayUserID]);
 
   return (
     <>
