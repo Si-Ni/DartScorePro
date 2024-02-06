@@ -22,4 +22,5 @@ export interface OnlineMultiplayerSettingsProps {
   cbNextBtnClicked(): void;
   displayUserID: string;
   setGameStarted: React.Dispatch<React.SetStateAction<boolean>>;
+  cbBackBtnClicked(): void;
 }

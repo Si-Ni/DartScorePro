@@ -22,7 +22,7 @@ function OnlineGames(props: OnlineGamesProps) {
   const [winningPlayer, setWinningPlayer] = useState<string | null>(null);
 
   const checkIsPlayersTurn = (currentPlayerIndex: number): boolean => {
-    return props.players[currentPlayerIndex] === props.userID;
+    return props.players[currentPlayerIndex] === props.displayUserID;
   };
   const [isPlayersTurn, setIsPlayersTurn] = useState<boolean>(
     checkIsPlayersTurn(props.initialGameStats.currentPlayerIndex)
@@ -89,7 +89,7 @@ function OnlineGames(props: OnlineGamesProps) {
         modeIn={props.modeIn}
         modeOut={props.modeOut}
       />
-      {props.selectedGamemode === "301" && <OnlineStandardGames {...gameProps} />}
+      {(props.selectedGamemode === "301" || props.selectedGamemode === "501") && <OnlineStandardGames {...gameProps} />}
       <NavigationButtons cbBackBtnClicked={props.cbBackBtnClicked} marginTop={0} />
     </div>
   );

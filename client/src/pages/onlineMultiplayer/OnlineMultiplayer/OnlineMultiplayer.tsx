@@ -18,7 +18,10 @@ function OnlineMultiplayer(props: OnlineMultiplayerProps) {
   const [initialGameStats, setInitialGameStats] = useState<any>();
 
   const { lobbyCode } = useParams();
-  if (lobbyCode) props.setLobbyCode(lobbyCode);
+
+  useEffect(() => {
+    if (lobbyCode) props.setLobbyCode(lobbyCode);
+  }, [lobbyCode]);
 
   useEffect(() => {
     const handleGameStarted = (data: DSettingsAndGameData) => {
@@ -93,39 +96,33 @@ function OnlineMultiplayer(props: OnlineMultiplayerProps) {
   };
 
   const gameProps = {
+    socket: props.socket,
+    lobbyCode: props.lobbyCode,
+    displayUserID: props.displayUserID,
     players: players,
     selectedGamemode: selectedGamemode,
     setsToWin: setsToWin,
     legsForSet: legsForSet,
     modeIn: modeIn,
-    modeOut: modeOut
+    modeOut: modeOut,
+    cbBackBtnClicked: handleLeaveLobby
   };
 
   return (
     <>
       {gameStarted ? (
-        <OnlineGames
-          {...gameProps}
-          initialGameStats={initialGameStats}
-          cbBackBtnClicked={handleLeaveLobby}
-          userID={props.displayUserID}
-          socket={props.socket}
-          lobbyCode={props.lobbyCode}
-        />
+        <OnlineGames {...gameProps} initialGameStats={initialGameStats} />
       ) : (
         <OnlineMultiplayerSettings
           {...gameProps}
           setSelectedGamemode={setSelectedGamemode}
           setPlayers={setPlayers}
-          socket={props.socket}
-          lobbyCode={props.lobbyCode}
           isLobbyLeader={props.isLobbyLeader}
           setSetsToWin={setSetsToWin}
           setLegsForSet={setLegsForSet}
           setModeIn={setModeIn}
           setModeOut={setModeOut}
           cbNextBtnClicked={nextBtnClicked}
-          displayUserID={props.displayUserID}
           setIsLobbyLeader={props.setIsLobbyLeader}
           setGameStarted={setGameStarted}
         />
