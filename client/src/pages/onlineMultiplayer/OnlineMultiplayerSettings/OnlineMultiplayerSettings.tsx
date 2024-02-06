@@ -13,7 +13,7 @@ function OnlineMultiplayerSettings(props: OnlineMultiplayerSettingsProps) {
 
   useEffect(() => {
     if (lobbyCode && props.displayUserID) {
-      props.socket.emit("joinLobby", { lobbyCode: lobbyCode, userID: props.displayUserID });
+      props.socket.emit("lobby:join", { lobbyCode: lobbyCode, userID: props.displayUserID });
     }
   }, [lobbyCode, props.socket, props.displayUserID]);
 
@@ -22,7 +22,7 @@ function OnlineMultiplayerSettings(props: OnlineMultiplayerSettingsProps) {
   };
 
   const handleBack = () => {
-    props.socket.emit("leaveLobby");
+    props.socket.emit("lobby:leave");
     navigate("/multiplayer");
   };
 

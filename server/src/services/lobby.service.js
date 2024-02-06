@@ -3,83 +3,91 @@ const { initialiseForNewGame, handlePointsThrown } = require("./game.service");
 
 const lobbies = {};
 const lobbyCodeRegex = /^[A-Z0-9]{6}$/;
-const multiplierRegex = /^[123]$/;
 
-const configureLobbyService = (io) => {
-  io.on("connection", (socket) => {
-    console.log("New connection:", socket.id);
+module.exports = (io) => {
+  const createLobby = function (userID) {
+    const socket = this;
+    const lobbyCode = generateCode();
+    lobbies[lobbyCode] = { gameStarted: false, players: [{ userID, socketId: socket.id, isLeader: true }] };
 
-    socket.on("createLobby", (userID) => {
-      const lobbyCode = generateCode();
-      lobbies[lobbyCode] = { gameStarted: false, players: [{ userID, socketId: socket.id, isLeader: true }] };
-      socket.join(lobbyCode);
-      socket.emit("lobbyCreated", lobbyCode);
-    });
+    socket.join(lobbyCode);
+    socket.emit("lobbyCreated", lobbyCode);
+  };
 
-    socket.on("joinLobby", ({ lobbyCode, userID }) => {
-      const socketId = socket.id;
-      const lobby = lobbies[lobbyCode];
+  const joinLobby = function ({ lobbyCode, userID }) {
+    const socket = this;
 
-      if (!lobbyCodeRegex.test(lobbyCode) || !lobby)
-        return socket.emit(lobbyCode ? "lobbyNotFound" : "invalidLobbyCode");
+    const socketId = socket.id;
 
-      const playerIndex = lobby.players.findIndex((player) => player.userID === userID);
-
-      if (playerIndex !== -1) lobby.players[playerIndex].socketId = socketId;
-      else lobby.players.push({ userID, socketId, isLeader: false });
-
-      socket.join(lobbyCode);
-      socket.emit("lobbyJoined", lobbyCode);
-
-      const updatedPlayers = lobby.players
-        .filter((player) => player.socketId !== "")
-        .map((player) => ({ userID: player.userID, isLeader: player.isLeader }));
-
-      io.to(lobbyCode).emit("updatePlayersList", updatedPlayers);
-
-      lobby.gameSettings && io.to(lobbyCode).emit("isGameStarted");
-    });
-
-    socket.on("gameStarted", ({ lobbyCode, gameSettings }) => {
-      const isLeader = lobbies[lobbyCode]?.players.find((player) => player.socketId === socket.id)?.isLeader ?? false;
-      const isValidGamemode = ["301", "501", "rcl", "cri"].includes(gameSettings.selectedGamemode);
-
-      if (!lobbyCodeRegex.test(lobbyCode)) return socket.emit("invalidLobbyCode");
-
-      if (lobbies[lobbyCode] && isLeader && isValidGamemode && !gameSettings.hasOwnProperty("__proto__")) {
-        lobbies[lobbyCode].gameSettings = gameSettings;
-        initialiseForNewGame(lobbies[lobbyCode]);
-        const responseData = { gameSettings: lobbies[lobbyCode].gameSettings, game: lobbies[lobbyCode].game };
-        io.to(lobbyCode).emit("leaderStartedGame", responseData);
-      }
-    });
-
-    socket.on("game:sendThrownPoints", ({ lobbyCode, multiplier, points }) => {
-      if (lobbies[lobbyCode] && lobbies[lobbyCode].gameStarted && multiplierRegex.test(multiplier)) {
-        handlePointsThrown(socket.id, lobbies[lobbyCode], multiplier, points);
-      }
-    });
-
-    socket.on("leaveLobby", () => leaveLobby(io, socket.id));
-
-    socket.on("disconnect", () => {
-      console.log("User disconnected:", socket.id);
-      leaveLobby(io, socket.id);
-    });
-  });
-};
-
-const leaveLobby = (io, socketId) => {
-  Object.keys(lobbies).forEach((lobbyCode) => {
     const lobby = lobbies[lobbyCode];
-    const disconnectedPlayer = lobby.players.find((player) => player.socketId === socketId);
 
-    if (disconnectedPlayer) {
-      disconnectedPlayer.socketId = "";
-      const updatedPlayers = lobby.players.filter((player) => player.socketId !== "").map((player) => player);
-      io.to(lobbyCode).emit("updatePlayersList", updatedPlayers);
+    if (!lobbyCodeRegex.test(lobbyCode) || !lobby) return socket.emit(lobbyCode ? "lobbyNotFound" : "invalidLobbyCode");
+
+    const playerIndex = lobby.players.findIndex((player) => player.userID === userID);
+
+    if (playerIndex !== -1) lobby.players[playerIndex].socketId = socketId;
+    else lobby.players.push({ userID, socketId, isLeader: false });
+
+    socket.join(lobbyCode);
+    socket.emit("lobbyJoined", lobbyCode);
+
+    const updatedPlayers = lobby.players
+      .filter((player) => player.socketId !== "")
+      .map((player) => ({ userID: player.userID, isLeader: player.isLeader }));
+
+    io.to(lobbyCode).emit("updatePlayersList", updatedPlayers);
+
+    lobby.gameSettings && io.to(lobbyCode).emit("isGameStarted");
+  };
+
+  const gameStarted = function ({ lobbyCode, gameSettings }) {
+    const socket = this;
+    const isLeader = lobbies[lobbyCode]?.players.find((player) => player.socketId === socket.id)?.isLeader ?? false;
+    const isValidGamemode = ["301", "501", "rcl", "cri"].includes(gameSettings.selectedGamemode);
+
+    if (!lobbyCodeRegex.test(lobbyCode)) return socket.emit("invalidLobbyCode");
+
+    if (lobbies[lobbyCode] && isLeader && isValidGamemode && !gameSettings.hasOwnProperty("__proto__")) {
+      lobbies[lobbyCode].gameSettings = gameSettings;
+      initialiseForNewGame(lobbies[lobbyCode]);
+      const responseData = { gameSettings: lobbies[lobbyCode].gameSettings, game: lobbies[lobbyCode].game };
+      io.to(lobbyCode).emit("leaderStartedGame", responseData);
     }
-  });
-};
+  };
 
-module.exports = { configureLobbyService };
+  const leaveLobby = function (socketId) {
+    Object.keys(lobbies).forEach((lobbyCode) => {
+      const lobby = lobbies[lobbyCode];
+      const disconnectedPlayer = lobby.players.find((player) => player.socketId === socketId);
+
+      if (disconnectedPlayer) {
+        disconnectedPlayer.socketId = "";
+        const updatedPlayers = lobby.players.filter((player) => player.socketId !== "").map((player) => player);
+
+        io.to(lobbyCode).emit("updatePlayersList", updatedPlayers);
+      }
+    });
+  };
+
+  const disconnect = function () {
+    const socket = this;
+
+    console.log("User disconnected:", socket.id);
+    leaveLobby(socket.id);
+  };
+
+  const sendThrownPoints = function ({ lobbyCode, multiplier, points }) {
+    const socket = this;
+    if (lobbies[lobbyCode] && lobbies[lobbyCode].gameStarted) {
+      handlePointsThrown(socket.id, lobbies[lobbyCode], multiplier, points);
+    }
+  };
+  return {
+    createLobby,
+    joinLobby,
+    gameStarted,
+    leaveLobby,
+    disconnect,
+    sendThrownPoints
+  };
+};
