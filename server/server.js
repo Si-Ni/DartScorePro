@@ -8,7 +8,6 @@ const api = require("./src/routes/api.route");
 const rateLimiter = require("./src/middlewares/rateLimit.middleware");
 const cookieParser = require("cookie-parser");
 const { connectDB } = require("./src/services/db.service");
-const { configureLobbyService } = require("./src/services/lobby.service");
 
 const app = express();
 const PORT = 4000 || process.env.PORT;
@@ -34,7 +33,23 @@ const io = require("socket.io")(server, {
     methods: ["GET", "POST"]
   }
 });
-configureLobbyService(io);
+
+const { createLobby, joinLobby, leaveLobby, sendThrownPoints, disconnect, gameStarted } =
+  require("./src/services/lobby.service")(io);
+
+const onConnection = (socket) => {
+  console.log("New connection:", socket.id);
+
+  socket.on("lobby:create", createLobby);
+  socket.on("lobby:join", joinLobby);
+  socket.on("lobby:gameStarted", gameStarted);
+  socket.on("lobby:leave", leaveLobby);
+  socket.on("disconnect", disconnect);
+
+  socket.on("game:sendThrownPoints", sendThrownPoints);
+};
+
+io.on("connection", onConnection);
 
 connectDB();
 

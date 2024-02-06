@@ -53,7 +53,7 @@ function OnlineMultiplayer(props: OnlineMultiplayerProps) {
         modeOut: modeOut
       };
 
-      props.socket.emit("gameStarted", {
+      props.socket.emit("lobby:gameStarted", {
         lobbyCode: props.lobbyCode || lobbyCode,
         gameSettings: gameSettings
       });

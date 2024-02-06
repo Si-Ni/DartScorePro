@@ -16,7 +16,7 @@ function CreateLobby({
   const codeCopiedRef = useRef<HTMLInputElement | null>(null);
 
   const createLobby = () => {
-    socket.emit("createLobby", displayUserID);
+    socket.emit("lobby:create", displayUserID);
 
     socket.once("lobbyCreated", (newLobbyCode: string) => {
       setLobbyCode(newLobbyCode);
