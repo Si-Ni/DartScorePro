@@ -1,4 +1,4 @@
-![logo](https://github.com/Si-Ni/DartScorePro/assets/91952781/b5d46721-c1b1-4e7d-b4ba-b218b2ab8c80)
+![logo](client/src/assets/logo.png)
 
 Welcome to DartScorePro, your ultimate tool for playing dart games with ease and precision. This documentation will guide you through the features, usage, and support options available for DartScorePro.
 
