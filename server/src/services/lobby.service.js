@@ -55,7 +55,7 @@ module.exports = (io) => {
     }
   };
 
-  const leaveLobby = function (socketId) {
+  const leaveLobby = function (socketId = this.id) {
     Object.keys(lobbies).forEach((lobbyCode) => {
       const lobby = lobbies[lobbyCode];
       const disconnectedPlayer = lobby.players.find((player) => player.socketId === socketId);

@@ -20,6 +20,11 @@ function OnlineMultiplayer(props: OnlineMultiplayerProps) {
   const { lobbyCode } = useParams();
 
   useEffect(() => {
+    const handleGameStarted = (data: DSettingsAndGameData) => {
+      setGameSettings(data.gameSettings);
+      setInitialGameStats(data.game);
+    };
+
     const setGameSettings = (gameSettings: DGameSettings) => {
       setSelectedGamemode(gameSettings.selectedGamemode);
       setSetsToWin(gameSettings.setsToWin);
@@ -28,17 +33,36 @@ function OnlineMultiplayer(props: OnlineMultiplayerProps) {
       setModeOut(gameSettings.modeOut);
     };
 
-    const handleGameStarted = (data: DSettingsAndGameData) => {
-      setGameSettings(data.gameSettings);
-      setInitialGameStats(data.game);
-    };
-
     props.socket.on("leaderStartedGame", handleGameStarted);
 
     return () => {
       props.socket.off("leaderStartedGame", handleGameStarted);
     };
   }, [props.socket]);
+
+  useEffect(() => {
+    if (lobbyCode && props.displayUserID) {
+      props.socket.emit("lobby:join", { lobbyCode: lobbyCode, userID: props.displayUserID });
+    }
+  }, [lobbyCode, props.socket, props.displayUserID]);
+
+  useEffect(() => {
+    const handleSetPlayerList = (players: { userID: string; isLeader: boolean }[]) => {
+      const isLeader = players.find((player) => player.userID === props.displayUserID && player.isLeader);
+
+      setPlayers(players.map((player) => player.userID));
+
+      isLeader && props.setIsLobbyLeader(true);
+    };
+
+    props.socket.on("updatePlayersList", handleSetPlayerList);
+
+    props.socket.on("isGameStarted", () => setGameStarted(true));
+
+    return () => {
+      props.socket.off("updatePlayersList", handleSetPlayerList);
+    };
+  }, [props.socket, setPlayers, props.displayUserID]);
 
   useEffect(() => {
     if (initialGameStats) setGameStarted(true);
@@ -62,7 +86,7 @@ function OnlineMultiplayer(props: OnlineMultiplayerProps) {
   };
 
   const handleLeaveLobby = () => {
-    props.socket.emit("leaveLobby");
+    props.socket.emit("lobby:leave");
     navigate("/multiplayer");
   };
 
