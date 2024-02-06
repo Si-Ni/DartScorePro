@@ -4,6 +4,7 @@ import React from "react";
 export interface JoinLobbyProps {
   cbBackBtnClicked(): void;
   socket: Socket;
-  setLobbyCodeGlobal: React.Dispatch<React.SetStateAction<string>>;
+  lobbyCode: string;
+  setLobbyCode: React.Dispatch<React.SetStateAction<string>>;
   displayUserID: string;
 }

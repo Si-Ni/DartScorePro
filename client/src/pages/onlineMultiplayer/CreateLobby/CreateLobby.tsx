@@ -1,35 +1,27 @@
-import { useState, useRef } from "react";
+import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import NavigationButtons from "../../../components/buttons/NavigationButtons/NavigationButtons.tsx";
 import { CreateLobbyProps } from "./CreateLobby";
 
-function CreateLobby({
-  socket,
-  setIsLobbyLeader,
-  cbBackBtnClicked,
-  setLobbyCodeGlobal,
-  displayUserID
-}: CreateLobbyProps) {
+function CreateLobby(props: CreateLobbyProps) {
   const navigate = useNavigate();
-  const [lobbyCode, setLobbyCode] = useState("");
   const lobbyCodeRef = useRef<HTMLInputElement | null>(null);
   const codeCopiedRef = useRef<HTMLInputElement | null>(null);
 
   const createLobby = () => {
-    socket.emit("lobby:create", displayUserID);
+    props.socket.emit("lobby:create", props.displayUserID);
 
-    socket.once("lobbyCreated", (newLobbyCode: string) => {
-      setLobbyCode(newLobbyCode);
-      setLobbyCodeGlobal(newLobbyCode);
+    props.socket.once("lobbyCreated", (newLobbyCode: string) => {
+      props.setLobbyCode(newLobbyCode);
     });
 
     hideCodeCopied();
   };
 
   const handleCopy = () => {
-    if (lobbyCode) {
+    if (props.lobbyCode) {
       navigator.clipboard
-        .writeText(lobbyCode)
+        .writeText(props.lobbyCode)
         .then(() => {
           codeCopiedRef.current!.style.display = "block";
         })
@@ -47,8 +39,8 @@ function CreateLobby({
 
   const handleNext = () => {
     if (!lobbyCodeRef.current!.value.trim()) return;
-    setIsLobbyLeader(true);
-    navigate(`/multiplayer/lobby/${lobbyCode}`);
+    props.setIsLobbyLeader(true);
+    navigate(`/multiplayer/lobby/${props.lobbyCode}`);
   };
 
   return (
@@ -61,7 +53,7 @@ function CreateLobby({
             </div>
             <div className="column">
               <input
-                value={lobbyCode}
+                value={props.lobbyCode}
                 ref={lobbyCodeRef}
                 onClick={handleCopy}
                 autoFocus
@@ -79,7 +71,10 @@ function CreateLobby({
                 Create Lobby
               </button>
             </div>
-            <NavigationButtons cbBackBtnClicked={cbBackBtnClicked} cbNextBtnClicked={handleNext}></NavigationButtons>
+            <NavigationButtons
+              cbBackBtnClicked={props.cbBackBtnClicked}
+              cbNextBtnClicked={handleNext}
+            ></NavigationButtons>
           </div>
         </div>
       </div>
