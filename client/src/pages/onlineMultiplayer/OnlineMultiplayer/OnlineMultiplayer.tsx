@@ -2,11 +2,12 @@ import { useEffect, useState } from "react";
 import { Gamemode, InAndOutMode } from "../../../types/global";
 import OnlineGames from "../../../components/game/OnlineGames/OnlineGames.tsx";
 import OnlineMultiplayerSettings from "../OnlineMultiplayerSettings/OnlineMultiplayerSettings.tsx";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { OnlineMultiplayerProps } from "./OnlineMultiplayer";
 import { DGameSettings, DSettingsAndGameData } from "./OnlineMultiplayerDTOs";
 
 function OnlineMultiplayer(props: OnlineMultiplayerProps) {
+  const navigate = useNavigate();
   const [players, setPlayers] = useState([props.displayUserID]);
   const [selectedGamemode, setSelectedGamemode] = useState<Gamemode>("301");
   const [gameStarted, setGameStarted] = useState<boolean>(false);
@@ -60,9 +61,9 @@ function OnlineMultiplayer(props: OnlineMultiplayerProps) {
     }
   };
 
-  const handleBackToPlayerMenu = () => {
-    setGameStarted(false);
-    setSelectedGamemode("301");
+  const handleLeaveLobby = () => {
+    props.socket.emit("leaveLobby");
+    navigate("/multiplayer");
   };
 
   const gameProps = {
@@ -80,10 +81,10 @@ function OnlineMultiplayer(props: OnlineMultiplayerProps) {
         <OnlineGames
           {...gameProps}
           initialGameStats={initialGameStats}
-          cbBackBtnClicked={handleBackToPlayerMenu}
+          cbBackBtnClicked={handleLeaveLobby}
           userID={props.displayUserID}
           socket={props.socket}
-          lobbyCode={props.lobbyCode}
+          lobbyCode={props.lobbyCode || lobbyCode}
         />
       ) : (
         <OnlineMultiplayerSettings
