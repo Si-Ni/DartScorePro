@@ -3,6 +3,7 @@ const { initialiseForNewGame, handlePointsThrown } = require("./game.service");
 
 const lobbies = {};
 const lobbyCodeRegex = /^[A-Z0-9]{6}$/;
+const multiplierRegex = /^[123]$/;
 
 const configureLobbyService = (io) => {
   io.on("connection", (socket) => {
@@ -54,7 +55,7 @@ const configureLobbyService = (io) => {
     });
 
     socket.on("game:sendThrownPoints", ({ lobbyCode, multiplier, points }) => {
-      if (lobbies[lobbyCode] && lobbies[lobbyCode].gameStarted) {
+      if (lobbies[lobbyCode] && lobbies[lobbyCode].gameStarted && multiplierRegex.test(multiplier)) {
         handlePointsThrown(socket.id, lobbies[lobbyCode], multiplier, points);
       }
     });
