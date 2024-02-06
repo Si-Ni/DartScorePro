@@ -80,6 +80,7 @@ module.exports = (io) => {
     const socket = this;
     if (lobbies[lobbyCode] && lobbies[lobbyCode].gameStarted) {
       handlePointsThrown(socket.id, lobbies[lobbyCode], multiplier, points);
+      io.to(lobbyCode).emit("gameStatsUpdated", lobbies[lobbyCode].game);
     }
   };
   return {

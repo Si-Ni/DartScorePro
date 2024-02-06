@@ -15,6 +15,7 @@ export interface DGameData {
   throwsRemaining: number;
   playerStats: PlayerToPlayerStats;
   totalGameStats: PlayerToPlayerTotalGameStats;
+  winner: string | null;
 }
 
 export interface DSettingsAndGameData {

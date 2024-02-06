@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { PlayerToPlayerStats, PlayerToPlayerTotalGameStats } from "../../../types/global";
 import YesNoPopUp from "../../popUps/YesNoPopUp/YesNoPopUp.tsx";
 import "../../../styles/Games.css";
@@ -6,6 +6,8 @@ import NavigationButtons from "../../buttons/NavigationButtons/NavigationButtons
 import OnlineStandardGames from "../../onlineGamemodes/OnlineStandardGames/OnlineStandardGames.tsx";
 import { OnlineGamesProps } from "./OnlineGames";
 import GameInformationHeader from "../../GameInformationHeader/GameInformationHeader.tsx";
+import { DGameData } from "../../../pages/onlineMultiplayer/OnlineMultiplayer/OnlineMultiplayerDTOs.tsx";
+import PopUp from "../../popUps/PopUp/PopUp.tsx";
 
 function OnlineGames(props: OnlineGamesProps) {
   const [showGoToMainMenuPopUp, setShowGoToMainMenuPopUp] = useState<boolean>(false);
@@ -17,6 +19,7 @@ function OnlineGames(props: OnlineGamesProps) {
   const [startingPlayerIndex, setStartingPlayerIndex] = useState<number>(props.initialGameStats.startingPlayerIndex);
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState<number>(props.initialGameStats.currentPlayerIndex);
   const [playerStats, setPlayerStats] = useState<PlayerToPlayerStats>(props.initialGameStats.playerStats);
+  const [winningPlayer, setWinningPlayer] = useState<string | null>(null);
 
   const checkIsPlayersTurn = (currentPlayerIndex: number): boolean => {
     return props.players[currentPlayerIndex] === props.userID;
@@ -24,6 +27,35 @@ function OnlineGames(props: OnlineGamesProps) {
   const [isPlayersTurn, setIsPlayersTurn] = useState<boolean>(
     checkIsPlayersTurn(props.initialGameStats.currentPlayerIndex)
   );
+
+  useEffect(() => {
+    const handleStatsUpdated = (data: DGameData) => {
+      setPlayerTotalGameStats(data.totalGameStats);
+      setPlayerStats(data.playerStats);
+      setThrowsRemaining(data.throwsRemaining);
+      setCurrentRound(data.currentRound);
+      setStartingPlayerIndex(data.startingPlayerIndex);
+      setCurrentPlayerIndex(data.currentPlayerIndex);
+      setIsPlayersTurn(checkIsPlayersTurn(data.currentPlayerIndex));
+
+      if (data.winner) {
+        setWinningPlayer(data.winner);
+      }
+    };
+
+    props.socket.on("gameStatsUpdated", handleStatsUpdated);
+
+    return () => {
+      props.socket.off("gameStatsUpdated", handleStatsUpdated);
+    };
+  }, [props.socket]);
+
+  const getWinnerPopUpText = (): string => {
+    if (props.players.length === 1) {
+      return "You have won!";
+    }
+    return `Player: ${winningPlayer} has won this game!`;
+  };
 
   const gameProps = {
     socket: props.socket,
@@ -40,6 +72,9 @@ function OnlineGames(props: OnlineGamesProps) {
 
   return (
     <div className="App hero is-flex is-justify-content-center is-align-items-center is-fullheight">
+      {winningPlayer && (
+        <PopUp content={getWinnerPopUpText()} btnContent="End game" cbBtnClicked={props.cbBackBtnClicked} />
+      )}
       {showGoToMainMenuPopUp && (
         <YesNoPopUp
           content={"Do you really want to leave the game?"}
@@ -55,12 +90,7 @@ function OnlineGames(props: OnlineGamesProps) {
         modeOut={props.modeOut}
       />
       {props.selectedGamemode === "301" && <OnlineStandardGames {...gameProps} />}
-      <NavigationButtons
-        cbBackBtnClicked={() => {
-          /* ToDo */
-        }}
-        marginTop={0}
-      />
+      <NavigationButtons cbBackBtnClicked={props.cbBackBtnClicked} marginTop={0} />
     </div>
   );
 }
