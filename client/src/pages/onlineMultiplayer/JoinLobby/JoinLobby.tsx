@@ -1,23 +1,22 @@
-import { useState, useRef } from "react";
+import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import NavigationButtons from "../../../components/buttons/NavigationButtons/NavigationButtons.tsx";
 import { JoinLobbyProps } from "./JoinLobby";
 
-function JoinLobby({ socket, ...props }: JoinLobbyProps) {
+function JoinLobby(props: JoinLobbyProps) {
   const navigate = useNavigate();
-  const [lobbyCode, setLobbyCode] = useState("");
   const lobbyCodeRef = useRef<HTMLInputElement | null>(null);
   const invalidPwdMsgRef = useRef<HTMLInputElement | null>(null);
 
   const joinLobby = () => {
     if (!lobbyCodeRef.current!.value.trim()) return;
-    socket.emit("lobby:join", { lobbyCode: lobbyCode, userID: props.displayUserID });
+    props.socket.emit("lobby:join", { lobbyCode: props.lobbyCode, userID: props.displayUserID });
 
-    socket.once("lobbyJoined", () => {
-      navigate(`/multiplayer/lobby/${lobbyCode}`);
+    props.socket.once("lobbyJoined", () => {
+      navigate(`/multiplayer/lobby/${props.lobbyCode}`);
     });
 
-    socket.once("lobbyNotFound", () => {
+    props.socket.once("lobbyNotFound", () => {
       invalidPwdMsgRef.current!.style.display = "block";
     });
 
@@ -40,11 +39,10 @@ function JoinLobby({ socket, ...props }: JoinLobbyProps) {
             </div>
             <div className="column">
               <input
-                value={lobbyCode}
+                value={props.lobbyCode}
                 ref={lobbyCodeRef}
                 onChange={(e) => {
-                  props.setLobbyCodeGlobal(e.target.value);
-                  setLobbyCode(e.target.value);
+                  props.setLobbyCode(e.target.value);
                   onChangeHideInvalidCodeMsg();
                 }}
                 autoFocus

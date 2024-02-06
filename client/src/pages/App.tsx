@@ -71,6 +71,7 @@ function App() {
               socket={socket}
               displayUserID={displayUserID}
               lobbyCode={lobbyCode}
+              setLobbyCode={setLobbyCode}
               isLobbyLeader={isLobbyLeader}
               cbBackBtnClicked={() => {}}
               setIsLobbyLeader={setIsLobbyLeader}
@@ -83,6 +84,7 @@ function App() {
           element={
             <Multiplayer
               socket={socket}
+              lobbyCode={lobbyCode}
               setLobbyCode={setLobbyCode}
               setIsLobbyLeader={setIsLobbyLeader}
               displayUserID={displayUserID}

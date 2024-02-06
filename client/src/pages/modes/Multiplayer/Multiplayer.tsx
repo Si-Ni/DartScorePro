@@ -6,41 +6,31 @@ import JoinLobby from "../../onlineMultiplayer/JoinLobby/JoinLobby.tsx";
 import CreateLobby from "../../onlineMultiplayer/CreateLobby/CreateLobby.tsx";
 import { MultiplayerProps } from "./Multiplayer";
 
-function Multiplayer({ socket, setLobbyCode, setIsLobbyLeader, displayUserID }: MultiplayerProps) {
+function Multiplayer(props: MultiplayerProps) {
   const [selectedMultiplayerMode, setSelectedMultiplayerMode] = useState<MultiplayerMode | null>(null);
+
+  const handleBackBtnClicked = () => {
+    props.setLobbyCode("");
+    setSelectedMultiplayerMode(null);
+  };
+
+  const lobbyProps = {
+    socket: props.socket,
+    lobbyCode: props.lobbyCode,
+    setLobbyCode: props.setLobbyCode,
+    displayUserID: props.displayUserID,
+    cbBackBtnClicked: handleBackBtnClicked
+  };
 
   return (
     <>
       {selectedMultiplayerMode ? (
         <div>
-          {selectedMultiplayerMode === "local" && (
-            <LocalMultiplayer
-              cbBackBtnClicked={() => {
-                setSelectedMultiplayerMode(null);
-              }}
-            />
-          )}
+          {selectedMultiplayerMode === "local" && <LocalMultiplayer cbBackBtnClicked={handleBackBtnClicked} />}
           {selectedMultiplayerMode === "create" && (
-            <CreateLobby
-              cbBackBtnClicked={() => {
-                setSelectedMultiplayerMode(null);
-              }}
-              socket={socket}
-              setLobbyCodeGlobal={setLobbyCode}
-              setIsLobbyLeader={setIsLobbyLeader}
-              displayUserID={displayUserID}
-            />
+            <CreateLobby {...lobbyProps} setIsLobbyLeader={props.setIsLobbyLeader} />
           )}
-          {selectedMultiplayerMode === "join" && (
-            <JoinLobby
-              cbBackBtnClicked={() => {
-                setSelectedMultiplayerMode(null);
-              }}
-              socket={socket}
-              setLobbyCodeGlobal={setLobbyCode}
-              displayUserID={displayUserID}
-            />
-          )}
+          {selectedMultiplayerMode === "join" && <JoinLobby {...lobbyProps} />}
         </div>
       ) : (
         <MultiplayerMenu cbMultiplayerModeSelected={setSelectedMultiplayerMode} />

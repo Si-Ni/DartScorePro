@@ -6,6 +6,7 @@ export interface OnlineMultiplayerProps {
   displayUserID: string;
   socket: Socket;
   lobbyCode: string;
+  setLobbyCode: React.Dispatch<React.SetStateAction<string>>;
   isLobbyLeader: boolean;
   setIsLobbyLeader: React.Dispatch<React.SetStateAction<boolean>>;
 }

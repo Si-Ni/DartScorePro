@@ -18,6 +18,7 @@ function OnlineMultiplayer(props: OnlineMultiplayerProps) {
   const [initialGameStats, setInitialGameStats] = useState<any>();
 
   const { lobbyCode } = useParams();
+  if (lobbyCode) props.setLobbyCode(lobbyCode);
 
   useEffect(() => {
     const handleGameStarted = (data: DSettingsAndGameData) => {
@@ -41,10 +42,10 @@ function OnlineMultiplayer(props: OnlineMultiplayerProps) {
   }, [props.socket]);
 
   useEffect(() => {
-    if (lobbyCode && props.displayUserID) {
-      props.socket.emit("lobby:join", { lobbyCode: lobbyCode, userID: props.displayUserID });
+    if (props.lobbyCode && props.displayUserID) {
+      props.socket.emit("lobby:join", { lobbyCode: props.lobbyCode, userID: props.displayUserID });
     }
-  }, [lobbyCode, props.socket, props.displayUserID]);
+  }, [props.lobbyCode, props.socket, props.displayUserID]);
 
   useEffect(() => {
     const handleSetPlayerList = (players: { userID: string; isLeader: boolean }[]) => {
@@ -79,13 +80,14 @@ function OnlineMultiplayer(props: OnlineMultiplayerProps) {
       };
 
       props.socket.emit("lobby:gameStarted", {
-        lobbyCode: props.lobbyCode || lobbyCode,
+        lobbyCode: props.lobbyCode,
         gameSettings: gameSettings
       });
     }
   };
 
   const handleLeaveLobby = () => {
+    props.setLobbyCode("");
     props.socket.emit("lobby:leave");
     navigate("/multiplayer");
   };
@@ -108,7 +110,7 @@ function OnlineMultiplayer(props: OnlineMultiplayerProps) {
           cbBackBtnClicked={handleLeaveLobby}
           userID={props.displayUserID}
           socket={props.socket}
-          lobbyCode={props.lobbyCode || lobbyCode}
+          lobbyCode={props.lobbyCode}
         />
       ) : (
         <OnlineMultiplayerSettings
