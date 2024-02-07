@@ -1,6 +1,6 @@
 const initialisePlayerStatsForStandardGame = (players, gamemodeTotalScore) => {
   const initialStats = {};
-  players.forEach((player, index) => {
+  players.forEach((player) => {
     initialStats[player.userID] = {
       score: gamemodeTotalScore,
       scoreAtBeginningOfRound: gamemodeTotalScore,
@@ -9,11 +9,21 @@ const initialisePlayerStatsForStandardGame = (players, gamemodeTotalScore) => {
       totalScore: 0,
       turns: 0,
       lastThrows: [],
-      throwsRemaining: 0,
-      isPlayersTurn: index === 0
+      throwsRemaining: 0
     };
   });
   return initialStats;
 };
 
-module.exports = initialisePlayerStatsForStandardGame;
+const initialisePlayerStatsForRclGame = (players) => {
+  const initialStats = {};
+  players.forEach((player) => {
+    initialStats[player.userID] = {
+      currentTarget: 1,
+      lastThrows: []
+    };
+  });
+  return initialStats;
+};
+
+module.exports = { initialisePlayerStatsForStandardGame, initialisePlayerStatsForRclGame };

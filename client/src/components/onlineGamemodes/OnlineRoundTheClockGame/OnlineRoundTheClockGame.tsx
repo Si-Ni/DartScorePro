@@ -2,24 +2,32 @@ import RoundTheClockGameView from "../../gamemodeViews/RoundTheClockGameView/Rou
 import { OnlineRoundTheClockGameProps } from "./OnlineRoundTheClockGame";
 
 function OnlineRoundTheClockGame(props: OnlineRoundTheClockGameProps) {
-  const handleScoreBtnClicked = (points: number) => {
+  const handleHitClicked = () => {
     if (!props.isPlayersTurn) return;
-
-    props.socket.emit("game:sendThrownPoints", { lobbyCode: props.lobbyCode, points: points });
+    props.socket.emit("game:sendGameInputFromPlayer", { lobbyCode: props.lobbyCode, isHitted: true });
+  };
+  const handleMissClicked = () => {
+    if (!props.isPlayersTurn) return;
+    props.socket.emit("game:sendGameInputFromPlayer", { lobbyCode: props.lobbyCode, isHitted: false });
+  };
+  const handleSkipClicked = () => {
+    console.log(props.isPlayersTurn);
+    if (!props.isPlayersTurn) return;
+    props.socket.emit("game:sendGameInputFromPlayer", { lobbyCode: props.lobbyCode, skip: true });
   };
 
   return (
     <RoundTheClockGameView
       currentRound={props.currentRound}
       players={props.players}
-      startingPlayerIndex={props.currentPlayerIndex}
+      startingPlayerIndex={props.startingPlayerIndex}
       currentPlayerIndex={props.currentPlayerIndex}
       playerTotalGameStats={props.playerTotalGameStats}
       playerStats={props.playerStats}
       isPlayersTurn={props.isPlayersTurn}
-      cbHandleHitClicked={() => {}}
-      cbHandleMissClicked={() => {}}
-      cbHandleNextClicked={() => {}}
+      cbHandleHitClicked={handleHitClicked}
+      cbHandleMissClicked={handleMissClicked}
+      cbHandleNextClicked={handleSkipClicked}
     />
   );
 }
