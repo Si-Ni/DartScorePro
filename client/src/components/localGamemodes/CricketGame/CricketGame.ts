@@ -1,18 +1,6 @@
-import { PlayerToPlayerTotalGameStats } from "../../../types/global";
+import { BaseGameProps } from "../BaseGameProps";
 
-export interface CricketGameProps {
-  players: string[];
-  cbPlayerHasWon(playerKey: string): void;
-  playerTotalGameStats: PlayerToPlayerTotalGameStats;
-  setsToWin: number;
-  legsForSet: number;
-  throwsRemaining: number;
-  currentRound: number;
-  startingPlayerIndex: number;
-  currentPlayerIndex: number;
-  switchToNextPlayer(): void;
-  updateRemainingThrows(): void;
-}
+export interface CricketGameProps extends BaseGameProps {}
 
 // 4 = closed for all players
 export type CricketStatus = 0 | 1 | 2 | 3 | 4;

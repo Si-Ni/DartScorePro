@@ -1,4 +1,5 @@
-import { GameViewProps, PlayerToPlayerStatsRCl } from "../../../types/global";
+import { PlayerToPlayerStatsRCl } from "../../../types/global";
+import { GameViewProps } from "../GameView";
 
 export interface RoundTheClockGameViewProps extends GameViewProps {
   playerStats: PlayerToPlayerStatsRCl;

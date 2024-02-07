@@ -33,17 +33,3 @@ export type PlayerToPlayerTotalGameStats = { [player: string]: PlayerTotalGameSt
 export type InAndOutMode = "straight" | "double";
 
 export type MultiplayerMode = "local" | "create" | "join";
-
-export interface GameViewProps {
-  currentRound: number;
-  players: string[];
-  startingPlayerIndex: number;
-  currentPlayerIndex: number;
-  playerTotalGameStats: PlayerToPlayerTotalGameStats;
-}
-
-export interface GameViewWithScoreProps extends GameViewProps {
-  cbHandleScoreBtnClicked(number: number): void;
-  multiplier: number;
-  cbHandleMultiplierClicked(multiplier: number): void;
-}
