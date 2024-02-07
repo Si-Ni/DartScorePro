@@ -25,13 +25,12 @@ function Login(props: LoginProps) {
     const userIDorMail = userIDorMailRef.current!.value;
     setPwdDisabled(true);
     axios
-      .post(LOGIN_URL, { userIDorMail, userPWD })
+      .post(LOGIN_URL, { userIDorMail, userPWD }, { withCredentials: true })
       .then((res) => {
         const token = res.data.token;
         setPwdDisabled(false);
         props.setLoggedIn(true);
         props.setDisplayUserID(`${res.data.userID}`);
-        localStorage.setItem("token", token);
         setAuth({ userIDorMail, userPWD, token });
 
         navigate(navigateTo, { replace: true });

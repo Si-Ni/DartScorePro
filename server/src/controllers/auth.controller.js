@@ -4,6 +4,10 @@ async function handleRequest(handler, req, res, next) {
   try {
     const result = await handler(req);
     const { status, json } = result;
+    json.accessToken &&
+      res.cookie("access_token", json.accessToken, { httpOnly: true, expires: new Date(Date.now() + 900000) });
+    json.refreshToken &&
+      res.cookie("refresh_token", json.refreshToken, { httpOnly: true, expires: new Date(Date.now() + 604800000) });
     res.status(status).json(json);
   } catch (err) {
     console.error(`Error: ${err.message}`);

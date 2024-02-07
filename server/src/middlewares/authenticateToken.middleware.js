@@ -1,13 +1,13 @@
 const jwt = require("jsonwebtoken");
 
 const verifyToken = (req, res, next) => {
-  const token = req.headers.authorization;
+  const token = req.cookies.access_token;
 
   if (!token) {
     return res.status(401).json({ error: "Unauthorized: Missing token" });
   }
 
-  jwt.verify(token.split(" ")[1], process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
     if (err) {
       return res.status(403).json({ error: "Unauthorized: Invalid token" });
     }

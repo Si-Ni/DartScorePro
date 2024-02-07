@@ -27,12 +27,9 @@ function App() {
   const [isLobbyLeader, setIsLobbyLeader] = useState<boolean>(false);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
     axios
       .get(GENERAL_AUTH, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+        withCredentials: true
       })
       .then((res) => {
         setLoggedIn(true);
