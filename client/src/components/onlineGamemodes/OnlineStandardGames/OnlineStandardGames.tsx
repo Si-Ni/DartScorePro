@@ -8,7 +8,7 @@ function OnlineStandardGames(props: OnlineStandardGamesProps) {
   const handleScoreBtnClicked = (points: number) => {
     if (!props.isPlayersTurn || (multiplier === 3 && points === 25)) return;
 
-    props.socket.emit("standardGame:sendThrownPoints", {
+    props.socket.emit("game:sendGameInputFromPlayer", {
       lobbyCode: props.lobbyCode,
       multiplier: multiplier,
       points: points
@@ -19,7 +19,7 @@ function OnlineStandardGames(props: OnlineStandardGamesProps) {
     <StandardGamesView
       currentRound={props.currentRound}
       players={props.players}
-      startingPlayerIndex={props.currentPlayerIndex}
+      startingPlayerIndex={props.startingPlayerIndex}
       currentPlayerIndex={props.currentPlayerIndex}
       playerTotalGameStats={props.playerTotalGameStats}
       playerStats={props.playerStats}

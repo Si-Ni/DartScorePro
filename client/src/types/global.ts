@@ -14,6 +14,13 @@ export interface PlayerStats {
 
 export type PlayerToPlayerStats = { [player: string]: PlayerStats };
 
+export interface PlayerStatsRCl {
+  currentTarget: number;
+  lastThrows: string[];
+}
+
+export type PlayerToPlayerStatsRCl = { [player: string]: PlayerStatsRCl };
+
 export type Gamemode = "301" | "501" | "rcl" | "cri";
 
 export interface PlayerTotalGameStats {

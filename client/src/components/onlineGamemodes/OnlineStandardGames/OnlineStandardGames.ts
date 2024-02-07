@@ -1,15 +1,6 @@
-import { Socket } from "socket.io-client";
-import { PlayerToPlayerStats, PlayerToPlayerTotalGameStats } from "../../../types/global";
+import { PlayerToPlayerStats } from "../../../types/global";
+import { OnlineGameProps } from "../OnlineGameProps";
 
-export interface OnlineStandardGamesProps {
-  socket: Socket;
-  lobbyCode: string;
-  playerTotalGameStats: PlayerToPlayerTotalGameStats;
+export interface OnlineStandardGamesProps extends OnlineGameProps {
   playerStats: PlayerToPlayerStats;
-  currentRound: number;
-  players: string[];
-  throwsRemaining: number;
-  startingPlayerIndex: number;
-  currentPlayerIndex: number;
-  isPlayersTurn: boolean;
 }
