@@ -1,5 +1,5 @@
-const { initialisePlayerStatsForStandardGame, initialisePlayerStatsForRclGame } = require("./initPlayerStats.service");
-const findPlayerIndexBySocketId = require("../../helpers/game.helper");
+const { findPlayerIndexBySocketId } = require("../../helpers/game.helper");
+const { initialiseForNewRound } = require("../../helpers/initPlayerStats.helper");
 const { lobbies, lobbyCodeRegex } = require("../lobby.service");
 const { updateScoreForCurrentPlayerStandardGames } = require("./standardGame.service");
 const { updateScoreForCurrentPlayerRcl } = require("./rclGame.service");
@@ -22,23 +22,6 @@ const initialiseTotalGameStats = (players) => {
     };
   });
   return initialStats;
-};
-
-const initialiseForNewRound = (lobby) => {
-  const gamemode = lobby.gameSettings.selectedGamemode;
-  lobby.game.currentRound = 1;
-  lobby.game.currentPlayerIndex = lobby.game.startingPlayerIndex;
-  lobby.game.throwsRemaining = 3;
-  lobby.game.turns = 0;
-  if (gamemode === "301" || gamemode === "501") {
-    const totalScore = Number(lobby.gameSettings.selectedGamemode);
-    lobby.game.gamemodeTotalScore = Number(totalScore);
-    lobby.game.playerStats = initialisePlayerStatsForStandardGame(lobby.players, totalScore);
-  } else if (gamemode === "rcl") {
-    lobby.game.playerStats = initialisePlayerStatsForRclGame(lobby.players);
-  } else {
-    console.error("selected gamemode not supported");
-  }
 };
 
 const updateGameWithThrownPoints = (socketId, lobby, args) => {
@@ -88,5 +71,3 @@ module.exports = (io) => {
     handleGameInput
   };
 };
-
-module.exports.initialiseForNewRound = initialiseForNewRound;
