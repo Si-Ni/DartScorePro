@@ -27,7 +27,7 @@ function PlayerScoreCardCricket(props: PlayerScoreCardCricketProps) {
   };
 
   return (
-    <div className="column playerCardMinWidth">
+    <div className="column playerCardCricket">
       <div className="box" style={{ borderLeft: props.isCurrentPlayer ? "5px solid red" : "" }}>
         <h1 className={`title is-5 ${props.isStartingPlayer && "red-dot"}`}>{props.playerName}</h1>
         <table className="table is-bordered">
@@ -50,10 +50,10 @@ function PlayerScoreCardCricket(props: PlayerScoreCardCricketProps) {
             </tr>
           </tbody>
         </table>
-        <div className="columns is-centered mb-1">
+        <div className="columns is-centered mb-1 is-flex">
           <p className="subtitle is-2 mb-3">Score: {props.score}</p>
         </div>
-        <div className="columns is-centered mb-1">
+        <div className="columns is-centered mb-1 is-flex">
           <table className="table is-bordered mt-3">
             <tbody>
               <tr>

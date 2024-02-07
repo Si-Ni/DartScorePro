@@ -3,7 +3,7 @@ import { PlayerScoreCardProps } from "./PlayerScoreCard";
 
 function PlayerScoreCard(props: PlayerScoreCardProps) {
   return (
-    <div className="column is-full playerCardMinWidth">
+    <div className="column is-full playerCard">
       <div className="box" style={{ borderLeft: props.isCurrentPlayer ? "5px solid red" : "" }}>
         <h1 className={`title is-5 ${props.isStartingPlayer && "red-dot"}`}>{props.playerName}</h1>
         <p className="subtitle is-1">{props.score}</p>

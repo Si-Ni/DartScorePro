@@ -11,7 +11,7 @@ function CricketGameView(props: CricketGameViewProps) {
           Round: {props.currentRound}
         </p>
       </div>
-      <div className="columns is-centered">
+      <div className="columns is-centered playerCardsContainerCricket">
         {props.players.map((player) => (
           <PlayerScoreCardCricket
             key={player}

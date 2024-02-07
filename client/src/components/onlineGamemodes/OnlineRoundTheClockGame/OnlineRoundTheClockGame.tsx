@@ -11,7 +11,6 @@ function OnlineRoundTheClockGame(props: OnlineRoundTheClockGameProps) {
     props.socket.emit("game:sendGameInputFromPlayer", { lobbyCode: props.lobbyCode, isHitted: false });
   };
   const handleSkipClicked = () => {
-    console.log(props.isPlayersTurn);
     if (!props.isPlayersTurn) return;
     props.socket.emit("game:sendGameInputFromPlayer", { lobbyCode: props.lobbyCode, skip: true });
   };
