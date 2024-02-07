@@ -12,14 +12,19 @@ const { connectDB } = require("./src/services/db.service");
 const app = express();
 const PORT = 4000 || process.env.PORT;
 
-app.use(cors());
+const corsOptions = {
+  origin: "http://localhost:3000",
+  credentials: true
+};
+
+app.use(cors(corsOptions));
+app.use(cookieParser());
 app.use(rateLimiter);
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "../client/dist")));
 app.use("/", auth);
 app.use("/api", api);
-app.use(cookieParser());
 app.set("trust proxy", 1);
 dotenv.config();
 
