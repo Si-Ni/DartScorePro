@@ -1,56 +1,8 @@
-const initialisePlayerStats = (players, gamemodeTotalScore) => {
-  const initialStats = {};
-  players.forEach((player, index) => {
-    initialStats[player.userID] = {
-      score: gamemodeTotalScore,
-      scoreAtBeginningOfRound: gamemodeTotalScore,
-      average: 0,
-      dartsThrown: 0,
-      totalScore: 0,
-      turns: 0,
-      lastThrows: [],
-      throwsRemaining: 0,
-      isPlayersTurn: index === 0
-    };
-  });
-  return initialStats;
-};
+const findPlayerIndexBySocketId = require("../../helpers/game.helper");
+const initialiseForNewRound = require("./game.service");
+const { lobbies } = require("../lobby.service");
 
-const initialiseTotalGameStats = (players) => {
-  const initialStats = {};
-  players.forEach((player) => {
-    initialStats[player.userID] = {
-      sets: 0,
-      legs: 0
-    };
-  });
-  return initialStats;
-};
-
-const initialiseForNewRound = (lobby, gamemodeTotalScore) => {
-  lobby.game.currentRound = 1;
-  lobby.game.currentPlayerIndex = lobby.game.startingPlayerIndex;
-  lobby.game.throwsRemaining = 3;
-  lobby.game.turns = 0;
-  lobby.game.playerStats = initialisePlayerStats(lobby.players, gamemodeTotalScore);
-};
-
-const initialiseForNewGame = (lobby) => {
-  lobby.game = {};
-  lobby.game.totalGameStats = initialiseTotalGameStats(lobby.players);
-  lobby.game.gamemodeTotalScore = lobby.gameSettings.selectedGamemode === "301" ? 301 : 501;
-  lobby.game.winner = null;
-  lobby.game.startingPlayerIndex = 0;
-  lobby.gameStarted = true;
-  initialiseForNewRound(lobby, lobby.game.gamemodeTotalScore);
-};
-
-const findPlayerIndexBySocketId = (socketId, players) => {
-  const index = players.findIndex((player) => player.socketId === socketId);
-  return index;
-};
-
-const handlePointsThrown = (socketId, lobby, multiplier, points) => {
+const updateGameWithThrownPoints = (socketId, lobby, multiplier, points) => {
   const playerIndex = findPlayerIndexBySocketId(socketId, lobby.players);
   if (playerIndex === lobby.game.currentPlayerIndex) {
     updateScoreForCurrentPlayer(lobby, multiplier, points);
@@ -188,7 +140,19 @@ const updateGameStatsForWinningPlayer = (lobby, player) => {
 
 const resetRoundStatsForNextGame = (lobby) => {
   lobby.game.startingPlayerIndex = (lobby.game.startingPlayerIndex + 1) % lobby.players.length;
-  initialiseForNewRound(lobby, lobby.game.gamemodeTotalScore);
+  initialiseForNewRound(lobby);
 };
 
-module.exports = { initialiseForNewGame, handlePointsThrown };
+module.exports = (io) => {
+  const handlePointsThrown = function ({ lobbyCode, multiplier, points }) {
+    const socket = this;
+    if (lobbies[lobbyCode] && lobbies[lobbyCode].gameStarted) {
+      updateGameWithThrownPoints(socket.id, lobbies[lobbyCode], multiplier, points);
+      io.to(lobbyCode).emit("gameStatsUpdated", lobbies[lobbyCode].game);
+    }
+  };
+
+  return {
+    handlePointsThrown
+  };
+};
