@@ -34,19 +34,21 @@ const io = require("socket.io")(server, {
   }
 });
 
-const { createLobby, joinLobby, leaveLobby, sendThrownPoints, disconnect, gameStarted } =
-  require("./src/services/lobby.service")(io);
+const { createLobby, joinLobby, leaveLobby, disconnect } = require("./src/services/lobby.service")(io);
+const { handleGameStarted } = require("./src/services/gameServices/game.service")(io);
+const { handlePointsThrown } = require("./src/services/gameServices/standardGame.service")(io);
 
 const onConnection = (socket) => {
   console.log("New connection:", socket.id);
 
   socket.on("lobby:create", createLobby);
   socket.on("lobby:join", joinLobby);
-  socket.on("lobby:gameStarted", gameStarted);
   socket.on("lobby:leave", leaveLobby);
   socket.on("disconnect", disconnect);
 
-  socket.on("game:sendThrownPoints", sendThrownPoints);
+  socket.on("game:gameStarted", handleGameStarted);
+
+  socket.on("standardGame:sendThrownPoints", handlePointsThrown);
 };
 
 io.on("connection", onConnection);

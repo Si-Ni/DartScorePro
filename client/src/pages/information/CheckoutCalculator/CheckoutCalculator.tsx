@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../../../api/axios";
 import React, { useState, useEffect, useCallback } from "react";
 import NavigationButtons from "../../../components/buttons/NavigationButtons/NavigationButtons.tsx";
 import { useNavigate } from "react-router-dom";
