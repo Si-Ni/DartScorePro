@@ -4,17 +4,31 @@ import logo from "../../../assets/logo.png";
 import { useContext } from "react";
 import AuthContext from "../../../context/AuthProvider";
 import { MainMenuProps } from "./MainMenu";
+import axios from "../../../api/axios";
 
+const LOGOUT_URL = "/logout";
 function MainMenu(props: MainMenuProps) {
   const { setAuth } = useContext(AuthContext);
   const navigate = useNavigate();
 
   function logout() {
-    localStorage.removeItem("token");
-    props.setLoggedIn(false);
-    props.setDisplayUserID("");
-    setAuth({});
-    navigate("/login");
+    axios
+      .post(
+        LOGOUT_URL,
+        {},
+        {
+          withCredentials: true
+        }
+      )
+      .then(() => {
+        props.setLoggedIn(false);
+        props.setDisplayUserID("");
+        setAuth({});
+        navigate("/login");
+      })
+      .catch((error) => {
+        console.error("Error logging out:", error);
+      });
   }
 
   return (
