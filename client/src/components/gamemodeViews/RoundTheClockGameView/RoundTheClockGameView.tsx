@@ -9,7 +9,7 @@ function RoundTheClockGameView(props: RoundTheClockGameViewProps) {
           Round: {props.currentRound}
         </p>
       </div>
-      <div className="columns is-centered">
+      <div className="columns is-centered playerCardsContainer">
         {props.players.map((player) => (
           <PlayerScoreCard
             key={player}

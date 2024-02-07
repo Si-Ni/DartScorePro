@@ -2,10 +2,6 @@
   width: 100px;
 }
 
-.playerCardMinWidth {
-  min-width: 200px;
-}
-
 .red-dot {
   position: relative;
 }
@@ -33,4 +29,38 @@
 
 .selectedButton {
   box-shadow: inset rgba(0, 0, 0, 0.7) 0px 0px 10px 1px !important;
+}
+
+.playerCard {
+  width: 50% !important;
+  min-width: 260px !important;
+}
+
+.playerCardsContainer {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  width: 60% !important;
+}
+
+@media (max-width: 900px) {
+  .playerCardsContainer {
+    width: 80% !important;
+  }
+}
+
+.playerCardCricket {
+  min-width: 450px !important;
+  max-width: 450px !important;
+}
+
+.playerCardsContainerCricket {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  width: 70% !important;
+}
+
+@media (max-width: 1300px) {
+  .playerCardsContainerCricket {
+    width: 100% !important;
+  }
 }
