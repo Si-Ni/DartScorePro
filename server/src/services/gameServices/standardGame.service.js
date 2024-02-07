@@ -1,5 +1,5 @@
 const findPlayerIndexBySocketId = require("../../helpers/game.helper");
-const initialiseForNewRound = require("./game.service");
+const { initialiseForNewRound } = require("./game.service");
 const { lobbies } = require("../lobby.service");
 
 const updateGameWithThrownPoints = (socketId, lobby, multiplier, points) => {
@@ -118,6 +118,7 @@ const checkIfPlayerHasWon = (lobby, player, updatedScore, multiplier) => {
   const playerWon = updatedScore === 0 && (lobby.gameSettings.modeOut !== "double" || multiplier === 2);
   if (playerWon) {
     updateGameStatsForWinningPlayer(lobby, player);
+    console.log("test");
     resetRoundStatsForNextGame(lobby);
   }
 };
@@ -140,6 +141,7 @@ const updateGameStatsForWinningPlayer = (lobby, player) => {
 
 const resetRoundStatsForNextGame = (lobby) => {
   lobby.game.startingPlayerIndex = (lobby.game.startingPlayerIndex + 1) % lobby.players.length;
+  console.log("test2");
   initialiseForNewRound(lobby);
 };
 

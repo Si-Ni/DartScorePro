@@ -3,4 +3,4 @@ const findPlayerIndexBySocketId = (socketId, players) => {
   return index;
 };
 
-module.exports = { findPlayerIndexBySocketId };
+module.exports = findPlayerIndexBySocketId;

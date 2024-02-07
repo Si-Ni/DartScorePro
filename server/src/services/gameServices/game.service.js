@@ -1,9 +1,7 @@
 const initialisePlayerStatsForStandardGame = require("./initPlayerStats.service");
-const { lobbies } = require("../lobby.service");
-console.log(lobbies);
+const { lobbies, lobbyCodeRegex } = require("../lobby.service");
 
 const initialiseForNewGame = (lobby) => {
-  console.log(lobbies);
   lobby.game = {};
   lobby.game.totalGameStats = initialiseTotalGameStats(lobby.players);
   lobby.game.winner = null;
@@ -23,33 +21,29 @@ const initialiseTotalGameStats = (players) => {
   return initialStats;
 };
 
-module.exports = () => {
-  const initialiseForNewRound = (lobby) => {
-    const gamemode = lobby.gameSettings.selectedGamemode;
-    lobby.game.currentRound = 1;
-    lobby.game.currentPlayerIndex = lobby.game.startingPlayerIndex;
-    lobby.game.throwsRemaining = 3;
-    lobby.game.turns = 0;
-    if (gamemode === "301" || gamemode === "501") {
-      const totalScore = Number(lobby.gameSettings.selectedGamemode);
-      lobby.game.gamemodeTotalScore = Number(totalScore);
-      lobby.game.playerStats = initialisePlayerStatsForStandardGame(lobby.players, totalScore);
-    } else if (gamemode === "rcl") {
-      //lobby.game.playerStats = initialisePlayerStatsForRclGame(lobby.players);
-    } else {
-      console.error("selected gamemode not supported");
-    }
-  };
-  return {
-    initialiseForNewRound
-  };
+const initialiseForNewRound = (lobby) => {
+  console.log("test3");
+  const gamemode = lobby.gameSettings.selectedGamemode;
+  lobby.game.currentRound = 1;
+  lobby.game.currentPlayerIndex = lobby.game.startingPlayerIndex;
+  lobby.game.throwsRemaining = 3;
+  lobby.game.turns = 0;
+  if (gamemode === "301" || gamemode === "501") {
+    const totalScore = Number(lobby.gameSettings.selectedGamemode);
+    lobby.game.gamemodeTotalScore = Number(totalScore);
+    console.log(lobby.game);
+    lobby.game.playerStats = initialisePlayerStatsForStandardGame(lobby.players, totalScore);
+    console.log(lobby.game);
+  } else if (gamemode === "rcl") {
+    //lobby.game.playerStats = initialisePlayerStatsForRclGame(lobby.players);
+  } else {
+    console.error("selected gamemode not supported");
+  }
 };
 
 module.exports = (io) => {
   const handleGameStarted = function ({ lobbyCode, gameSettings }) {
-    initialiseForNewGame(lobbies[lobbyCode]);
     const socket = this;
-    console.log(lobbies);
     const isLeader = lobbies[lobbyCode]?.players.find((player) => player.socketId === socket.id)?.isLeader ?? false;
     const isValidGamemode = ["301", "501", "rcl", "cri"].includes(gameSettings.selectedGamemode);
 
@@ -67,3 +61,5 @@ module.exports = (io) => {
     handleGameStarted
   };
 };
+
+module.exports.initialiseForNewRound = initialiseForNewRound;

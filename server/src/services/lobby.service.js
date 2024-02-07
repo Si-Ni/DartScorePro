@@ -1,9 +1,8 @@
 const generateCode = require("../helpers/generateCode.helper");
+const lobbies = {};
+const lobbyCodeRegex = /^[A-Z0-9]{6}$/;
 
-module.exports = (io = null) => {
-  const lobbies = {};
-  const lobbyCodeRegex = /^[A-Z0-9]{6}$/;
-
+module.exports = (io) => {
   const createLobby = function (userID) {
     const socket = this;
     const lobbyCode = generateCode();
@@ -61,11 +60,12 @@ module.exports = (io = null) => {
   };
 
   return {
-    lobbies,
-    lobbyCodeRegex,
     createLobby,
     joinLobby,
     leaveLobby,
     disconnect
   };
 };
+
+module.exports.lobbies = lobbies;
+module.exports.lobbyCodeRegex = lobbyCodeRegex;
