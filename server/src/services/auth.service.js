@@ -43,10 +43,10 @@ async function login(req) {
       status: 200,
       json: {
         msg: "Login Success",
-        userID: isUserRegistered.userID,
-        accessToken: accessToken,
-        refreshToken: refreshToken
-      }
+        userID: isUserRegistered.userID
+      },
+      accessToken: accessToken,
+      refreshToken: refreshToken
     };
   } else {
     return { status: 400, json: "This password or username is invalid" };
@@ -89,6 +89,13 @@ async function register(req) {
     : { status: 500, json: "Failed to send registration email" };
 }
 
+async function logout() {
+  return {
+    status: 200,
+    json: "Logout Success"
+  };
+}
+
 async function registerVerify(req) {
   let { userMail, registerCode } = req.body;
 
@@ -105,12 +112,13 @@ async function generalAuth(req) {
 
   const accessToken = generateToken(userIDorMail, process.env.ACCESS_TOKEN_SECRET, "15min");
 
-  return { status: 200, json: { msg: "Authentication successful", userID: userIDorMail, accessToken: accessToken } };
+  return { status: 200, json: { msg: "Authentication successful", userID: userIDorMail }, accessToken: accessToken };
 }
 
 module.exports = {
   login,
   register,
+  logout,
   registerVerify,
   generalAuth
 };
