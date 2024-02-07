@@ -4,7 +4,7 @@ import OnlineGames from "../../../components/game/OnlineGames/OnlineGames.tsx";
 import OnlineMultiplayerSettings from "../OnlineMultiplayerSettings/OnlineMultiplayerSettings.tsx";
 import { useNavigate, useParams } from "react-router-dom";
 import { OnlineMultiplayerProps } from "./OnlineMultiplayer";
-import { DGameSettings, DSettingsAndGameData } from "./OnlineMultiplayerDTOs";
+import { DStandardGameSettings, DSettingsAndGameData } from "./OnlineMultiplayerDTOs";
 
 function OnlineMultiplayer(props: OnlineMultiplayerProps) {
   const navigate = useNavigate();
@@ -25,11 +25,11 @@ function OnlineMultiplayer(props: OnlineMultiplayerProps) {
 
   useEffect(() => {
     const handleGameStarted = (data: DSettingsAndGameData) => {
-      setGameSettings(data.gameSettings);
+      setGameSettings(data.gameSettings as DStandardGameSettings);
       setInitialGameStats(data.game);
     };
 
-    const setGameSettings = (gameSettings: DGameSettings) => {
+    const setGameSettings = (gameSettings: DStandardGameSettings) => {
       setSelectedGamemode(gameSettings.selectedGamemode);
       setSetsToWin(gameSettings.setsToWin);
       setLegsForSet(gameSettings.legsForSet);
@@ -74,7 +74,7 @@ function OnlineMultiplayer(props: OnlineMultiplayerProps) {
 
   const nextBtnClicked = () => {
     if (props.isLobbyLeader) {
-      const gameSettings: DGameSettings = {
+      const gameSettings: DStandardGameSettings = {
         selectedGamemode: selectedGamemode,
         setsToWin: setsToWin,
         legsForSet: legsForSet,

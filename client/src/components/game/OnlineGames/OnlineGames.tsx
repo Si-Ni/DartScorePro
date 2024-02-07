@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { PlayerToPlayerStats, PlayerToPlayerTotalGameStats } from "../../../types/global";
+import { PlayerToPlayerStats, PlayerToPlayerStatsRCl, PlayerToPlayerTotalGameStats } from "../../../types/global";
 import YesNoPopUp from "../../popUps/YesNoPopUp/YesNoPopUp.tsx";
 import "../../../styles/Games.css";
 import NavigationButtons from "../../buttons/NavigationButtons/NavigationButtons.tsx";
 import OnlineStandardGames from "../../onlineGamemodes/OnlineStandardGames/OnlineStandardGames.tsx";
+import OnlineRoundTheClockGame from "../../onlineGamemodes/OnlineRoundTheClockGame/OnlineRoundTheClockGame.tsx";
 import { OnlineGamesProps } from "./OnlineGames";
 import GameInformationHeader from "../../GameInformationHeader/GameInformationHeader.tsx";
 import { DGameData } from "../../../pages/onlineMultiplayer/OnlineMultiplayer/OnlineMultiplayerDTOs.tsx";
@@ -18,7 +19,9 @@ function OnlineGames(props: OnlineGamesProps) {
   const [currentRound, setCurrentRound] = useState<number>(props.initialGameStats.currentRound);
   const [startingPlayerIndex, setStartingPlayerIndex] = useState<number>(props.initialGameStats.startingPlayerIndex);
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState<number>(props.initialGameStats.currentPlayerIndex);
-  const [playerStats, setPlayerStats] = useState<PlayerToPlayerStats>(props.initialGameStats.playerStats);
+  const [playerStats, setPlayerStats] = useState<PlayerToPlayerStats | PlayerToPlayerStatsRCl>(
+    props.initialGameStats.playerStats
+  );
   const [winningPlayer, setWinningPlayer] = useState<string | null>(null);
 
   const checkIsPlayersTurn = (currentPlayerIndex: number): boolean => {
@@ -62,7 +65,6 @@ function OnlineGames(props: OnlineGamesProps) {
     lobbyCode: props.lobbyCode,
     players: props.players,
     playerTotalGameStats: playerTotalGameStats,
-    playerStats: playerStats,
     throwsRemaining: throwsRemaining,
     currentRound: currentRound,
     startingPlayerIndex: startingPlayerIndex,
@@ -89,7 +91,12 @@ function OnlineGames(props: OnlineGamesProps) {
         modeIn={props.modeIn}
         modeOut={props.modeOut}
       />
-      {(props.selectedGamemode === "301" || props.selectedGamemode === "501") && <OnlineStandardGames {...gameProps} />}
+      {(props.selectedGamemode === "301" || props.selectedGamemode === "501") && (
+        <OnlineStandardGames {...gameProps} playerStats={playerStats as PlayerToPlayerStats} />
+      )}
+      {props.selectedGamemode === "rcl" && (
+        <OnlineRoundTheClockGame {...gameProps} playerStats={playerStats as PlayerToPlayerStatsRCl} />
+      )}
       <NavigationButtons cbBackBtnClicked={props.cbBackBtnClicked} marginTop={0} />
     </div>
   );
