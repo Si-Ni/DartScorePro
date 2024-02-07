@@ -1,6 +1,7 @@
 import { useState } from "react";
 import RoundTheClockGameView from "../../gamemodeViews/RoundTheClockGameView/RoundTheClockGameView.tsx";
-import { PlayerToPlayerStatsRCl, RoundTheClockGameProps } from "./RoundTheClockGame";
+import { LocalRoundTheClockGameProps } from "./LocalRoundTheClockGame.ts";
+import { PlayerToPlayerStatsRCl } from "../../../types/global.ts";
 
 const initializePlayerStats = (players: string[]): PlayerToPlayerStatsRCl => {
   const initialPoints: PlayerToPlayerStatsRCl = {};
@@ -13,7 +14,7 @@ const initializePlayerStats = (players: string[]): PlayerToPlayerStatsRCl => {
   return initialPoints;
 };
 
-function RoundTheClockGame({ throwsRemaining, currentPlayerIndex, ...props }: RoundTheClockGameProps) {
+function LocalRoundTheClockGame({ throwsRemaining, currentPlayerIndex, ...props }: LocalRoundTheClockGameProps) {
   const [players] = useState<string[]>(props.players);
   const [playerStats, setPlayerStats] = useState<PlayerToPlayerStatsRCl>(() => initializePlayerStats(props.players));
 
@@ -88,4 +89,4 @@ function RoundTheClockGame({ throwsRemaining, currentPlayerIndex, ...props }: Ro
   );
 }
 
-export default RoundTheClockGame;
+export default LocalRoundTheClockGame;

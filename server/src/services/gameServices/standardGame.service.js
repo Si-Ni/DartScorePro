@@ -1,15 +1,6 @@
-const findPlayerIndexBySocketId = require("../../helpers/game.helper");
 const { initialiseForNewRound } = require("./game.service");
-const { lobbies } = require("../lobby.service");
 
-const updateGameWithThrownPoints = (socketId, lobby, multiplier, points) => {
-  const playerIndex = findPlayerIndexBySocketId(socketId, lobby.players);
-  if (playerIndex === lobby.game.currentPlayerIndex) {
-    updateScoreForCurrentPlayer(lobby, multiplier, points);
-  }
-};
-
-const updateScoreForCurrentPlayer = (lobby, multiplier, points) => {
+const updateScoreForCurrentPlayerStandardGames = (lobby, { multiplier, points }) => {
   const currentPlayerIndex = lobby.game.currentPlayerIndex;
   const currentPlayer = lobby.players[currentPlayerIndex].userID;
 
@@ -118,7 +109,6 @@ const checkIfPlayerHasWon = (lobby, player, updatedScore, multiplier) => {
   const playerWon = updatedScore === 0 && (lobby.gameSettings.modeOut !== "double" || multiplier === 2);
   if (playerWon) {
     updateGameStatsForWinningPlayer(lobby, player);
-    console.log("test");
     resetRoundStatsForNextGame(lobby);
   }
 };
@@ -141,20 +131,7 @@ const updateGameStatsForWinningPlayer = (lobby, player) => {
 
 const resetRoundStatsForNextGame = (lobby) => {
   lobby.game.startingPlayerIndex = (lobby.game.startingPlayerIndex + 1) % lobby.players.length;
-  console.log("test2");
   initialiseForNewRound(lobby);
 };
 
-module.exports = (io) => {
-  const handlePointsThrown = function ({ lobbyCode, multiplier, points }) {
-    const socket = this;
-    if (lobbies[lobbyCode] && lobbies[lobbyCode].gameStarted) {
-      updateGameWithThrownPoints(socket.id, lobbies[lobbyCode], multiplier, points);
-      io.to(lobbyCode).emit("gameStatsUpdated", lobbies[lobbyCode].game);
-    }
-  };
-
-  return {
-    handlePointsThrown
-  };
-};
+module.exports = { updateScoreForCurrentPlayerStandardGames };

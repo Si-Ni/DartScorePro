@@ -24,10 +24,18 @@ function RoundTheClockGameView(props: RoundTheClockGameViewProps) {
         ))}
       </div>
       <div className="columns is-centered mt-6">
-        <button className="button is-success m-1 is-size-5 uniformButton" onClick={props.cbHandleHitClicked}>
+        <button
+          className="button is-success m-1 is-size-5 uniformButton"
+          onClick={props.cbHandleHitClicked}
+          disabled={!props.isPlayersTurn}
+        >
           Hit
         </button>
-        <button className="button is-danger m-1 is-size-5 uniformButton" onClick={props.cbHandleMissClicked}>
+        <button
+          className="button is-danger m-1 is-size-5 uniformButton"
+          onClick={props.cbHandleMissClicked}
+          disabled={!props.isPlayersTurn}
+        >
           Miss
         </button>
       </div>
@@ -37,8 +45,9 @@ function RoundTheClockGameView(props: RoundTheClockGameViewProps) {
             className="button is-warning m-1 is-size-5"
             style={{ width: "150px" }}
             onClick={props.cbHandleNextClicked}
+            disabled={!props.isPlayersTurn}
           >
-            Skip Player
+            Skip Turn
           </button>
         </div>
       </div>

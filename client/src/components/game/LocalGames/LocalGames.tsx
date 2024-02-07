@@ -6,7 +6,7 @@ import NavigationButtons from "../../buttons/NavigationButtons/NavigationButtons
 import GameInformationHeader from "../../GameInformationHeader/GameInformationHeader.tsx";
 import { LocalGamesProps } from "./LocalGames";
 import LocalStandardGames from "../../localGamemodes/LocalStandardGames/LocalStandardGames.tsx";
-import RoundTheClockGame from "../../localGamemodes/RoundTheClockGame/RoundTheClockGame.tsx";
+import LocalRoundTheClockGame from "../../localGamemodes/LocalRoundTheClockGame/LocalRoundTheClockGame.tsx";
 import CricketGame from "../../localGamemodes/CricketGame/CricketGame.tsx";
 import PopUp from "../../popUps/PopUp/PopUp.tsx";
 import YesNoPopUp from "../../popUps/YesNoPopUp/YesNoPopUp.tsx";
@@ -146,7 +146,7 @@ function LocalGames(props: LocalGamesProps) {
       {props.selectedGamemode === "501" && (
         <LocalStandardGames {...gameProps} {...standardGamesProps} gamemodeTotalScore={501} />
       )}
-      {props.selectedGamemode === "rcl" && <RoundTheClockGame {...gameProps} />}
+      {props.selectedGamemode === "rcl" && <LocalRoundTheClockGame {...gameProps} />}
       {props.selectedGamemode === "cri" && <CricketGame {...gameProps} />}
       <NavigationButtons cbBackBtnClicked={() => setShowGoToMainMenuPopUp(true)} marginTop={0} />
     </div>

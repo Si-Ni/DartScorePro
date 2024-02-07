@@ -1,5 +1,8 @@
-const initialisePlayerStatsForStandardGame = require("./initPlayerStats.service");
+const { initialisePlayerStatsForStandardGame, initialisePlayerStatsForRclGame } = require("./initPlayerStats.service");
+const findPlayerIndexBySocketId = require("../../helpers/game.helper");
 const { lobbies, lobbyCodeRegex } = require("../lobby.service");
+const { updateScoreForCurrentPlayerStandardGames } = require("./standardGame.service");
+const { updateScoreForCurrentPlayerRcl } = require("./rclGame.service");
 
 const initialiseForNewGame = (lobby) => {
   lobby.game = {};
@@ -22,7 +25,6 @@ const initialiseTotalGameStats = (players) => {
 };
 
 const initialiseForNewRound = (lobby) => {
-  console.log("test3");
   const gamemode = lobby.gameSettings.selectedGamemode;
   lobby.game.currentRound = 1;
   lobby.game.currentPlayerIndex = lobby.game.startingPlayerIndex;
@@ -31,11 +33,27 @@ const initialiseForNewRound = (lobby) => {
   if (gamemode === "301" || gamemode === "501") {
     const totalScore = Number(lobby.gameSettings.selectedGamemode);
     lobby.game.gamemodeTotalScore = Number(totalScore);
-    console.log(lobby.game);
     lobby.game.playerStats = initialisePlayerStatsForStandardGame(lobby.players, totalScore);
-    console.log(lobby.game);
   } else if (gamemode === "rcl") {
-    //lobby.game.playerStats = initialisePlayerStatsForRclGame(lobby.players);
+    lobby.game.playerStats = initialisePlayerStatsForRclGame(lobby.players);
+  } else {
+    console.error("selected gamemode not supported");
+  }
+};
+
+const updateGameWithThrownPoints = (socketId, lobby, args) => {
+  const playerIndex = findPlayerIndexBySocketId(socketId, lobby.players);
+  if (playerIndex === lobby.game.currentPlayerIndex) {
+    forwardRequestToResponsibleService(lobby, args);
+  }
+};
+
+const forwardRequestToResponsibleService = (lobby, args) => {
+  const gamemode = lobby.gameSettings.selectedGamemode;
+  if (gamemode === "301" || gamemode === "501") {
+    updateScoreForCurrentPlayerStandardGames(lobby, args);
+  } else if (gamemode === "rcl") {
+    updateScoreForCurrentPlayerRcl(lobby, args);
   } else {
     console.error("selected gamemode not supported");
   }
@@ -57,8 +75,17 @@ module.exports = (io) => {
     }
   };
 
+  const handleGameInput = function ({ lobbyCode, ...args }) {
+    const socket = this;
+    if (lobbies[lobbyCode] && lobbies[lobbyCode].gameStarted) {
+      updateGameWithThrownPoints(socket.id, lobbies[lobbyCode], args);
+      io.to(lobbyCode).emit("gameStatsUpdated", lobbies[lobbyCode].game);
+    }
+  };
+
   return {
-    handleGameStarted
+    handleGameStarted,
+    handleGameInput
   };
 };
 
