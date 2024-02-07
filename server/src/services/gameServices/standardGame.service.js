@@ -1,4 +1,9 @@
-const { initialiseForNewRound } = require("./game.service");
+const {
+  switchToNextPlayer,
+  updateRemainingThrows,
+  updateGameStatsForWinningPlayer,
+  resetRoundStatsForNextGame
+} = require("../../helpers/game.helper");
 
 const updateScoreForCurrentPlayerStandardGames = (lobby, { multiplier, points }) => {
   const currentPlayerIndex = lobby.game.currentPlayerIndex;
@@ -72,17 +77,6 @@ const resetScoreToBeginningOfRound = (lobby, currentPlayer) => {
   currentPlayerStats.score = currentPlayerStats.scoreAtBeginningOfRound;
 };
 
-const switchToNextPlayer = (lobby) => {
-  const currentGame = lobby.game;
-  currentGame.currentPlayerIndex = (currentGame.currentPlayerIndex + 1) % lobby.players.length;
-  currentGame.turns++;
-  if (lobby.game.turns === lobby.players.length) {
-    currentGame.currentRound++;
-    currentGame.turns = 0;
-  }
-  currentGame.throwsRemaining = 3;
-};
-
 const updatePlayerStatsByThrownPoints = (lobby, player, thrownPoints) => {
   let currentPlayerStats = lobby.game.playerStats[player];
   currentPlayerStats = {
@@ -97,41 +91,12 @@ const updatePlayerStatsByThrownPoints = (lobby, player, thrownPoints) => {
   lobby.game.playerStats[player] = currentPlayerStats;
 };
 
-const updateRemainingThrows = (lobby) => {
-  lobby.game.throwsRemaining--;
-  if (lobby.game.throwsRemaining === 0) {
-    switchToNextPlayer(lobby);
-    lobby.game.throwsRemaining = 3;
-  }
-};
-
 const checkIfPlayerHasWon = (lobby, player, updatedScore, multiplier) => {
   const playerWon = updatedScore === 0 && (lobby.gameSettings.modeOut !== "double" || multiplier === 2);
   if (playerWon) {
     updateGameStatsForWinningPlayer(lobby, player);
     resetRoundStatsForNextGame(lobby);
   }
-};
-
-const updateGameStatsForWinningPlayer = (lobby, player) => {
-  let currentLegs = lobby.game.totalGameStats[player].legs + 1;
-  let currentSets = lobby.game.totalGameStats[player].sets;
-  if (currentLegs === Number(lobby.gameSettings.legsForSet)) {
-    currentSets++;
-    currentLegs = 0;
-  }
-
-  lobby.game.totalGameStats[player].legs = currentLegs;
-  lobby.game.totalGameStats[player].sets = currentSets;
-
-  if (currentSets === Number(lobby.gameSettings.setsToWin)) {
-    lobby.game.winner = player;
-  }
-};
-
-const resetRoundStatsForNextGame = (lobby) => {
-  lobby.game.startingPlayerIndex = (lobby.game.startingPlayerIndex + 1) % lobby.players.length;
-  initialiseForNewRound(lobby);
 };
 
 module.exports = { updateScoreForCurrentPlayerStandardGames };
