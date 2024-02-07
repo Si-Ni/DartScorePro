@@ -1,4 +1,5 @@
-import { GameViewWithScoreProps, PlayerToPlayerStats } from "../../../types/global";
+import { PlayerToPlayerStats } from "../../../types/global";
+import { GameViewWithScoreProps } from "../GameView";
 
 export interface StandardGamesViewProps extends GameViewWithScoreProps {
   playerStats: PlayerToPlayerStats;
