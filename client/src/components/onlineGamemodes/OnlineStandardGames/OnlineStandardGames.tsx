@@ -8,7 +8,11 @@ function OnlineStandardGames(props: OnlineStandardGamesProps) {
   const handleScoreBtnClicked = (points: number) => {
     if (!props.isPlayersTurn || (multiplier === 3 && points === 25)) return;
 
-    props.socket.emit("game:sendThrownPoints", { lobbyCode: props.lobbyCode, multiplier: multiplier, points: points });
+    props.socket.emit("standardGame:sendThrownPoints", {
+      lobbyCode: props.lobbyCode,
+      multiplier: multiplier,
+      points: points
+    });
   };
 
   return (
