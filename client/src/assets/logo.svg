@@ -10,10 +10,42 @@
     <stop offset="100%" style="stop-color: #E3292E;" />
   </linearGradient>
 
- <linearGradient id="gradientForS" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#309F6A" />
-      <stop offset="100%" style="stop-color:#E3292E" />
-  </linearGradient>
+  <linearGradient id="gradientForS" x1="0.13" y1="0.83" x2="0.87" y2="0.17">
+      <stop offset="0%" stop-color="#309f6a"/>
+      <stop offset="4%" stop-color="#309f6a"/>
+      <stop offset="8%" stop-color="#309f6a"/>
+      <stop offset="12%" stop-color="#309f6a"/>
+      <stop offset="16%" stop-color="#309f6a"/>
+      <stop offset="20%" stop-color="#309f6a"/>
+      <stop offset="24%" stop-color="#309f6a"/>
+      <stop offset="28%" stop-color="#309f6a"/>
+      <stop offset="32%" stop-color="#309f6a"/>
+      <stop offset="36%" stop-color="#309f6a"/>
+      <stop offset="40%" stop-color="#309f6a"/>
+      <stop offset="48%" stop-color="#309f6a"/>
+      <stop offset="48.17%" stop-color="#2e9e4d"/>
+      <stop offset="48.33%" stop-color="#4a9b2d"/>
+      <stop offset="48.5%" stop-color="#67942d"/>
+      <stop offset="48.67%" stop-color="#788e2c"/>
+      <stop offset="48.83%" stop-color="#84882c"/>
+      <stop offset="49%" stop-color="#8d832b"/>
+      <stop offset="49.17%" stop-color="#967d2b"/>
+      <stop offset="49.33%" stop-color="#9e772a"/>
+      <stop offset="49.5%" stop-color="#a8702a"/>
+      <stop offset="49.67%" stop-color="#b46629"/>
+      <stop offset="50%" stop-color="#e3292e"/>
+      <stop offset="54.17%" stop-color="#e3292e"/>
+      <stop offset="58.33%" stop-color="#e3292e"/>
+      <stop offset="62.5%" stop-color="#e3292e"/>
+      <stop offset="66.67%" stop-color="#e3292e"/>
+      <stop offset="70.83%" stop-color="#e3292e"/>
+      <stop offset="75%" stop-color="#e3292e"/>
+      <stop offset="79.17%" stop-color="#e3292e"/>
+      <stop offset="83.33%" stop-color="#e3292e"/>
+      <stop offset="87.5%" stop-color="#e3292e"/>
+      <stop offset="91.67%" stop-color="#e3292e"/>
+      <stop offset="100%" stop-color="#e3292e"/>
+    </linearGradient>
 
 
 <g transform="translate(0.000000,701.000000) scale(0.100000,-0.100000)"
