@@ -49,7 +49,8 @@ module.exports = (io) => {
   const handleGameStarted = function ({ lobbyCode, gameSettings }) {
     const socket = this;
     const isLeader = lobbies[lobbyCode]?.players.find((player) => player.socketId === socket.id)?.isLeader ?? false;
-    const isValidGamemode = ["301", "501", "rcl", "cri"].includes(gameSettings.selectedGamemode);
+    const validGamemodes = ["301", "501", "rcl", "cri"];
+    const isValidGamemode = validGamemodes.includes(gameSettings.selectedGamemode);
 
     if (!lobbyCodeRegex.test(lobbyCode)) return socket.emit("invalidLobbyCode");
 
@@ -57,7 +58,6 @@ module.exports = (io) => {
       lobbies[lobbyCode].gameSettings = gameSettings;
       initialiseForNewGame(lobbies[lobbyCode]);
       const responseData = { gameSettings: lobbies[lobbyCode].gameSettings, game: lobbies[lobbyCode].game };
-      console.log(lobbies[lobbyCode].game);
       io.to(lobbyCode).emit("leaderStartedGame", responseData);
     }
   };
