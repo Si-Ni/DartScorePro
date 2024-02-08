@@ -6,6 +6,8 @@ const {
 } = require("../../helpers/game.helper");
 
 const updateScoreForCurrentPlayerStandardGames = (lobby, { multiplier, points }) => {
+  if (!validatePoints) return;
+
   const currentPlayerIndex = lobby.game.currentPlayerIndex;
   const currentPlayer = lobby.players[currentPlayerIndex].userID;
 
@@ -20,6 +22,10 @@ const updateScoreForCurrentPlayerStandardGames = (lobby, { multiplier, points })
   addThrowToLastThrows(lobby, currentPlayer, points, multiplier);
 
   updateScoreForPlayerAndContinueGame(lobby, currentPlayer, points, multiplier);
+};
+
+const validatePoints = (points) => {
+  return [0, ...Array.from({ length: 21 }, (_, i) => i + 1), 25].includes(points);
 };
 
 const shouldSetPointsToZero = (lobby, currentPlayer, multiplier) => {
