@@ -1,6 +1,6 @@
 import { BaseGameProps } from "../BaseGameProps";
 
-export interface CricketGameProps extends BaseGameProps {}
+export interface LocalCricketGameProps extends BaseGameProps {}
 
 // 4 = closed for all players
 export type CricketStatus = 0 | 1 | 2 | 3 | 4;

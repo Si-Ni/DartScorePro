@@ -1,7 +1,12 @@
 import { useState } from "react";
 
 import CricketGameView from "../../gamemodeViews/CricketGameView/CricketGameView.tsx";
-import { CricketGameProps, CricketStatus, PlayerStatsCricket, PlayerToPlayerStatsCricket } from "./CricketGame";
+import {
+  LocalCricketGameProps,
+  CricketStatus,
+  PlayerStatsCricket,
+  PlayerToPlayerStatsCricket
+} from "./LocalCricketGame";
 
 const initializePlayerStats = (players: string[]): PlayerToPlayerStatsCricket => {
   const initialPoints: PlayerToPlayerStatsCricket = {};
@@ -22,7 +27,7 @@ const initializePlayerStats = (players: string[]): PlayerToPlayerStatsCricket =>
   return initialPoints;
 };
 
-function CricketGame(props: CricketGameProps) {
+function LocalCricketGame(props: LocalCricketGameProps) {
   const [multiplier, setMultiplier] = useState<number>(1);
   const [players] = useState<string[]>(props.players);
   const [playerStats, setPlayerStats] = useState<PlayerToPlayerStatsCricket>(() =>
@@ -207,4 +212,4 @@ function CricketGame(props: CricketGameProps) {
   );
 }
 
-export default CricketGame;
+export default LocalCricketGame;

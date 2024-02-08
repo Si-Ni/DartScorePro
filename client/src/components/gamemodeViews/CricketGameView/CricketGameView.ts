@@ -1,4 +1,4 @@
-import { PlayerToPlayerStatsCricket } from "../../localGamemodes/CricketGame/CricketGame";
+import { PlayerToPlayerStatsCricket } from "../../localGamemodes/LocalCricketGame/LocalCricketGame";
 import { GameViewWithScoreProps } from "../GameView";
 
 export interface CricketGameViewProps extends GameViewWithScoreProps {
