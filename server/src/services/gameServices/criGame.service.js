@@ -4,11 +4,19 @@ const {
   resetRoundStatsForNextGame
 } = require("../../helpers/game.helper");
 
+const validPoints = new Set([15, 16, 17, 18, 19, 20, 25, 0]);
+
 const updateScoreForCurrentPlayerCri = (lobby, { points, multiplier }) => {
+  if (!validatePoints(points)) return;
+
   const currentPlayerIndex = lobby.game.currentPlayerIndex;
   const currentPlayer = lobby.players[currentPlayerIndex].userID;
 
   updatePlayerStats(lobby, currentPlayer, points, multiplier);
+};
+
+const validatePoints = (points) => {
+  return validPoints.has(points);
 };
 
 const updatePlayerStats = (lobby, player, points, multiplier) => {
