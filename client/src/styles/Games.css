@@ -64,3 +64,18 @@
     width: 100% !important;
   }
 }
+
+.playerList {
+  max-height: 30vh;
+  overflow-y: scroll;
+  border: 2px solid #e8e8e8;
+  box-shadow: inset 0px 0px 3px 1px rgba(0, 0, 0, 0.1);
+}
+
+.playerList li:first-child {
+  margin-top: 1.5rem;
+}
+
+.playerList li:last-child {
+  margin-bottom: 1.5rem;
+}

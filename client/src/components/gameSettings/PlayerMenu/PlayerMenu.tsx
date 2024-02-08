@@ -39,7 +39,7 @@ function PlayerMenu({ players, setPlayers, ...props }: PlayerMenuProps) {
         <h1 className="is-size-4 mb-3">Player List</h1>
       </div>
       <hr></hr>
-      <ul className="mb-6 mt-4" style={{ maxHeight: "30vh", overflowY: "scroll" }}>
+      <ul className="mb-6 mt-4 pr-3 pl-3 playerList">
         {players.map((player, index) => (
           <li key={index}>
             <div className="mb-2 is-flex">
@@ -54,7 +54,7 @@ function PlayerMenu({ players, setPlayers, ...props }: PlayerMenuProps) {
                 </div>
               )}
             </div>
-            <hr></hr>
+            {index != players.length - 1 && <hr />}
           </li>
         ))}
       </ul>
