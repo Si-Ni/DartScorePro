@@ -1,4 +1,4 @@
-import { PlayerToPlayerTotalGameStats } from "../../types/global";
+import { PlayerToPlayerTotalGameStats } from "../../types/playerStats.ts";
 
 export interface GameViewProps {
   currentRound: number;
@@ -6,6 +6,7 @@ export interface GameViewProps {
   startingPlayerIndex: number;
   currentPlayerIndex: number;
   playerTotalGameStats: PlayerToPlayerTotalGameStats;
+  isPlayersTurn?: boolean;
 }
 
 export interface GameViewWithScoreProps extends GameViewProps {

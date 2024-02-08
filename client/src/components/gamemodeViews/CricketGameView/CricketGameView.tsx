@@ -34,6 +34,7 @@ function CricketGameView(props: CricketGameViewProps) {
                 cbHandleButtonClicked={props.cbHandleScoreBtnClicked}
                 showMissButton={true}
                 btnSize={60}
+                disabled={props.isPlayersTurn === false}
               />
             }
           </div>
@@ -43,6 +44,7 @@ function CricketGameView(props: CricketGameViewProps) {
         <GameMultiplierButtons
           multiplier={props.multiplier}
           cbHandleMultiplierClicked={props.cbHandleMultiplierClicked}
+          disabled={props.isPlayersTurn === false}
         />
       </div>
     </>

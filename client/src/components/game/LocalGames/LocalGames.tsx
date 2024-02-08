@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { PlayerToPlayerTotalGameStats } from "../../../types/global";
+import { PlayerToPlayerTotalGameStats } from "../../../types/playerStats.ts";
 
 import "../../../styles/Games.css";
 import NavigationButtons from "../../buttons/NavigationButtons/NavigationButtons.tsx";
