@@ -31,16 +31,18 @@ function LocalCricketGame(props: LocalCricketGameProps) {
   );
 
   const handleScoreBtnClicked = (points: number): void => {
-    const validThrow = !(points === 25 && multiplier === 3);
-    if (validThrow) {
-      updatePlayerStats(props.currentPlayerIndex, points);
-      props.updateRemainingThrows();
-    }
+    if (points === 25 && multiplier === 3) return;
+
+    updatePlayerStats(props.currentPlayerIndex, points);
+
     setMultiplier(1);
   };
 
   const updatePlayerStats = (playerIndex: number, points: number): void => {
-    if (points === 0) return;
+    if (points === 0) {
+      props.updateRemainingThrows();
+      return;
+    }
 
     const statsKey = getCricketStatsKey(points);
     const playerKey = players[playerIndex];
@@ -51,6 +53,8 @@ function LocalCricketGame(props: LocalCricketGameProps) {
     } else if (currentCricketStatusValue === 3) {
       increasePlayerScore(playerKey, points * multiplier);
       checkIfPlayerHasWon(playerKey, points * multiplier, statsKey, currentCricketStatusValue);
+    } else {
+      props.updateRemainingThrows();
     }
   };
 
@@ -93,7 +97,7 @@ function LocalCricketGame(props: LocalCricketGameProps) {
       const numberNotClosed = player != playerKey && playerStats[player].cricketStats[statsKey] < 3;
       if (numberNotClosed) {
         numberClosedByOtherPlayers = false;
-        return;
+        return numberClosedByOtherPlayers;
       }
     });
     return numberClosedByOtherPlayers;
@@ -160,6 +164,8 @@ function LocalCricketGame(props: LocalCricketGameProps) {
     ) {
       props.cbPlayerHasWon(playerKey);
       setPlayerStats(initializePlayerStats(props.players));
+    } else {
+      props.updateRemainingThrows();
     }
   };
 

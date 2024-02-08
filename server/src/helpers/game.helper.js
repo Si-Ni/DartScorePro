@@ -6,6 +6,7 @@ const findPlayerIndexBySocketId = (socketId, players) => {
 };
 
 const switchToNextPlayer = (lobby) => {
+  console.log("switchToNextPlayer: ", lobby.game.throwsRemaining);
   const currentGame = lobby.game;
   currentGame.currentPlayerIndex = (currentGame.currentPlayerIndex + 1) % lobby.players.length;
   currentGame.turns++;
@@ -17,10 +18,10 @@ const switchToNextPlayer = (lobby) => {
 };
 
 const updateRemainingThrows = (lobby) => {
+  console.log("updateRemainingThrows: ", lobby.game.throwsRemaining);
   lobby.game.throwsRemaining--;
   if (lobby.game.throwsRemaining === 0) {
     switchToNextPlayer(lobby);
-    lobby.game.throwsRemaining = 3;
   }
 };
 
