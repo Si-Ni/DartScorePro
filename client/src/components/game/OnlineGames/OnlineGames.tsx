@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
-import { PlayerToPlayerStats, PlayerToPlayerStatsRCl, PlayerToPlayerTotalGameStats } from "../../../types/global";
+import {
+  PlayerToPlayerStats,
+  PlayerToPlayerStatsRCl,
+  PlayerToPlayerTotalGameStats
+} from "../../../types/playerStats.ts";
 import YesNoPopUp from "../../popUps/YesNoPopUp/YesNoPopUp.tsx";
 import "../../../styles/Games.css";
 import NavigationButtons from "../../buttons/NavigationButtons/NavigationButtons.tsx";

@@ -1,12 +1,8 @@
 import { useState } from "react";
 
 import CricketGameView from "../../gamemodeViews/CricketGameView/CricketGameView.tsx";
-import {
-  LocalCricketGameProps,
-  CricketStatus,
-  PlayerStatsCricket,
-  PlayerToPlayerStatsCricket
-} from "./LocalCricketGame";
+import { LocalCricketGameProps } from "./LocalCricketGame";
+import { CricketStatus, PlayerStatsCricket, PlayerToPlayerStatsCricket } from "../../../types/playerStats.ts";
 
 const initializePlayerStats = (players: string[]): PlayerToPlayerStatsCricket => {
   const initialPoints: PlayerToPlayerStatsCricket = {};
