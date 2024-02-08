@@ -5,4 +5,5 @@ export interface PlayerMenuProps {
   maxPlayers: number;
   setPlayers: React.Dispatch<React.SetStateAction<string[]>>;
   isEditable: boolean;
+  playerCountInfo: string;
 }

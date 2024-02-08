@@ -18,4 +18,5 @@ export interface PlayersAndSettingsProps {
   setModeOut: React.Dispatch<React.SetStateAction<InAndOutMode>>;
   handleSettingsNextBtnClicked(): void;
   cbBackBtnClicked(): void;
+  playerCountInfo: string;
 }

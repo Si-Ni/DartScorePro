@@ -1,12 +1,10 @@
 import { useState } from "react";
 import PlayerMenu from "../../../components/gameSettings/PlayerMenu/PlayerMenu.tsx";
-import { useNavigate } from "react-router-dom";
 import SettingsMenu from "../../../components/gameSettings/SettingsMenu/SettingsMenu.tsx";
 import NavigationButtons from "../../../components/buttons/NavigationButtons/NavigationButtons.tsx";
 import { OnlineMultiplayerSettingsProps } from "./OnlineMultiplayerSettings";
 
 function OnlineMultiplayerSettings(props: OnlineMultiplayerSettingsProps) {
-  const navigate = useNavigate();
   const [showSettingsMenu, setShowSettingsMenu] = useState<boolean>(false);
 
   const handleNext = () => {
@@ -34,7 +32,13 @@ function OnlineMultiplayerSettings(props: OnlineMultiplayerSettingsProps) {
         <div className="hero is-justify-content-center is-align-items-center is-fullheight">
           <div className="hero-body">
             <div className="container box">
-              <PlayerMenu players={props.players} maxPlayers={4} setPlayers={props.setPlayers} isEditable={false} />
+              <PlayerMenu
+                players={props.players}
+                maxPlayers={4}
+                setPlayers={props.setPlayers}
+                isEditable={false}
+                playerCountInfo="2-4 players required to start"
+              />
               <NavigationButtons
                 cbBackBtnClicked={props.cbBackBtnClicked}
                 cbNextBtnClicked={props.isLobbyLeader ? handleNext : undefined}

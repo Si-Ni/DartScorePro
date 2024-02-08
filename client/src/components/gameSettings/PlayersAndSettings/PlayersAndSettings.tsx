@@ -41,6 +41,7 @@ function PlayersAndSettings(props: PlayersAndSettingsProps) {
                 maxPlayers={props.maxPlayers}
                 setPlayers={props.setPlayers}
                 isEditable={true}
+                playerCountInfo={props.playerCountInfo}
               />
               <NavigationButtons
                 cbBackBtnClicked={props.cbBackBtnClicked}

@@ -137,6 +137,7 @@ function Tournament() {
           players={allPlayers}
           maxPlayers={16}
           validNumberOfPlayers={numberOfPlayersIsPowerOfTwo()}
+          playerCountInfo="2, 4, 8 or 16 players required"
           setSelectedGamemode={setSelectedGamemode}
           setPlayers={setAllPlayers}
           setLegsForSet={setLegsForSet}

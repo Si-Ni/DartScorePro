@@ -41,6 +41,7 @@ function LocalMultiplayer(props: LocalMultiplayerProps) {
           {...gameProps}
           maxPlayers={4}
           validNumberOfPlayers={numberOfPlayersCondition()}
+          playerCountInfo="2-4 players required to start"
           setSelectedGamemode={setSelectedGamemode}
           setPlayers={setPlayers}
           setLegsForSet={setLegsForSet}
