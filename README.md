@@ -1,4 +1,4 @@
-![logo](client/src/assets/logo.png)
+![logo](client/src/assets/logo.svg)
 
 Welcome to DartScorePro, your ultimate tool for playing dart games with ease and precision. This documentation will guide you through the features, usage, and support options available for DartScorePro.
 

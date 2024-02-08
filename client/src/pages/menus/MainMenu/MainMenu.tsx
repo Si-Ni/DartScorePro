@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import "../../../styles/Menu.css";
-import logo from "../../../assets/logo.png";
+import logo from "../../../assets/logo.svg";
 import { useContext } from "react";
 import AuthContext from "../../../context/AuthProvider";
 import { MainMenuProps } from "./MainMenu";
