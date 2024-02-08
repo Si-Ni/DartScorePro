@@ -3,6 +3,7 @@ const { initialiseForNewRound } = require("../../helpers/initPlayerStats.helper"
 const { lobbies, lobbyCodeRegex } = require("../lobby.service");
 const { updateScoreForCurrentPlayerStandardGames } = require("./standardGame.service");
 const { updateScoreForCurrentPlayerRcl } = require("./rclGame.service");
+const { updateScoreForCurrentPlayerCri } = require("./criGame.service");
 
 const initialiseForNewGame = (lobby) => {
   lobby.game = {};
@@ -37,6 +38,8 @@ const forwardRequestToResponsibleService = (lobby, args) => {
     updateScoreForCurrentPlayerStandardGames(lobby, args);
   } else if (gamemode === "rcl") {
     updateScoreForCurrentPlayerRcl(lobby, args);
+  } else if (gamemode === "cri") {
+    updateScoreForCurrentPlayerCri(lobby, args);
   } else {
     console.error("selected gamemode not supported");
   }
@@ -54,6 +57,7 @@ module.exports = (io) => {
       lobbies[lobbyCode].gameSettings = gameSettings;
       initialiseForNewGame(lobbies[lobbyCode]);
       const responseData = { gameSettings: lobbies[lobbyCode].gameSettings, game: lobbies[lobbyCode].game };
+      console.log(lobbies[lobbyCode].game);
       io.to(lobbyCode).emit("leaderStartedGame", responseData);
     }
   };

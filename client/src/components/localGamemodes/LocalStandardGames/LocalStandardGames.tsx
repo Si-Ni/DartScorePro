@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "../../../styles/App.css";
 import "../../../styles/Games.css";
-import { PlayerStats, PlayerToPlayerStats } from "../../../types/global";
+import { PlayerStats, PlayerToPlayerStats } from "../../../types/playerStats.ts";
 import { getAllOptions, sumRound } from "../../../helpers/calcCheckouts";
 import StandardGamesView from "../../gamemodeViews/StandardGamesView/StandardGamesView.tsx";
 import { LocalStandardGamesProps } from "./LocalStandardGames";

@@ -1,10 +1,16 @@
 import { useEffect, useState } from "react";
-import { PlayerToPlayerStats, PlayerToPlayerStatsRCl, PlayerToPlayerTotalGameStats } from "../../../types/global";
+import {
+  PlayerToPlayerStats,
+  PlayerToPlayerStatsCricket,
+  PlayerToPlayerStatsRCl,
+  PlayerToPlayerTotalGameStats
+} from "../../../types/playerStats.ts";
 import YesNoPopUp from "../../popUps/YesNoPopUp/YesNoPopUp.tsx";
 import "../../../styles/Games.css";
 import NavigationButtons from "../../buttons/NavigationButtons/NavigationButtons.tsx";
 import OnlineStandardGames from "../../onlineGamemodes/OnlineStandardGames/OnlineStandardGames.tsx";
 import OnlineRoundTheClockGame from "../../onlineGamemodes/OnlineRoundTheClockGame/OnlineRoundTheClockGame.tsx";
+import OnlineCricketGame from "../../onlineGamemodes/OnlineCricketGame/OnlineCricketGame.tsx";
 import { OnlineGamesProps } from "./OnlineGames";
 import GameInformationHeader from "../../GameInformationHeader/GameInformationHeader.tsx";
 import { DGameData } from "../../../pages/onlineMultiplayer/OnlineMultiplayer/OnlineMultiplayerDTOs.tsx";
@@ -19,9 +25,9 @@ function OnlineGames(props: OnlineGamesProps) {
   const [currentRound, setCurrentRound] = useState<number>(props.initialGameStats.currentRound);
   const [startingPlayerIndex, setStartingPlayerIndex] = useState<number>(props.initialGameStats.startingPlayerIndex);
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState<number>(props.initialGameStats.currentPlayerIndex);
-  const [playerStats, setPlayerStats] = useState<PlayerToPlayerStats | PlayerToPlayerStatsRCl>(
-    props.initialGameStats.playerStats
-  );
+  const [playerStats, setPlayerStats] = useState<
+    PlayerToPlayerStats | PlayerToPlayerStatsRCl | PlayerToPlayerStatsCricket
+  >(props.initialGameStats.playerStats);
   const [winningPlayer, setWinningPlayer] = useState<string | null>(null);
 
   const checkIsPlayersTurn = (currentPlayerIndex: number): boolean => {
@@ -96,6 +102,9 @@ function OnlineGames(props: OnlineGamesProps) {
       )}
       {props.selectedGamemode === "rcl" && (
         <OnlineRoundTheClockGame {...gameProps} playerStats={playerStats as PlayerToPlayerStatsRCl} />
+      )}
+      {props.selectedGamemode === "cri" && (
+        <OnlineCricketGame {...gameProps} playerStats={playerStats as PlayerToPlayerStatsCricket} />
       )}
       <NavigationButtons cbBackBtnClicked={props.cbBackBtnClicked} marginTop={0} />
     </div>

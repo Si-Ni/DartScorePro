@@ -1,10 +1,10 @@
+import { Gamemode, InAndOutMode } from "../../../types/global";
 import {
-  Gamemode,
-  InAndOutMode,
   PlayerToPlayerStats,
+  PlayerToPlayerStatsCricket,
   PlayerToPlayerStatsRCl,
   PlayerToPlayerTotalGameStats
-} from "../../../types/global";
+} from "../../../types/playerStats";
 
 export interface DGameSettings {
   selectedGamemode: Gamemode;
@@ -22,7 +22,7 @@ export interface DGameData {
   startingPlayerIndex: number;
   currentPlayerIndex: number;
   throwsRemaining: number;
-  playerStats: PlayerToPlayerStats | PlayerToPlayerStatsRCl;
+  playerStats: PlayerToPlayerStats | PlayerToPlayerStatsRCl | PlayerToPlayerStatsCricket;
   totalGameStats: PlayerToPlayerTotalGameStats;
   winner: string | null;
 }

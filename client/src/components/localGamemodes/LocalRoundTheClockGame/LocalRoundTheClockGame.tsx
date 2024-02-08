@@ -1,7 +1,7 @@
 import { useState } from "react";
 import RoundTheClockGameView from "../../gamemodeViews/RoundTheClockGameView/RoundTheClockGameView.tsx";
 import { LocalRoundTheClockGameProps } from "./LocalRoundTheClockGame.ts";
-import { PlayerToPlayerStatsRCl } from "../../../types/global.ts";
+import { PlayerToPlayerStatsRCl } from "../../../types/playerStats.ts";
 
 const initializePlayerStats = (players: string[]): PlayerToPlayerStatsRCl => {
   const initialPoints: PlayerToPlayerStatsRCl = {};

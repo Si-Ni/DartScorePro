@@ -1,4 +1,4 @@
-import { PlayerToPlayerTotalGameStats } from "../../types/global";
+import { PlayerToPlayerTotalGameStats } from "../../types/playerStats.ts";
 
 export interface BaseGameProps {
   players: string[];

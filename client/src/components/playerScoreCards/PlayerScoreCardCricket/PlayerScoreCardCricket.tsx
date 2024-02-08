@@ -1,6 +1,6 @@
 import "../../../styles/CricketSymbols.css";
 import { PlayerScoreCardCricketProps } from "./PlayerScoreCardCricket";
-import { CricketStatus } from "../../localGamemodes/CricketGame/CricketGame";
+import { CricketStatus } from "../../localGamemodes/LocalCricketGame/LocalCricketGame";
 
 const sortTableHeaders = (tableHeaders: string[]) => {
   tableHeaders.sort((a, b) => {

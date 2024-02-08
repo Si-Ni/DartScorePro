@@ -1,5 +1,5 @@
 import { Socket } from "socket.io-client";
-import { PlayerToPlayerTotalGameStats } from "../../types/global";
+import { PlayerToPlayerTotalGameStats } from "../../types/playerStats";
 
 export interface OnlineGameProps {
   socket: Socket;
