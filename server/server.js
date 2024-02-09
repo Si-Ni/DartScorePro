@@ -25,12 +25,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "../client/dist")));
 app.use("/", auth);
 app.use("/api", api);
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   if (req.path.length > 1 && /\/$/.test(req.path)) {
-    var query = req.url.slice(req.path.length)
-    res.redirect(301, req.path.slice(0, -1) + query)
+    var query = req.url.slice(req.path.length);
+    res.redirect(301, req.path.slice(0, -1) + query);
   } else {
-    next()
+    next();
   }
 });
 app.set("trust proxy", 1);
