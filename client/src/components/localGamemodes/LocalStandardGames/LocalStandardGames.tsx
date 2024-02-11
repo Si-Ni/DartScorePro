@@ -105,8 +105,7 @@ function LocalStandardGames({ currentPlayerIndex, throwsRemaining, ...props }: L
     const updatedScore = calculateUpdatedScore(playerIndex, thrownPoints);
 
     const updatedScoreIsInvalid =
-      updatedScore < 0 ||
-      (props.modeOut === "double" && (updatedScore === 1 || (multiplier === 1 && updatedScore === 0)));
+      updatedScore < 0 || (props.modeOut === "double" && (multiplier === 1 || multiplier === 3) && updatedScore <= 1);
 
     if (updatedScoreIsInvalid) {
       resetScoreToBeginningOfRound(playerIndex);
