@@ -60,7 +60,7 @@ const updateScoreForPlayerAndContinueGame = (lobby, currentPlayer, points, multi
 
   const updatedScoreIsInvalid =
     updatedScore < 0 ||
-    (lobby.gameSettings.modeOut === "double" && (updatedScore === 1 || (multiplier === 1 && updatedScore === 0)));
+    (lobby.gameSettings.modeOut === "double" && (multiplier === 1 || multiplier === 3) && updatedScore <= 1);
 
   if (updatedScoreIsInvalid) {
     resetScoreToBeginningOfRound(lobby, currentPlayer);
