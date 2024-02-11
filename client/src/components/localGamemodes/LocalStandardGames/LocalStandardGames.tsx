@@ -6,21 +6,28 @@ import { getAllOptions, sumRound } from "../../../helpers/calcCheckouts";
 import StandardGamesView from "../../gamemodeViews/StandardGamesView/StandardGamesView.tsx";
 import { LocalStandardGamesProps } from "./LocalStandardGames";
 
-const initializePlayerStats = (players: string[], gamemodeTotalScore: number): PlayerToPlayerStats => {
+const initializePlayerStats = (
+  players: string[],
+  gamemodeTotalScore: number,
+  playerStats: PlayerToPlayerStats = {},
+  thrownPoints?: number
+): PlayerToPlayerStats => {
   const initialPoints: PlayerToPlayerStats = {};
   players.forEach((player) => {
     initialPoints[player] = {
       score: gamemodeTotalScore,
       scoreAtBeginningOfRound: gamemodeTotalScore,
-      average: 0,
-      dartsThrown: 0,
-      totalScore: 0,
+      average:
+        ((playerStats[player]?.totalScore + (thrownPoints ?? 0)) * 3) / (playerStats[player]?.dartsThrown + 1) || 0,
+      dartsThrown: playerStats[player]?.dartsThrown + 1 || 0,
+      totalScore: playerStats[player]?.totalScore + (thrownPoints ?? 0) || 0,
       turns: 0,
       lastThrows: [],
       throwsRemaining: 0,
       checkoutOptions: []
     };
   });
+
   return initialPoints;
 };
 
@@ -113,7 +120,7 @@ function LocalStandardGames({ currentPlayerIndex, throwsRemaining, ...props }: L
     } else {
       updatePlayerStatsByThrownPoints(currentPlayerIndex, thrownPoints);
       props.updateRemainingThrows();
-      checkIfPlayerHasWon(updatedScore, playerIndex);
+      checkIfPlayerHasWon(updatedScore, playerIndex, thrownPoints);
     }
 
     setMultiplier(1);
@@ -126,11 +133,11 @@ function LocalStandardGames({ currentPlayerIndex, throwsRemaining, ...props }: L
     return updatedScore;
   };
 
-  const checkIfPlayerHasWon = (updatedScore: number, playerIndex: number) => {
+  const checkIfPlayerHasWon = (updatedScore: number, playerIndex: number, thrownPoints: number) => {
     const playerWon = updatedScore === 0 && (props.modeOut !== "double" || multiplier === 2);
     if (playerWon) {
       props.cbPlayerHasWon(players[playerIndex]);
-      setPlayerStats(initializePlayerStats(props.players, props.gamemodeTotalScore));
+      setPlayerStats(initializePlayerStats(props.players, props.gamemodeTotalScore, playerStats, thrownPoints));
     }
   };
 
