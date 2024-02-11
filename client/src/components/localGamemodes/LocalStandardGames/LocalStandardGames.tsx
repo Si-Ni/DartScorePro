@@ -10,24 +10,27 @@ const initializePlayerStats = (
   players: string[],
   gamemodeTotalScore: number,
   playerStats: PlayerToPlayerStats = {},
-  thrownPoints?: number
+  thrownPoints?: number,
+  winningPlayerIndex?: number
 ): PlayerToPlayerStats => {
   const initialPoints: PlayerToPlayerStats = {};
-  players.forEach((player) => {
+  players.forEach((player, index) => {
+    const stats = playerStats[player] || { average: 0, dartsThrown: 0, totalScore: 0 };
     initialPoints[player] = {
       score: gamemodeTotalScore,
       scoreAtBeginningOfRound: gamemodeTotalScore,
       average:
-        ((playerStats[player]?.totalScore + (thrownPoints ?? 0)) * 3) / (playerStats[player]?.dartsThrown + 1) || 0,
-      dartsThrown: playerStats[player]?.dartsThrown + 1 || 0,
-      totalScore: playerStats[player]?.totalScore + (thrownPoints ?? 0) || 0,
+        index === winningPlayerIndex
+          ? ((stats.totalScore + (thrownPoints || 0)) * 3) / (stats.dartsThrown + 1) || 0
+          : stats.average,
+      dartsThrown: stats.dartsThrown + (index === winningPlayerIndex ? 1 : 0),
+      totalScore: index === winningPlayerIndex ? stats.totalScore + (thrownPoints || 0) : stats.totalScore,
       turns: 0,
       lastThrows: [],
       throwsRemaining: 0,
       checkoutOptions: []
     };
   });
-
   return initialPoints;
 };
 
@@ -49,6 +52,8 @@ function LocalStandardGames({ currentPlayerIndex, throwsRemaining, ...props }: L
       saveBeginningScore(currentPlayerIndex);
       clearLastThrowsOfPlayer(currentPlayerIndex);
     }
+
+    console.log(playerStats);
 
     addThrowToLastThrows(currentPlayerIndex, points, multiplier);
 
@@ -137,7 +142,9 @@ function LocalStandardGames({ currentPlayerIndex, throwsRemaining, ...props }: L
     const playerWon = updatedScore === 0 && (props.modeOut !== "double" || multiplier === 2);
     if (playerWon) {
       props.cbPlayerHasWon(players[playerIndex]);
-      setPlayerStats(initializePlayerStats(props.players, props.gamemodeTotalScore, playerStats, thrownPoints));
+      setPlayerStats(
+        initializePlayerStats(props.players, props.gamemodeTotalScore, playerStats, thrownPoints, playerIndex)
+      );
     }
   };
 
