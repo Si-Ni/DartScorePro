@@ -3,7 +3,7 @@ import { PlayerToPlayerTotalGameStats } from "../../../types/playerStats.ts";
 
 import "../../../styles/Games.css";
 import NavigationButtons from "../../buttons/NavigationButtons/NavigationButtons.tsx";
-import GameInformationHeader from "../../GameInformationHeader/GameInformationHeader.tsx";
+import GameInformationHeader from "../../gameInformationHeader/GameInformationHeader.tsx";
 import { LocalGamesProps } from "./LocalGames";
 import LocalStandardGames from "../../localGamemodes/LocalStandardGames/LocalStandardGames.tsx";
 import LocalRoundTheClockGame from "../../localGamemodes/LocalRoundTheClockGame/LocalRoundTheClockGame.tsx";

@@ -12,7 +12,7 @@ import OnlineStandardGames from "../../onlineGamemodes/OnlineStandardGames/Onlin
 import OnlineRoundTheClockGame from "../../onlineGamemodes/OnlineRoundTheClockGame/OnlineRoundTheClockGame.tsx";
 import OnlineCricketGame from "../../onlineGamemodes/OnlineCricketGame/OnlineCricketGame.tsx";
 import { OnlineGamesProps } from "./OnlineGames";
-import GameInformationHeader from "../../GameInformationHeader/GameInformationHeader.tsx";
+import GameInformationHeader from "../../gameInformationHeader/GameInformationHeader.tsx";
 import { DGameData } from "../../../pages/onlineMultiplayer/OnlineMultiplayer/OnlineMultiplayerDTOs.tsx";
 import EndGamePopUp from "../../popUps/EndGamePopUp/EndGamePopUp.tsx";
 
