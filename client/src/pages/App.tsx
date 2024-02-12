@@ -14,6 +14,7 @@ import CheckoutCalculator from "./information/CheckoutCalculator/CheckoutCalcula
 import Tournament from "./tournament/Tournament";
 import Impressum from "./information/Impressum/Impressum";
 import Settings from "./settings/Settings";
+import Statistics from "./statistics/Statistics.tsx";
 import Footer from "../components/footer/Footer/Footer.tsx";
 
 const socket = io("http://localhost:4000");
@@ -93,6 +94,7 @@ function App() {
         <Route path="/settings" element={<Settings />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/impressum" element={<Impressum />} />
+        <Route path="/statistics" element={<Statistics />} />
       </Routes>
       <Footer isLoggedIn={isLoggedIn} userID={displayUserID} />
     </>

@@ -13,6 +13,8 @@ async function userStats(req) {
 
   const playerStats = await getPlayerStats(userIDorMail);
 
+  console.log(playerStats);
+
   return { status: 200, json: playerStats };
 }
 
