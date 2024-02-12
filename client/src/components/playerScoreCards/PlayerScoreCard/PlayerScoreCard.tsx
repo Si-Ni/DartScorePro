@@ -3,17 +3,48 @@ import axios from "../../../api/axios";
 import "../../../styles/Games.css";
 import { PlayerScoreCardProps } from "./PlayerScoreCard";
 
-const COMMON_CHECKOUTS = "/api/commonCheckout?";
+const COMMON_CHECKOUTS_URL = "/api/commonCheckout?";
+const STATISTICS_URL = "/api/userStats";
+
+interface Checkout {
+  checkout: number;
+  timesPlayed: number;
+}
 
 function PlayerScoreCard(props: PlayerScoreCardProps) {
   const [possibleCheckout, setPossibleCheckout] = useState<string[] | null>(null);
+  const [mostPlayedCheckout, setMostPlayedCheckout] = useState<Checkout | null>(null);
+
+  const findMaxTimesPlayed = (data: Checkout[]): Checkout | null => {
+    if (data.length === 0) {
+      return null;
+    }
+
+    return data.reduce((prev, current) => {
+      return current.timesPlayed > prev.timesPlayed ? current : prev;
+    });
+  };
 
   useEffect(() => {
     axios
-      .get(COMMON_CHECKOUTS + new URLSearchParams({ score: props.score.toString() }))
+      .get(COMMON_CHECKOUTS_URL + new URLSearchParams({ score: props.score.toString() }))
       .then((res) => {
         const checkout = res.data as string[];
         setPossibleCheckout(checkout);
+      })
+      .catch(() => {});
+    axios
+      .get(STATISTICS_URL, { withCredentials: true })
+      .then((res) => {
+        const maxCheckout = res.data.playerStats.standard.checkouts.double[props.score];
+
+        console.log(props.playerName, res.data.userIDorMail);
+        if (props.playerName === res.data.userIDorMail && maxCheckout && maxCheckout.length > 0) {
+          const mostPlayed = findMaxTimesPlayed(maxCheckout);
+          setMostPlayedCheckout(mostPlayed);
+        } else {
+          setMostPlayedCheckout(null);
+        }
       })
       .catch(() => {});
   }, [props.score]);
@@ -31,6 +62,18 @@ function PlayerScoreCard(props: PlayerScoreCardProps) {
                   {checkout}
                   {index < possibleCheckout?.length - 1 && (
                     <span style={{ borderLeft: "1px solid #209CEE", margin: "0 5px", height: "100%" }} />
+                  )}
+                </span>
+              ))}
+            </span>
+          )}{" "}
+          {mostPlayedCheckout && (
+            <span style={{ border: `1px solid #ffdd57`, marginTop: "-11px" }} className="tag is-warning is-light">
+              {mostPlayedCheckout.checkout.map((checkout, index) => (
+                <span key={index} style={{ display: "inline-block" }}>
+                  {checkout}
+                  {index < mostPlayedCheckout.checkout.length - 1 && (
+                    <span style={{ borderLeft: "1px solid #ffdd57", margin: "0 5px", height: "100%" }} />
                   )}
                 </span>
               ))}

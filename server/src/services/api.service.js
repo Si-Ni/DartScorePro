@@ -15,7 +15,7 @@ async function userStats(req) {
 
   console.log(playerStats);
 
-  return { status: 200, json: playerStats };
+  return { status: 200, json: { playerStats: playerStats, userIDorMail: userIDorMail } };
 }
 
 module.exports = {
