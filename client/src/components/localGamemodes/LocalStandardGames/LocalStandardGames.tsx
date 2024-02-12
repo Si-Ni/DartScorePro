@@ -115,7 +115,7 @@ function LocalStandardGames({ currentPlayerIndex, throwsRemaining, ...props }: L
 
     const updatedScoreIsInvalid =
       updatedScore < 0 ||
-      (props.modeOut === "double" === "double" && (multiplier === 1 || multiplier === 3) && updatedScore <= 1) ||
+      ((props.modeOut === "double") === "double" && (multiplier === 1 || multiplier === 3) && updatedScore <= 1) ||
       (multiplier === 2 && updatedScore === 1);
 
     if (updatedScoreIsInvalid) {
