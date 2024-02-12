@@ -53,10 +53,7 @@ function LocalStandardGames({ currentPlayerIndex, throwsRemaining, ...props }: L
       clearLastThrowsOfPlayer(currentPlayerIndex);
     }
 
-    console.log(playerStats);
-
     addThrowToLastThrows(currentPlayerIndex, points, multiplier);
-
     updateScoreForPlayerAndContinueGame(currentPlayerIndex, points);
   };
 

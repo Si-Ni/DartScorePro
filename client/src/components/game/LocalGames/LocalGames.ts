@@ -1,4 +1,4 @@
-import { Gamemode, InAndOutMode } from "../../../types/global";
+import { GameType, Gamemode, InAndOutMode } from "../../../types/global";
 
 export interface LocalGamesProps {
   selectedGamemode: Gamemode;
@@ -8,5 +8,6 @@ export interface LocalGamesProps {
   legsForSet: number;
   modeIn: InAndOutMode;
   modeOut: InAndOutMode;
+  gameType: GameType;
   cbPlayerWon?(player: string): void;
 }
