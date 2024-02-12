@@ -36,11 +36,8 @@ function PlayerScoreCard(props: PlayerScoreCardProps) {
     axios
       .get(STATISTICS_URL, { withCredentials: true })
       .then((res) => {
-        console.log(props.modeOut);
         const maxCheckout = res.data.playerStats.standard.checkouts[props.modeOut][props.score];
 
-        console.log(maxCheckout);
-        console.log(props.playerName, res.data.userIDorMail);
         if (props.playerName === res.data.userIDorMail && maxCheckout && maxCheckout.length > 0) {
           const mostPlayed = findMaxTimesPlayed(maxCheckout);
           setMostPlayedCheckout(mostPlayed);

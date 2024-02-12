@@ -2,8 +2,6 @@ const UserStats = require("../models/userStats.model");
 const checkUserRegistered = require("./checkUserRegistered.helper");
 
 async function savePlayerWinOrDefeat(lobby) {
-  // console.log(lobby.game.playerStats.marc.lastThrows)
-
   try {
     for (const player of lobby.players) {
       const { userID } = player;

@@ -15,8 +15,6 @@ function OnlineStandardGames(props: OnlineStandardGamesProps) {
     });
   };
 
-  console.log(props);
-
   return (
     <StandardGamesView
       currentRound={props.currentRound}

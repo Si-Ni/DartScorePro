@@ -78,7 +78,6 @@ function OnlineGames(props: OnlineGamesProps) {
     isPlayersTurn: isPlayersTurn
   };
 
-  console.log(props.modeOut);
   return (
     <div className="App hero is-flex is-justify-content-center is-align-items-center is-fullheight">
       {winningPlayer && (
