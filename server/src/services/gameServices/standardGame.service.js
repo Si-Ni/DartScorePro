@@ -1,5 +1,6 @@
 const saveUpdatedPlayerStats = require("../../helpers/saveUpdatedPlayerStats.helper");
 const savePlayerWinOrDefeat = require("../../helpers/savePlayerWinOrDefeat.helper");
+const savePlayerCheckout = require("../../helpers/savePlayerCheckout.helper");
 const {
   switchToNextPlayer,
   updateRemainingThrows,
@@ -86,7 +87,7 @@ const resetScoreToBeginningOfRound = (lobby, currentPlayer) => {
   currentPlayerStats.score = currentPlayerStats.scoreAtBeginningOfRound;
 };
 
-const updatePlayerStatsByThrownPoints = (lobby, player, thrownPoints) => {
+const updatePlayerStatsByThrownPoints = async (lobby, player, thrownPoints) => {
   let currentPlayerStats = lobby.game.playerStats[player];
   currentPlayerStats = {
     ...currentPlayerStats,
@@ -99,16 +100,16 @@ const updatePlayerStatsByThrownPoints = (lobby, player, thrownPoints) => {
   };
   lobby.game.playerStats[player] = currentPlayerStats;
 
-  saveUpdatedPlayerStats(thrownPoints, player);
+  await saveUpdatedPlayerStats(thrownPoints, player, lobby);
 };
 
-const checkIfPlayerHasWon = (lobby, player, updatedScore, multiplier) => {
+const checkIfPlayerHasWon = async (lobby, player, updatedScore, multiplier) => {
   const playerWon = updatedScore === 0 && (lobby.gameSettings.modeOut !== "double" || multiplier === 2);
   if (playerWon) {
     updateGameStatsForWinningPlayer(lobby, player);
+    await savePlayerWinOrDefeat(lobby);
+    await savePlayerCheckout(lobby);
     resetRoundStatsForNextGame(lobby);
-
-    savePlayerWinOrDefeat(lobby);
   }
 };
 

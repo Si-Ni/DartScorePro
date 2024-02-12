@@ -29,12 +29,11 @@ const addMissesToLastThrows = (lobby, currentPlayer) => {
   lobby.game.playerStats[currentPlayer].lastThrows = throws;
 };
 
-const handlePlayerHitTarget = (lobby, player) => {
+const handlePlayerHitTarget = async (lobby, player) => {
   if (checkIfPlayerHasWon(lobby, player)) {
     updateGameStatsForWinningPlayer(lobby, player);
+    await savePlayerWinOrDefeat(lobby);
     resetRoundStatsForNextGame(lobby);
-
-    savePlayerWinOrDefeat(lobby);
   } else {
     increaseTargetByOne(lobby, player);
   }

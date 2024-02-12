@@ -1,8 +1,9 @@
 const UserStats = require("../models/userStats.model");
 const checkUserRegistered = require("./checkUserRegistered.helper");
 
-async function saveUpdatedPlayerStats(thrownPoints, userID) {
+async function saveUpdatedPlayerStats(thrownPoints, userID, lobby) {
   const isUserRegistered = await checkUserRegistered(userID);
+  const lastThrows = lobby.game.playerStats[userID].lastThrows;
 
   if (!isUserRegistered) {
     console.log("User is not registered. Stats cannot be updated or created.");
@@ -16,6 +17,14 @@ async function saveUpdatedPlayerStats(thrownPoints, userID) {
     const totalAverage = (totalScore * 3) / totalDartsThrown;
 
     user = user || new UserStats({ userID, stats: {} });
+
+    const isTripleTwenty = lastThrows.toString() === ["T20", "T20", "T20"].toString();
+
+    if (isTripleTwenty) {
+      user.stats.standard["180's"] = (user.stats.standard["180's"] || 0) + 1;
+    }
+
+    console.log(thrownPoints);
     Object.assign(user.stats.standard, {
       totalAverage: totalAverage,
       totalDartsThrown: totalDartsThrown,

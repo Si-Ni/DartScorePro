@@ -98,7 +98,7 @@ const updateCricketStatusAndAddScoreForPlayer = (lobby, player, statsKey, update
   currentPlayerStats.score += thrownPoints;
 };
 
-const checkIfPlayerHasWon = (lobby, player, thrownPoints, currentCricketStatus, currentCricketStatusValue) => {
+const checkIfPlayerHasWon = async (lobby, player, thrownPoints, currentCricketStatus, currentCricketStatusValue) => {
   const highestScore = calculateHighestScore(lobby);
   const playersScore = lobby.game.playerStats[player].score + thrownPoints;
   if (
@@ -106,9 +106,8 @@ const checkIfPlayerHasWon = (lobby, player, thrownPoints, currentCricketStatus, 
     playersScore >= highestScore
   ) {
     updateGameStatsForWinningPlayer(lobby, player);
+    await savePlayerWinOrDefeat(lobby);
     resetRoundStatsForNextGame(lobby);
-
-    savePlayerWinOrDefeat(lobby);
   } else {
     updateRemainingThrows(lobby);
   }
