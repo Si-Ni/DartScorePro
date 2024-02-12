@@ -33,7 +33,7 @@ function Multiplayer(props: MultiplayerProps) {
           {selectedMultiplayerMode === "join" && <JoinLobby {...lobbyProps} />}
         </div>
       ) : (
-        <MultiplayerMenu cbMultiplayerModeSelected={setSelectedMultiplayerMode} />
+        <MultiplayerMenu isLoggedIn={props.isLoggedIn} cbMultiplayerModeSelected={setSelectedMultiplayerMode} />
       )}
     </>
   );

@@ -4,6 +4,7 @@ import logo from "../../../assets/logo.svg";
 import { useContext } from "react";
 import AuthContext from "../../../context/AuthProvider";
 import { MainMenuProps } from "./MainMenu";
+import ErrorMessageBoxButton from "../../../components/buttons/ErrorMessageBoxButton/ErrorMessageBoxButton.tsx";
 import axios from "../../../api/axios";
 
 const LOGOUT_URL = "/logout";
@@ -31,6 +32,12 @@ function MainMenu(props: MainMenuProps) {
       });
   }
 
+  const errorMessageBoxButtonProps = {
+    className: "button is-primary m-1 is-large sideBySideMenuBtn",
+    messageContent: "Log in to access",
+    disabled: !props.isLoggedIn
+  };
+
   return (
     <div className="hero is-justify-content-center is-align-items-center is-fullheight">
       <div className="hero-body">
@@ -56,15 +63,16 @@ function MainMenu(props: MainMenuProps) {
             </button>
           </div>
           <div className="buttons is-centered">
-            <button
-              className="button is-primary m-1 is-large sideBySideMenuBtn"
-              onClick={() => navigate("/statistics")}
-            >
-              Statistics
-            </button>
-            <button className="button is-primary m-1 is-large sideBySideMenuBtn" onClick={() => navigate("/settings")}>
-              Settings
-            </button>
+            <ErrorMessageBoxButton
+              cbBtnClicked={() => navigate("/statistics")}
+              btnContent="Statistics"
+              {...errorMessageBoxButtonProps}
+            />
+            <ErrorMessageBoxButton
+              cbBtnClicked={() => navigate("/settings")}
+              btnContent="Settings"
+              {...errorMessageBoxButtonProps}
+            />
           </div>
           <div className="buttons is-centered">
             <button className="button is-danger m-1 is-large" onClick={logout}>
