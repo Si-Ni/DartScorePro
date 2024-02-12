@@ -99,7 +99,7 @@ const updatePlayerStatsByThrownPoints = async (lobby, player, thrownPoints) => {
   };
   lobby.game.playerStats[player] = currentPlayerStats;
 
-  await saveUpdatedPlayerStats(thrownPoints, player);
+  await saveUpdatedPlayerStats(thrownPoints, player, lobby);
 };
 
 const checkIfPlayerHasWon = async (lobby, player, updatedScore, multiplier) => {
