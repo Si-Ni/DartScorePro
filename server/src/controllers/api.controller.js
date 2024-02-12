@@ -12,5 +12,6 @@ async function handleRequest(handler, req, res, next) {
 }
 
 module.exports = {
-  mostCommonCheckout: async (req, res, next) => await handleRequest(apiService.mostCommonCheckout, req, res, next)
+  mostCommonCheckout: async (req, res, next) => await handleRequest(apiService.mostCommonCheckout, req, res, next),
+  userStats: async (req, res, next) => await handleRequest(apiService.userStats, req, res, next)
 };

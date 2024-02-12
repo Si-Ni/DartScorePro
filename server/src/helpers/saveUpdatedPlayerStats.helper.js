@@ -1,7 +1,7 @@
 const UserStats = require("../models/userStats.model");
 const checkUserRegistered = require("./checkUserRegistered.helper");
 
-async function saveUpdatedPlayerStats(current, thrown, userID) {
+async function saveUpdatedPlayerStats(thrownPoints, userID) {
   const isUserRegistered = await checkUserRegistered(userID);
 
   if (!isUserRegistered) {
@@ -11,12 +11,12 @@ async function saveUpdatedPlayerStats(current, thrown, userID) {
 
   try {
     let user = await UserStats.findOne({ userID });
-    const totalScore = user ? user.stats.totalScore + thrown : thrown;
-    const totalDartsThrown = user ? user.stats.totalDartsThrown + 1 : 1;
+    const totalScore = user ? user.stats.standard.totalScore + thrownPoints : thrownPoints;
+    const totalDartsThrown = user ? user.stats.standard.totalDartsThrown + 1 : 1;
     const totalAverage = (totalScore * 3) / totalDartsThrown;
 
     user = user || new UserStats({ userID, stats: {} });
-    Object.assign(user.stats, {
+    Object.assign(user.stats.standard, {
       totalAverage: totalAverage,
       totalDartsThrown: totalDartsThrown,
       totalScore: totalScore

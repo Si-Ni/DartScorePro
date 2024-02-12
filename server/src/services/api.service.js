@@ -1,4 +1,5 @@
 const getMostCommonCheckout = require("../helpers/getMostCommonCheckout.helper");
+const getPlayerStats = require("../helpers/getPlayerStats.helper");
 
 async function mostCommonCheckout(req) {
   const { score } = req.query;
@@ -7,6 +8,15 @@ async function mostCommonCheckout(req) {
   return { status: 200, json: checkout };
 }
 
+async function userStats(req) {
+  const { userIDorMail } = req.user;
+
+  const playerStats = await getPlayerStats(userIDorMail);
+
+  return { status: 200, json: playerStats };
+}
+
 module.exports = {
-  mostCommonCheckout
+  mostCommonCheckout,
+  userStats
 };
