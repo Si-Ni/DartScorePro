@@ -6,7 +6,7 @@ import { CricketGameViewProps } from "./CricketGameView";
 function CricketGameView(props: CricketGameViewProps) {
   return (
     <>
-      <div className="is-centered">
+      <div className="is-centered roundsInfo">
         <p className="is-size-3 mb-3" style={{ textAlign: "center" }}>
           Round: {props.currentRound}
         </p>

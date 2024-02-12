@@ -4,8 +4,8 @@ import { RoundTheClockGameViewProps } from "./RoundTheClockGameView";
 function RoundTheClockGameView(props: RoundTheClockGameViewProps) {
   return (
     <>
-      <div className="is-centered">
-        <p className="is-size-3 mb-6" style={{ textAlign: "center" }}>
+      <div className="is-centered roundsInfo">
+        <p className="is-size-3 mb-3" style={{ textAlign: "center" }}>
           Round: {props.currentRound}
         </p>
       </div>

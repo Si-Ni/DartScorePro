@@ -79,3 +79,13 @@
 .playerList li:last-child {
   margin-bottom: 1.5rem;
 }
+
+.roundsInfo {
+  margin-top: 2rem;
+}
+
+@media (max-width: 650px) {
+  .roundsInfo {
+    margin-top: 4rem;
+  }
+}
