@@ -11,7 +11,7 @@ function Statistics() {
     axios
       .get(STATISTICS_URL, { withCredentials: true })
       .then((response) => {
-        setStatistics(response.data);
+        setStatistics(response.data.playerStats);
       })
       .catch(() => {});
   }, []);

@@ -4,27 +4,47 @@ import "../../../styles/Games.css";
 import { PlayerScoreCardProps } from "./PlayerScoreCard";
 
 const COMMON_CHECKOUTS_URL = "/api/commonCheckout?";
-const USER_STATS_URL = "/api/userStats";
+const STATISTICS_URL = "/api/userStats";
+
+interface Checkout {
+  checkout: number;
+  timesPlayed: number;
+}
 
 function PlayerScoreCard(props: PlayerScoreCardProps) {
-  const [commonCheckouts, setCommonCheckouts] = useState(null);
-  const [userStats, setUserStats] = useState<string[]>(null);
+  const [possibleCheckout, setPossibleCheckout] = useState<string[] | null>(null);
+  const [mostPlayedCheckout, setMostPlayedCheckout] = useState<Checkout | null>(null);
+
+  const findMaxTimesPlayed = (data: Checkout[]): Checkout | null => {
+    if (data.length === 0) {
+      return null;
+    }
+
+    return data.reduce((prev, current) => {
+      return current.timesPlayed > prev.timesPlayed ? current : prev;
+    });
+  };
 
   useEffect(() => {
-    // Fetch common checkouts
     axios
       .get(COMMON_CHECKOUTS_URL + new URLSearchParams({ score: props.score.toString() }))
       .then((res) => {
         const checkout = res.data as string[];
-        setCommonCheckouts(checkout);
+        setPossibleCheckout(checkout);
       })
       .catch(() => {});
-
-    // Fetch user stats
     axios
-      .get(USER_STATS_URL)
+      .get(STATISTICS_URL, { withCredentials: true })
       .then((res) => {
-        setUserStats(res.data);
+        const maxCheckout = res.data.playerStats.standard.checkouts.double[props.score];
+
+        console.log(props.playerName, res.data.userIDorMail);
+        if (props.playerName === res.data.userIDorMail && maxCheckout && maxCheckout.length > 0) {
+          const mostPlayed = findMaxTimesPlayed(maxCheckout);
+          setMostPlayedCheckout(mostPlayed);
+        } else {
+          setMostPlayedCheckout(null);
+        }
       })
       .catch(() => {});
   }, [props.score]);
@@ -42,6 +62,18 @@ function PlayerScoreCard(props: PlayerScoreCardProps) {
                   {checkout}
                   {index < possibleCheckout?.length - 1 && (
                     <span style={{ borderLeft: "1px solid #209CEE", margin: "0 5px", height: "100%" }} />
+                  )}
+                </span>
+              ))}
+            </span>
+          )}{" "}
+          {mostPlayedCheckout && (
+            <span style={{ border: `1px solid #ffdd57`, marginTop: "-11px" }} className="tag is-warning is-light">
+              {mostPlayedCheckout.checkout.map((checkout, index) => (
+                <span key={index} style={{ display: "inline-block" }}>
+                  {checkout}
+                  {index < mostPlayedCheckout.checkout.length - 1 && (
+                    <span style={{ borderLeft: "1px solid #ffdd57", margin: "0 5px", height: "100%" }} />
                   )}
                 </span>
               ))}
