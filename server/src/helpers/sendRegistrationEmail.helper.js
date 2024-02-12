@@ -2,7 +2,8 @@ const nodemailer = require("nodemailer");
 
 async function sendRegistrationEmail(userID, userMail, registrationCode) {
   const transporter = nodemailer.createTransport({
-    service: process.env.EMAIL_SERVICE,
+    host: `${process.env.EMAIL_HOST}`,
+    requireTLS: true,
     auth: {
       user: process.env.EMAIL_SENDER,
       pass: process.env.EMAIL_PASSWORD
@@ -37,10 +38,7 @@ async function sendRegistrationEmail(userID, userMail, registrationCode) {
   };
 
   try {
-    const info = await transporter.sendMail(mailOptions);
-    console.log("Registration email sent successfully");
-    console.log("Message sent: %s", info.messageId);
-    console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+    await transporter.sendMail(mailOptions);
     return true;
   } catch (error) {
     console.error("Error sending registration email:", error);
