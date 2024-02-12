@@ -78,6 +78,7 @@ function OnlineGames(props: OnlineGamesProps) {
     isPlayersTurn: isPlayersTurn
   };
 
+  console.log(props.modeOut);
   return (
     <div className="App hero is-flex is-justify-content-center is-align-items-center is-fullheight">
       {winningPlayer && (
@@ -104,7 +105,7 @@ function OnlineGames(props: OnlineGamesProps) {
         modeOut={props.modeOut}
       />
       {(props.selectedGamemode === "301" || props.selectedGamemode === "501") && (
-        <OnlineStandardGames {...gameProps} playerStats={playerStats as PlayerToPlayerStats} />
+        <OnlineStandardGames {...gameProps} modeOut={props.modeOut} playerStats={playerStats as PlayerToPlayerStats} />
       )}
       {props.selectedGamemode === "rcl" && (
         <OnlineRoundTheClockGame {...gameProps} playerStats={playerStats as PlayerToPlayerStatsRCl} />

@@ -15,6 +15,8 @@ function OnlineStandardGames(props: OnlineStandardGamesProps) {
     });
   };
 
+  console.log(props);
+
   return (
     <StandardGamesView
       currentRound={props.currentRound}
@@ -27,6 +29,7 @@ function OnlineStandardGames(props: OnlineStandardGamesProps) {
       multiplier={multiplier}
       cbHandleMultiplierClicked={setMultiplier}
       isPlayersTurn={props.isPlayersTurn}
+      modeOut={props.modeOut}
     />
   );
 }

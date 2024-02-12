@@ -233,6 +233,7 @@ function LocalStandardGames({ currentPlayerIndex, throwsRemaining, ...props }: L
       multiplier={multiplier}
       cbHandleMultiplierClicked={handleMultiplierClick}
       cbHandleUndoClicked={handleUndoClick}
+      modeOut={props.modeOut}
     />
   );
 }
