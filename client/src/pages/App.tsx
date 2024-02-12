@@ -43,7 +43,10 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<MainMenu setDisplayUserID={setDisplayUserID} setLoggedIn={setLoggedIn} />} />
+        <Route
+          path="/"
+          element={<MainMenu setDisplayUserID={setDisplayUserID} isLoggedIn={isLoggedIn} setLoggedIn={setLoggedIn} />}
+        />
         <Route
           path="/login"
           element={
@@ -86,6 +89,7 @@ function App() {
               setLobbyCode={setLobbyCode}
               setIsLobbyLeader={setIsLobbyLeader}
               displayUserID={displayUserID}
+              isLoggedIn={isLoggedIn}
             />
           }
         />
