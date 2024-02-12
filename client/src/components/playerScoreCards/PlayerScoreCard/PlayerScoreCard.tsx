@@ -3,17 +3,28 @@ import axios from "../../../api/axios";
 import "../../../styles/Games.css";
 import { PlayerScoreCardProps } from "./PlayerScoreCard";
 
-const COMMON_CHECKOUTS = "/api/commonCheckout?";
+const COMMON_CHECKOUTS_URL = "/api/commonCheckout?";
+const USER_STATS_URL = "/api/userStats";
 
 function PlayerScoreCard(props: PlayerScoreCardProps) {
-  const [possibleCheckout, setPossibleCheckout] = useState<string[] | null>(null);
+  const [commonCheckouts, setCommonCheckouts] = useState(null);
+  const [userStats, setUserStats] = useState<string[]>(null);
 
   useEffect(() => {
+    // Fetch common checkouts
     axios
-      .get(COMMON_CHECKOUTS + new URLSearchParams({ score: props.score.toString() }))
+      .get(COMMON_CHECKOUTS_URL + new URLSearchParams({ score: props.score.toString() }))
       .then((res) => {
         const checkout = res.data as string[];
-        setPossibleCheckout(checkout);
+        setCommonCheckouts(checkout);
+      })
+      .catch(() => {});
+
+    // Fetch user stats
+    axios
+      .get(USER_STATS_URL)
+      .then((res) => {
+        setUserStats(res.data);
       })
       .catch(() => {});
   }, [props.score]);
