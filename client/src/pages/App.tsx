@@ -4,7 +4,7 @@ import MainMenu from "./menus/MainMenu/MainMenu.tsx";
 import { useEffect, useRef, useState } from "react";
 import Register from "./authentication/Register/Register.tsx";
 import RegisterVerify from "./authentication/RegisterVerify/RegisterVerify";
-import Singleplayer from "./modes/SinglePlayer/Singleplayer";
+import Singleplayer from "./modes/SinglePlayer/Singleplayer.tsx";
 import PrivacyPolicy from "./information/PrivacyPolicy/PrivacyPolicy";
 import Multiplayer from "./modes/Multiplayer/Multiplayer.tsx";
 import axios from "../api/axios";
@@ -64,7 +64,7 @@ function App() {
           element={<Register loginErrorMsg={loginErrorMsg} pwdRef={pwdRef} setLoginErrorMsg={setLoginErrorMsg} />}
         />
         <Route path="/register/verify" element={<RegisterVerify />} />
-        <Route path="/singleplayer" element={<Singleplayer />} />
+        <Route path="/singleplayer" element={<Singleplayer displayUserID={displayUserID} />} />
         <Route
           path="/multiplayer/lobby/:lobbyCode"
           element={

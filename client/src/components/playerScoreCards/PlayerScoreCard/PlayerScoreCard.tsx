@@ -36,9 +36,8 @@ function PlayerScoreCard(props: PlayerScoreCardProps) {
     axios
       .get(STATISTICS_URL, { withCredentials: true })
       .then((res) => {
-        const maxCheckout = res.data.playerStats.standard.checkouts.double[props.score];
+        const maxCheckout = res.data.playerStats.standard.checkouts[props.modeOut][props.score];
 
-        console.log(props.playerName, res.data.userIDorMail);
         if (props.playerName === res.data.userIDorMail && maxCheckout && maxCheckout.length > 0) {
           const mostPlayed = findMaxTimesPlayed(maxCheckout);
           setMostPlayedCheckout(mostPlayed);
@@ -55,7 +54,7 @@ function PlayerScoreCard(props: PlayerScoreCardProps) {
         <h1 className={`title is-5 ${props.isStartingPlayer && "red-dot"}`}>{props.playerName}</h1>
         <p className="subtitle is-1">
           {props.score}{" "}
-          {possibleCheckout?.length > 0 && (
+          {possibleCheckout?.length > 0 && props.modeOut === "double" && (
             <span style={{ border: `1px solid #209CEE`, marginTop: "-11px" }} className="tag is-info is-light">
               {possibleCheckout?.map((checkout, index) => (
                 <span key={index} style={{ display: "inline-block" }}>

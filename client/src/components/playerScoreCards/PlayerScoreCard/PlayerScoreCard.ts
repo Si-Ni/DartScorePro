@@ -1,4 +1,5 @@
 import { Round } from "../../../helpers/calcCheckouts";
+import { InAndOutMode } from "../../../types/global";
 
 export interface PlayerScoreCardProps {
   playerName: string;
@@ -10,4 +11,5 @@ export interface PlayerScoreCardProps {
   checkoutOptions?: Round[];
   sets: number;
   legs: number;
+  modeOut: InAndOutMode;
 }

@@ -24,7 +24,6 @@ async function saveUpdatedPlayerStats(thrownPoints, userID, lobby) {
       user.stats.standard["180's"] = (user.stats.standard["180's"] || 0) + 1;
     }
 
-    console.log(thrownPoints);
     Object.assign(user.stats.standard, {
       totalAverage: totalAverage,
       totalDartsThrown: totalDartsThrown,

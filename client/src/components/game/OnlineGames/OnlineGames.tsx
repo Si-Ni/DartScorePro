@@ -104,7 +104,7 @@ function OnlineGames(props: OnlineGamesProps) {
         modeOut={props.modeOut}
       />
       {(props.selectedGamemode === "301" || props.selectedGamemode === "501") && (
-        <OnlineStandardGames {...gameProps} playerStats={playerStats as PlayerToPlayerStats} />
+        <OnlineStandardGames {...gameProps} modeOut={props.modeOut} playerStats={playerStats as PlayerToPlayerStats} />
       )}
       {props.selectedGamemode === "rcl" && (
         <OnlineRoundTheClockGame {...gameProps} playerStats={playerStats as PlayerToPlayerStatsRCl} />

@@ -24,6 +24,7 @@ function StandardGamesView(props: StandardGamesViewProps) {
             checkoutOptions={props.playerStats[player].checkoutOptions}
             sets={props.playerTotalGameStats[player].sets}
             legs={props.playerTotalGameStats[player].legs}
+            modeOut={props.modeOut}
           />
         ))}
       </div>
