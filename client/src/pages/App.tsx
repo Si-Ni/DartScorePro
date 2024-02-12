@@ -15,6 +15,7 @@ import Tournament from "./tournament/Tournament";
 import Impressum from "./information/Impressum/Impressum";
 import Settings from "./settings/Settings";
 import Statistics from "./statistics/Statistics.tsx";
+import Footer from "../components/footer/Footer/Footer.tsx";
 
 const socket = io("http://localhost:4000");
 
@@ -41,7 +42,6 @@ function App() {
 
   return (
     <>
-      {isLoggedIn && <div className="fixed-bottom-left">Logged in as {displayUserID}</div>}
       <Routes>
         <Route path="/" element={<MainMenu setDisplayUserID={setDisplayUserID} setLoggedIn={setLoggedIn} />} />
         <Route
@@ -96,6 +96,7 @@ function App() {
         <Route path="/impressum" element={<Impressum />} />
         <Route path="/statistics" element={<Statistics />} />
       </Routes>
+      <Footer isLoggedIn={isLoggedIn} userID={displayUserID} />
     </>
   );
 }

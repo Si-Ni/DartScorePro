@@ -35,7 +35,7 @@ function LocalMultiplayer(props: LocalMultiplayerProps) {
   return (
     <>
       {gameStarted ? (
-        <LocalGames {...gameProps} cbBackBtnClicked={handleBackToPlayerMenu} />
+        <LocalGames {...gameProps} gameType={"local"} cbBackBtnClicked={handleBackToPlayerMenu} />
       ) : (
         <PlayersAndSettings
           {...gameProps}

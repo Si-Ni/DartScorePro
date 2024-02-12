@@ -14,7 +14,7 @@ import OnlineCricketGame from "../../onlineGamemodes/OnlineCricketGame/OnlineCri
 import { OnlineGamesProps } from "./OnlineGames";
 import GameInformationHeader from "../../GameInformationHeader/GameInformationHeader.tsx";
 import { DGameData } from "../../../pages/onlineMultiplayer/OnlineMultiplayer/OnlineMultiplayerDTOs.tsx";
-import PopUp from "../../popUps/PopUp/PopUp.tsx";
+import EndGamePopUp from "../../popUps/EndGamePopUp/EndGamePopUp.tsx";
 
 function OnlineGames(props: OnlineGamesProps) {
   const [showGoToMainMenuPopUp, setShowGoToMainMenuPopUp] = useState<boolean>(false);
@@ -81,7 +81,13 @@ function OnlineGames(props: OnlineGamesProps) {
   return (
     <div className="App hero is-flex is-justify-content-center is-align-items-center is-fullheight">
       {winningPlayer && (
-        <PopUp content={getWinnerPopUpText()} btnContent="End game" cbBtnClicked={props.cbBackBtnClicked} />
+        <EndGamePopUp
+          winnerName={winningPlayer}
+          totalGameStats={playerTotalGameStats[winningPlayer]}
+          gameType={"online"}
+          gamemode={props.selectedGamemode}
+          cbBtnClicked={props.cbBackBtnClicked}
+        />
       )}
       {showGoToMainMenuPopUp && (
         <YesNoPopUp

@@ -6,8 +6,8 @@ import { StandardGamesViewProps } from "./StandardGamesView";
 function StandardGamesView(props: StandardGamesViewProps) {
   return (
     <>
-      <div className="is-centered mt-1">
-        <p className="is-size-3 mb-3" style={{ textAlign: "center" }}>
+      <div className="is-centered roundsInfo roundsInfo">
+        <p className="is-size-3 mb-1" style={{ textAlign: "center" }}>
           Round: {props.currentRound}
         </p>
       </div>

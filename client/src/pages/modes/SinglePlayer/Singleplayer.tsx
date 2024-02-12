@@ -31,7 +31,7 @@ function Singleplayer() {
   return (
     <>
       {gameStarted ? (
-        <LocalGames {...gameProps} players={["Player1"]} cbBackBtnClicked={backBtnGameClicked} />
+        <LocalGames {...gameProps} gameType={"singleplayer"} players={["You"]} cbBackBtnClicked={backBtnGameClicked} />
       ) : (
         <SettingsMenu
           {...gameProps}

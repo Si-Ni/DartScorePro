@@ -2,7 +2,7 @@ import { GameInformationHeaderProps } from "./GameInformationHeader";
 
 function GameInformationHeader(props: GameInformationHeaderProps) {
   return (
-    <div className="is-flex is-justify-content-center m-0 pt-2 pb-2 gameInfo">
+    <div className="is-flex is-justify-content-center m-0 pt-2 pb-2 gameInfo" style={{ zIndex: 99 }}>
       <p className="is-size-6 mr-4" style={{ textAlign: "center" }}>
         <strong>Remaining throws:</strong> {props.throwsRemaining}
       </p>
