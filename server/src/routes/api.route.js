@@ -4,6 +4,6 @@ const router = express.Router();
 const { mostCommonCheckout, userStats } = require("../controllers/api.controller");
 
 router.get("/commonCheckout", mostCommonCheckout);
-router.get("/userStats",verifyToken, userStats)
+router.get("/userStats", verifyToken, userStats);
 
 module.exports = router;
