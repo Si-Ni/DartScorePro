@@ -4,20 +4,41 @@ import axios from "../../api/axios";
 
 const STATISTICS_URL = "/api/userStats";
 
+const defaultStatistics = {
+  standard: {
+    totalAverage: 0,
+    totalDartsThrown: 0,
+    totalScore: 0,
+    "180's": 0,
+    totalWins: 0,
+    totalDefeats: 0
+  },
+  cri: {
+    totalWins: 0,
+    totalDefeats: 0
+  },
+  rcl: {
+    totalWins: 0,
+    totalDefeats: 0
+  }
+};
+
 function Statistics() {
-  const [statistics, setStatistics] = useState<any>({});
+  const [statistics, setStatistics] = useState(defaultStatistics);
 
   useEffect(() => {
     axios
       .get(STATISTICS_URL, { withCredentials: true })
       .then((response) => {
-        setStatistics(response.data.playerStats);
+        if (response.data.playerStats) setStatistics(response.data.playerStats);
       })
       .catch(() => {});
   }, []);
 
-  const calculateWinRate = (wins: number, defeats: number) =>
+  const calculateWinRate = (wins, defeats) =>
     wins + defeats === 0 ? 0 : defeats === 0 ? 100 : Number(((wins / (wins + defeats)) * 100).toFixed(2));
+
+  const { standard, cri, rcl } = statistics;
 
   return (
     <div className="hero is-justify-content-center is-align-items-center is-fullheight">
@@ -35,59 +56,57 @@ function Statistics() {
               <tr>
                 <td rowSpan={7}>Standard (301 and 501)</td>
                 <td>Average</td>
-                <td>{statistics.standard?.totalAverage?.toFixed(2) ?? 0}</td>
+                <td>{standard.totalAverage.toFixed(2)}</td>
               </tr>
               <tr>
                 <td>Darts Thrown</td>
-                <td>{statistics.standard?.totalDartsThrown ?? 0}</td>
+                <td>{standard.totalDartsThrown}</td>
               </tr>
               <tr>
                 <td>Score</td>
-                <td>{statistics.standard?.totalScore ?? 0}</td>
+                <td>{standard.totalScore}</td>
               </tr>
               <tr>
                 <td>180's</td>
-                <td>{statistics.standard?.["180's"] ?? 0}</td>
+                <td>{standard["180's"]}</td>
               </tr>
               <tr>
                 <td>Wins</td>
-                <td>{statistics.standard?.totalWins ?? 0}</td>
+                <td>{standard.totalWins}</td>
               </tr>
               <tr>
                 <td>Defeats</td>
-                <td>{statistics.standard?.totalDefeats ?? 0}</td>
+                <td>{standard.totalDefeats}</td>
               </tr>
               <tr>
                 <td>Win Rate</td>
-                <td>
-                  {calculateWinRate(statistics.standard?.totalWins ?? 0, statistics.standard?.totalDefeats ?? 0)} %
-                </td>
+                <td>{calculateWinRate(standard.totalWins, standard.totalDefeats)} %</td>
               </tr>
               <tr>
                 <td rowSpan={3}>CRI</td>
                 <td>Wins</td>
-                <td>{statistics.cri?.totalWins ?? 0}</td>
+                <td>{cri.totalWins}</td>
               </tr>
               <tr>
                 <td>Defeats</td>
-                <td>{statistics.cri?.totalDefeats ?? 0}</td>
+                <td>{cri.totalDefeats}</td>
               </tr>
               <tr>
                 <td>Win Rate</td>
-                <td>{calculateWinRate(statistics.cri?.totalWins ?? 0, statistics.cri?.totalDefeats ?? 0)} %</td>
+                <td>{calculateWinRate(cri.totalWins, cri.totalDefeats)} %</td>
               </tr>
               <tr>
                 <td rowSpan={3}>RCL</td>
                 <td>Wins</td>
-                <td>{statistics.rcl?.totalWins ?? 0}</td>
+                <td>{rcl.totalWins}</td>
               </tr>
               <tr>
                 <td>Defeats</td>
-                <td>{statistics.rcl?.totalDefeats ?? 0}</td>
+                <td>{rcl.totalDefeats}</td>
               </tr>
               <tr>
                 <td>Win Rate</td>
-                <td>{calculateWinRate(statistics.rcl?.totalWins ?? 0, statistics.rcl?.totalDefeats ?? 0)} %</td>
+                <td>{calculateWinRate(rcl.totalWins, rcl.totalDefeats)} %</td>
               </tr>
             </tbody>
           </table>
