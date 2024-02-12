@@ -2,7 +2,6 @@ const UserStats = require("../models/userStats.model");
 const checkUserRegistered = require("./checkUserRegistered.helper");
 
 async function savePlayerCheckout(lobby) {
-  console.log(lobby);
   try {
     for (const player of lobby.players) {
       const { userID } = player;
@@ -22,21 +21,25 @@ async function savePlayerCheckout(lobby) {
 
         if (!userStats.stats.standard.checkouts) userStats.stats.standard.checkouts = {};
 
+        if (!userStats.stats.standard.checkouts[modeOut]) {
+          userStats.stats.standard.checkouts[modeOut] = {};
+        }
+
         const existingCheckout =
-          userStats.stats.standard.checkouts[checkoutValue] &&
-          userStats.stats.standard.checkouts[checkoutValue].find((entry) =>
+          userStats.stats.standard.checkouts[modeOut][checkoutValue] &&
+          userStats.stats.standard.checkouts[modeOut][checkoutValue].find((entry) =>
             entry.checkout.every((item, index) => item === checkout[index])
           );
 
         if (existingCheckout) {
           const update = {
-            $inc: { [`stats.standard.checkouts.${checkoutValue}.$[elem].timesPlayed`]: 1 }
+            $inc: { [`stats.standard.checkouts.${modeOut}.${checkoutValue}.$[elem].timesPlayed`]: 1 }
           };
           const options = { arrayFilters: [{ "elem.checkout": { $eq: checkout } }] };
           await UserStats.updateOne({ userID }, update, options);
         } else {
           const update = {
-            $push: { [`stats.standard.checkouts.${checkoutValue}`]: { checkout, timesPlayed: 1 } }
+            $push: { [`stats.standard.checkouts.${modeOut}.${checkoutValue}`]: { checkout, timesPlayed: 1 } }
           };
           await UserStats.updateOne({ userID }, update);
         }
