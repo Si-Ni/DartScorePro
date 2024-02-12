@@ -1,3 +1,4 @@
+const savePlayerWinOrDefeat = require("../../helpers/savePlayerWinOrDefeat.helper");
 const {
   updateRemainingThrows,
   updateGameStatsForWinningPlayer,
@@ -106,6 +107,8 @@ const checkIfPlayerHasWon = (lobby, player, thrownPoints, currentCricketStatus, 
   ) {
     updateGameStatsForWinningPlayer(lobby, player);
     resetRoundStatsForNextGame(lobby);
+
+    savePlayerWinOrDefeat(lobby);
   } else {
     updateRemainingThrows(lobby);
   }

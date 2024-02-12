@@ -1,3 +1,5 @@
+const saveUpdatedPlayerStats = require("../../helpers/saveUpdatedPlayerStats.helper");
+const savePlayerWinOrDefeat = require("../../helpers/savePlayerWinOrDefeat.helper");
 const {
   switchToNextPlayer,
   updateRemainingThrows,
@@ -95,6 +97,8 @@ const updatePlayerStatsByThrownPoints = (lobby, player, thrownPoints) => {
     //ToDo: checkoutOptions: getAllOptions(3).filter((r) => sumRound(r) === currentPlayerStats.score - thrownPoints)
   };
   lobby.game.playerStats[player] = currentPlayerStats;
+
+  saveUpdatedPlayerStats(thrownPoints, player);
 };
 
 const checkIfPlayerHasWon = (lobby, player, updatedScore, multiplier) => {
@@ -102,6 +106,8 @@ const checkIfPlayerHasWon = (lobby, player, updatedScore, multiplier) => {
   if (playerWon) {
     updateGameStatsForWinningPlayer(lobby, player);
     resetRoundStatsForNextGame(lobby);
+
+    savePlayerWinOrDefeat(lobby);
   }
 };
 

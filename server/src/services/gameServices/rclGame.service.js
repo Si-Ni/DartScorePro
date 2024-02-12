@@ -1,3 +1,4 @@
+const savePlayerWinOrDefeat = require("../../helpers/savePlayerWinOrDefeat.helper");
 const {
   switchToNextPlayer,
   updateRemainingThrows,
@@ -32,6 +33,8 @@ const handlePlayerHitTarget = (lobby, player) => {
   if (checkIfPlayerHasWon(lobby, player)) {
     updateGameStatsForWinningPlayer(lobby, player);
     resetRoundStatsForNextGame(lobby);
+
+    savePlayerWinOrDefeat(lobby);
   } else {
     increaseTargetByOne(lobby, player);
   }
