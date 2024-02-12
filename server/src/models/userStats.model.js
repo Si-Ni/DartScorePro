@@ -17,6 +17,9 @@ const userStatsModel = new mongoose.Schema({
       },
       totalDefeats: {
         type: Number
+      },
+      checkouts: {
+        type: Object // You can adjust this type based on the structure of your checkouts
       }
     },
     cri: {
