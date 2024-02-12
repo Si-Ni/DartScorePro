@@ -8,7 +8,7 @@ import { LocalGamesProps } from "./LocalGames";
 import LocalStandardGames from "../../localGamemodes/LocalStandardGames/LocalStandardGames.tsx";
 import LocalRoundTheClockGame from "../../localGamemodes/LocalRoundTheClockGame/LocalRoundTheClockGame.tsx";
 import LocalCricketGame from "../../localGamemodes/LocalCricketGame/LocalCricketGame.tsx";
-import PopUp from "../../popUps/PopUp/PopUp.tsx";
+import EndGamePopUp from "../../popUps/EndGamePopUp/EndGamePopUp.tsx";
 import YesNoPopUp from "../../popUps/YesNoPopUp/YesNoPopUp.tsx";
 
 const initializePlayerTotalGameStats = (players: string[]): PlayerToPlayerTotalGameStats => {
@@ -92,13 +92,6 @@ function LocalGames(props: LocalGamesProps) {
     setThrowsRemaining(3);
   };
 
-  const getWinnerPopUpText = (): string => {
-    if (props.players.length === 1) {
-      return "You have won!";
-    }
-    return `Player: ${winningPlayer} has won this game!`;
-  };
-
   const gameProps = {
     players: props.players,
     playerTotalGameStats: playerTotalGameStats,
@@ -124,7 +117,13 @@ function LocalGames(props: LocalGamesProps) {
   return (
     <div className="App hero is-flex is-justify-content-center is-align-items-center is-fullheight">
       {winningPlayer && (
-        <PopUp content={getWinnerPopUpText()} btnContent="End game" cbBtnClicked={props.cbBackBtnClicked} />
+        <EndGamePopUp
+          winnerName={winningPlayer}
+          totalGameStats={playerTotalGameStats[winningPlayer]}
+          gameType={props.gameType}
+          gamemode={props.selectedGamemode}
+          cbBtnClicked={props.cbBackBtnClicked}
+        />
       )}
       {showGoToMainMenuPopUp && (
         <YesNoPopUp
