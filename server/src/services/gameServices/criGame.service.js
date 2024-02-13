@@ -7,13 +7,19 @@ const {
 
 const validPoints = new Set([15, 16, 17, 18, 19, 20, 25, 0]);
 
-const updateScoreForCurrentPlayerCri = (lobby, { points, multiplier }) => {
+const updateScoreForCurrentPlayerCri = async (lobby, { points, multiplier }) => {
   if (!validatePoints(points)) return;
 
   const currentPlayerIndex = lobby.game.currentPlayerIndex;
   const currentPlayer = lobby.players[currentPlayerIndex].userID;
 
   updatePlayerStats(lobby, currentPlayer, points, multiplier);
+
+  if (checkIfPlayerHasWon(lobby, currentPlayer)) {
+    await setWinnerAndUpdate(lobby, currentPlayer);
+  } else {
+    updateRemainingThrows(lobby);
+  }
 };
 
 const validatePoints = (points) => {
@@ -21,10 +27,7 @@ const validatePoints = (points) => {
 };
 
 const updatePlayerStats = (lobby, player, points, multiplier) => {
-  if (points === 0) {
-    updateRemainingThrows(lobby);
-    return;
-  }
+  if (points === 0) return;
 
   const statsKey = getCricketStatsKey(points);
   const currentCricketStatusValue = lobby.game.playerStats[player].cricketStats[statsKey];
@@ -33,9 +36,6 @@ const updatePlayerStats = (lobby, player, points, multiplier) => {
     updateCricketStatusAndScore(lobby, player, points, multiplier);
   } else if (currentCricketStatusValue === 3) {
     increasePlayerScore(lobby, player, points * multiplier);
-    checkIfPlayerHasWon(lobby, player, points * multiplier, statsKey, currentCricketStatusValue);
-  } else {
-    updateRemainingThrows(lobby);
   }
 };
 
@@ -69,7 +69,6 @@ const updateCricketStatusAndScore = (lobby, player, points, multiplier) => {
   }
 
   updateCricketStatusAndAddScoreForPlayer(lobby, player, statsKey, updatedCricketStatus, remainingScore);
-  checkIfPlayerHasWon(lobby, player, points * timesHitted, statsKey, updatedCricketStatus);
 };
 
 const checkIfNumberIsClosedByOtherPlayers = (lobby, currentPlayer, statsKey) => {
@@ -98,19 +97,17 @@ const updateCricketStatusAndAddScoreForPlayer = (lobby, player, statsKey, update
   currentPlayerStats.score += thrownPoints;
 };
 
-const checkIfPlayerHasWon = async (lobby, player, thrownPoints, currentCricketStatus, currentCricketStatusValue) => {
+const checkIfPlayerHasWon = (lobby, playerKey) => {
   const highestScore = calculateHighestScore(lobby);
-  const playersScore = lobby.game.playerStats[player].score + thrownPoints;
-  if (
-    playerHasClosedAll(lobby, player, currentCricketStatus, currentCricketStatusValue) &&
-    playersScore >= highestScore
-  ) {
-    updateGameStatsForWinningPlayer(lobby, player);
-    await savePlayerWinOrDefeat(lobby);
-    resetRoundStatsForNextGame(lobby);
-  } else {
-    updateRemainingThrows(lobby);
-  }
+  const playersScore = lobby.game.playerStats[playerKey].score;
+  console.log(highestScore, playersScore);
+  return playerHasClosedAll(lobby, playerKey) && playersScore >= highestScore;
+};
+
+const setWinnerAndUpdate = async (lobby, playerKey) => {
+  updateGameStatsForWinningPlayer(lobby, playerKey);
+  await savePlayerWinOrDefeat(lobby);
+  resetRoundStatsForNextGame(lobby);
 };
 
 const calculateHighestScore = (lobby) => {
@@ -122,12 +119,11 @@ const calculateHighestScore = (lobby) => {
   return highestScore;
 };
 
-const playerHasClosedAll = (lobby, playerKey, currentCricketStatus, currentUpdatedCricketStatusValue) => {
-  if (currentUpdatedCricketStatusValue < 3) return false;
+const playerHasClosedAll = (lobby, playerKey) => {
   const currentPlayerCricketStats = lobby.game.playerStats[playerKey].cricketStats;
   let closedAll = true;
   Object.keys(currentPlayerCricketStats).forEach((cricketStatus) => {
-    if (cricketStatus != currentCricketStatus && currentPlayerCricketStats[cricketStatus] < 3) {
+    if (currentPlayerCricketStats[cricketStatus] < 3) {
       closedAll = false;
       return;
     }
@@ -139,4 +135,12 @@ const increasePlayerScore = (lobby, player, thrownPoints) => {
   lobby.game.playerStats[player].score += thrownPoints;
 };
 
-module.exports = { updateScoreForCurrentPlayerCri };
+const checkIfAnyPlayerHasWonCri = async (lobby) => {
+  await lobby.players.forEach(async (player) => {
+    if (player.isActive) {
+      if (checkIfPlayerHasWon(lobby, player.userID)) await setWinnerAndUpdate(lobby, player.userID);
+    }
+  });
+};
+
+module.exports = { updateScoreForCurrentPlayerCri, checkIfAnyPlayerHasWonCri };
