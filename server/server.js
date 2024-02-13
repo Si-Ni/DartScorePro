@@ -5,6 +5,7 @@ const path = require("path");
 const dotenv = require("dotenv");
 const auth = require("./src/routes/auth.route");
 const api = require("./src/routes/api.route");
+const userSettings = require("./src/routes/userSettings.route");
 const rateLimiter = require("./src/middlewares/rateLimit.middleware");
 const cookieParser = require("cookie-parser");
 const { connectDB } = require("./src/services/db.service");
@@ -25,6 +26,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "../client/dist")));
 app.use("/", auth);
 app.use("/api", api);
+app.use("/", userSettings);
 app.use(function (req, res, next) {
   if (req.path.length > 1 && /\/$/.test(req.path)) {
     var query = req.url.slice(req.path.length);
