@@ -89,7 +89,9 @@ function Settings(props: SettingsProps) {
         formData,
         { withCredentials: true }
       )
-      .then((res) => {})
+      .then(() => {
+        logout();
+      })
       .catch((error) => {
         console.error("Error:", error);
       });
@@ -141,7 +143,7 @@ function Settings(props: SettingsProps) {
 
             <div className="field field-submit">
               <p className="control">
-                <button className="button is-primary" type="submit" onClick={() => handleSubmit(option, {})}>
+                <button className="button is-primary" type="submit" onClick={() => handleSubmit(option)}>
                   Submit
                 </button>
               </p>

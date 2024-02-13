@@ -2,9 +2,14 @@ const checkPwd = require("../helpers/checkPwd.helper");
 const updateUserEmail = require("../helpers/updateUserEmail.helper");
 const updateUserID = require("../helpers/updateUserID.helper");
 const updateUserPWD = require("../helpers/updateUserPWD.helper");
+const checkUserRegistered = require("../helpers/checkUserRegistered.helper");
+const deleteUserStats = require("../helpers/deleteUserStats.helper");
+const deleteUserAccount = require("../helpers/deleteUserAccount.helper");
 const mailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const userIDRegex = /^[a-zA-Z0-9._-]+$/;
-const pwdRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+let pwdRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+pwdRegex = /.*/;
 
 async function changeEmail(req) {
   let { userPWD, newUserMail, repeatedNewUserMail } = req.body;
@@ -17,12 +22,20 @@ async function changeEmail(req) {
   newUserMail = newUserMail.trim();
   repeatedNewUserMail = repeatedNewUserMail.trim();
 
-  console.log(mailRegex.test(newUserMail), pwdRegex.test(userPWD));
   if (!mailRegex.test(newUserMail) || !pwdRegex.test(userPWD)) {
     return { status: 400, json: "Invalid email or password format" };
   }
 
   if (newUserMail !== repeatedNewUserMail) return { status: 400, json: "New email does not match repeated new email" };
+
+  const isUserRegistered = await checkUserRegistered(null, newUserMail);
+
+  if (isUserRegistered) {
+    return {
+      status: 400,
+      json: `${isUserRegistered.userMail} already exists`
+    };
+  }
 
   const userID = req.user.userIDorMail;
   const isPWDValid = await checkPwd(userID, null, userPWD);
@@ -51,6 +64,15 @@ async function changeUserID(req) {
 
   if (newUserID !== repeatedNewUserID) return { status: 400, json: "New username does not match repeated username" };
 
+  const isUserRegistered = await checkUserRegistered(newUserID, null);
+
+  if (isUserRegistered) {
+    return {
+      status: 400,
+      json: `${isUserRegistered.userID} already exists`
+    };
+  }
+
   const userID = req.user.userIDorMail;
   const isPWDValid = await checkPwd(userID, null, userPWD);
 
@@ -76,7 +98,7 @@ async function changeUserPWD(req) {
     return { status: 400, json: "Invalid new password or password format" };
   }
 
-  if (newUserPWD !== repeatedNewUserPWD) return { status: 400, json: "New username does not match repeated password" };
+  if (newUserPWD !== repeatedNewUserPWD) return { status: 400, json: "New password does not match repeated password" };
 
   if (newUserPWD === userPWD) return { status: 400, json: "New password should not match old password" };
 
@@ -91,13 +113,56 @@ async function changeUserPWD(req) {
 }
 
 async function deleteStats(req) {
-  console.log(req.body);
-  return { status: 200, json: "deleteStats" };
+  let { userPWD, repeatedUserPWD } = req.body;
+
+  if (!userPWD || !repeatedUserPWD) {
+    return { status: 400, json: "Please provide valid values for password and repeated password" };
+  }
+
+  userPWD = userPWD.trim();
+  repeatedUserPWD = repeatedUserPWD.trim();
+
+  if (!pwdRegex.test(repeatedUserPWD) || !pwdRegex.test(userPWD)) {
+    return { status: 400, json: "Invalid password format" };
+  }
+  if (userPWD !== repeatedUserPWD) return { status: 400, json: "Password does not match repeated password" };
+
+  const userID = req.user.userIDorMail;
+
+  const isPWDValid = await checkPwd(userID, null, userPWD);
+
+  if (!isPWDValid) return { status: 400, json: "This password is invalid" };
+
+  await deleteUserStats(userID);
+
+  return { status: 200, json: "Statistics deleted successfully" };
 }
 
 async function deleteAccount(req) {
-  console.log(req.body);
-  return { status: 200, json: "deleteAccount" };
+  let { userPWD, repeatedUserPWD } = req.body;
+
+  if (!userPWD || !repeatedUserPWD) {
+    return { status: 400, json: "Please provide valid values for password and repeated password" };
+  }
+
+  userPWD = userPWD.trim();
+  repeatedUserPWD = repeatedUserPWD.trim();
+
+  if (!pwdRegex.test(repeatedUserPWD) || !pwdRegex.test(userPWD)) {
+    return { status: 400, json: "Invalid password format" };
+  }
+  if (userPWD !== repeatedUserPWD) return { status: 400, json: "Password does not match repeated password" };
+
+  const userID = req.user.userIDorMail;
+
+  const isPWDValid = await checkPwd(userID, null, userPWD);
+
+  if (!isPWDValid) return { status: 400, json: "This password is invalid" };
+
+  await deleteUserStats(userID);
+  await deleteUserAccount(userID);
+
+  return { status: 200, json: "Account deleted successfully" };
 }
 
 module.exports = {

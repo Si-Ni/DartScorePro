@@ -7,7 +7,7 @@ const updateUserPWD = async (userID, newUserPWD) => {
     await userModel.updateOne({ userID: userID }, { $set: { userPWD: hashedPWD } });
     return true;
   } catch (error) {
-    console.error("Error in updating username:", error);
+    console.error("Error in updating password:", error);
     return false;
   }
 };
