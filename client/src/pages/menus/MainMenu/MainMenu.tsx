@@ -49,6 +49,13 @@ function MainMenu(props: MainMenuProps) {
               {...errorMessageBoxButtonProps}
             />
           </div>
+          {!props.isLoggedIn && (
+            <div className="buttons is-centered">
+              <button className="button is-primary m-1 is-large" onClick={() => navigate("/login")}>
+                Login
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>
