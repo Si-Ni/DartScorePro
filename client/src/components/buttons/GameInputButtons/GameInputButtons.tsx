@@ -2,7 +2,7 @@ import { GameInputButtonsProps } from "./GameInputButtons";
 
 function GameInputButtons(props: GameInputButtonsProps) {
   return (
-    <>
+    <div className="box is-flex is-justify-content-center" style={{ flexWrap: "wrap" }}>
       {props.values.map((number) => (
         <button
           key={number}
@@ -25,7 +25,7 @@ function GameInputButtons(props: GameInputButtonsProps) {
           Miss
         </button>
       )}
-    </>
+    </div>
   );
 }
 export default GameInputButtons;
