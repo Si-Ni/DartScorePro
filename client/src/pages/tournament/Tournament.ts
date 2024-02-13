@@ -1,3 +1,3 @@
 export interface TournamentProps {
-  displayUserID: number;
+  displayUserID: string;
 }
