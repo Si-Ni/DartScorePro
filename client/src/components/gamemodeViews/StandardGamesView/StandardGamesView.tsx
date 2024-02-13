@@ -12,21 +12,43 @@ function StandardGamesView(props: StandardGamesViewProps) {
         </p>
       </div>
       <div className="columns is-centered playerCardsContainer">
-        {props.players.map((player) => (
-          <PlayerScoreCard
-            key={player}
-            playerName={player}
-            isStartingPlayer={props.players[props.startingPlayerIndex] === player}
-            isCurrentPlayer={props.players[props.currentPlayerIndex] === player}
-            score={props.playerStats[player].score}
-            average={props.playerStats[player].average}
-            lastThrows={props.playerStats[player].lastThrows}
-            checkoutOptions={props.playerStats[player].checkoutOptions}
-            sets={props.playerTotalGameStats[player].sets}
-            legs={props.playerTotalGameStats[player].legs}
-            modeOut={props.modeOut}
-          />
-        ))}
+        {props.players.map((player, index) => {
+          if (typeof player === "string") {
+            return (
+              <PlayerScoreCard
+                key={player}
+                playerName={player}
+                isStartingPlayer={props.players[props.startingPlayerIndex] === player}
+                isCurrentPlayer={props.players[props.currentPlayerIndex] === player}
+                score={props.playerStats[player].score}
+                average={props.playerStats[player].average}
+                lastThrows={props.playerStats[player].lastThrows}
+                checkoutOptions={props.playerStats[player].checkoutOptions}
+                sets={props.playerTotalGameStats[player].sets}
+                legs={props.playerTotalGameStats[player].legs}
+                modeOut={props.modeOut}
+              />
+            );
+          } else {
+            const { userID, isActive } = player;
+            return (
+              <PlayerScoreCard
+                key={index}
+                playerName={userID}
+                isStartingPlayer={props.players[props.startingPlayerIndex] === player}
+                isCurrentPlayer={props.players[props.currentPlayerIndex] === player}
+                score={props.playerStats[userID].score}
+                average={props.playerStats[userID].average}
+                lastThrows={props.playerStats[userID].lastThrows}
+                checkoutOptions={props.playerStats[userID].checkoutOptions}
+                sets={props.playerTotalGameStats[userID].sets}
+                legs={props.playerTotalGameStats[userID].legs}
+                modeOut={props.modeOut}
+                disabled={!isActive}
+              />
+            );
+          }
+        })}
       </div>
       <div className="columns is-centered">
         <div className="column">

@@ -4,14 +4,16 @@ import CheckoutDisplay from "../CheckoutDisplay/CheckoutDisplay.tsx";
 
 function PlayerScoreCard(props: PlayerScoreCardProps) {
   return (
-    <div className="column is-full playerCard">
+    <div className={`column is-full playerCard ${props.disabled === true && "inactiveCard"}`}>
       <div className="box" style={{ borderLeft: props.isCurrentPlayer ? "5px solid red" : "" }}>
         <h1 className={`title is-5 ${props.isStartingPlayer && "red-dot"}`}>{props.playerName}</h1>
         <div className="is-flex is-align-items-center mb-4">
           <p className="subtitle is-1 m-0" style={{ fontFamily: "sans-serif" }}>
             {props.score}
           </p>
-          <CheckoutDisplay playerName={props.playerName} score={props.score} modeOut={props.modeOut} />
+          {props.modeOut && (
+            <CheckoutDisplay playerName={props.playerName} score={props.score} modeOut={props.modeOut} />
+          )}
         </div>
         <div className="columns ml-0" style={{ minHeight: "24px", display: "block" }}>
           {props.lastThrows.map((lastThrow, index) => (

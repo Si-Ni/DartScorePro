@@ -1,8 +1,9 @@
+import { DPlayer } from "../../pages/onlineMultiplayer/OnlineMultiplayer/OnlineMultiplayerDTOs.tsx";
 import { PlayerToPlayerTotalGameStats } from "../../types/playerStats.ts";
 
 export interface GameViewProps {
   currentRound: number;
-  players: string[];
+  players: string[] | DPlayer[];
   startingPlayerIndex: number;
   currentPlayerIndex: number;
   playerTotalGameStats: PlayerToPlayerTotalGameStats;

@@ -4,11 +4,11 @@ import OnlineGames from "../../../components/game/OnlineGames/OnlineGames.tsx";
 import OnlineMultiplayerSettings from "../OnlineMultiplayerSettings/OnlineMultiplayerSettings.tsx";
 import { useNavigate, useParams } from "react-router-dom";
 import { OnlineMultiplayerProps } from "./OnlineMultiplayer";
-import { DStandardGameSettings, DSettingsAndGameData } from "./OnlineMultiplayerDTOs";
+import { DStandardGameSettings, DSettingsAndGameData, DPlayer } from "./OnlineMultiplayerDTOs";
 
 function OnlineMultiplayer(props: OnlineMultiplayerProps) {
   const navigate = useNavigate();
-  const [players, setPlayers] = useState([props.displayUserID]);
+  const [players, setPlayers] = useState<DPlayer[]>([{ userID: props.displayUserID, isLeader: false, isActive: true }]);
   const [selectedGamemode, setSelectedGamemode] = useState<Gamemode>("301");
   const [gameStarted, setGameStarted] = useState<boolean>(false);
   const [setsToWin, setSetsToWin] = useState<number>(1);
@@ -25,7 +25,6 @@ function OnlineMultiplayer(props: OnlineMultiplayerProps) {
 
   useEffect(() => {
     const handleGameStarted = (data: DSettingsAndGameData) => {
-      console.log(data);
       setGameSettings(data.gameSettings as DStandardGameSettings);
       setInitialGameStats(data.game);
     };
@@ -52,10 +51,10 @@ function OnlineMultiplayer(props: OnlineMultiplayerProps) {
   }, [props.lobbyCode, props.socket, props.displayUserID]);
 
   useEffect(() => {
-    const handleSetPlayerList = (players: { userID: string; isLeader: boolean }[]) => {
+    const handleSetPlayerList = (players: DPlayer[]) => {
       const isLeader = players.find((player) => player.userID === props.displayUserID && player.isLeader);
 
-      setPlayers(players.map((player) => player.userID));
+      setPlayers(players);
 
       isLeader && props.setIsLobbyLeader(true);
     };
@@ -98,7 +97,6 @@ function OnlineMultiplayer(props: OnlineMultiplayerProps) {
     socket: props.socket,
     lobbyCode: props.lobbyCode,
     displayUserID: props.displayUserID,
-    players: players,
     selectedGamemode: selectedGamemode,
     setsToWin: setsToWin,
     legsForSet: legsForSet,
@@ -110,12 +108,12 @@ function OnlineMultiplayer(props: OnlineMultiplayerProps) {
   return (
     <>
       {gameStarted ? (
-        <OnlineGames {...gameProps} initialGameStats={initialGameStats} />
+        <OnlineGames {...gameProps} players={players} initialGameStats={initialGameStats} />
       ) : (
         <OnlineMultiplayerSettings
           {...gameProps}
+          players={players.map((player) => player.userID)}
           setSelectedGamemode={setSelectedGamemode}
-          setPlayers={setPlayers}
           isLobbyLeader={props.isLobbyLeader}
           setSetsToWin={setSetsToWin}
           setLegsForSet={setLegsForSet}

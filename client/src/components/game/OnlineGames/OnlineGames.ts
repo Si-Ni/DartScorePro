@@ -1,5 +1,5 @@
 import { Socket } from "socket.io-client";
-import { DGameData } from "../../../pages/onlineMultiplayer/OnlineMultiplayer/OnlineMultiplayerDTOs";
+import { DGameData, DPlayer } from "../../../pages/onlineMultiplayer/OnlineMultiplayer/OnlineMultiplayerDTOs";
 import { Gamemode, InAndOutMode } from "../../../types/global";
 
 export interface OnlineGamesProps {
@@ -7,7 +7,7 @@ export interface OnlineGamesProps {
   socket: Socket;
   lobbyCode: string;
   selectedGamemode: Gamemode;
-  players: string[];
+  players: DPlayer[];
   cbBackBtnClicked(): void;
   setsToWin: number;
   legsForSet: number;

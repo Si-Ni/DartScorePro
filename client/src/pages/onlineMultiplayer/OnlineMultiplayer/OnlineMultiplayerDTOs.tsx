@@ -31,3 +31,9 @@ export interface DSettingsAndGameData {
   gameSettings: DGameSettings | DStandardGameSettings;
   game: DGameData;
 }
+
+export interface DPlayer {
+  userID: string;
+  isLeader: boolean;
+  isActive: boolean;
+}
