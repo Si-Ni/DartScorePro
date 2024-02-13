@@ -50,25 +50,30 @@ module.exports = (io) => {
     }
   };
 
-  const leaveLobby = function (socketId = this.id) {
-    Object.keys(lobbies).forEach((lobbyCode) => {
+  const leaveLobby = async function (socketId = this.id) {
+    const lobbyCodes = Object.keys(lobbies);
+    for (const lobbyCode of lobbyCodes) {
       const lobby = lobbies[lobbyCode];
       const disconnectedPlayer = lobby.players.find((player) => player.socketId === socketId);
 
       if (disconnectedPlayer) {
         disconnectedPlayer.socketId = "";
-        const updatedPlayers = lobby.players.filter((player) => player.socketId !== "").map((player) => player);
+        disconnectedPlayer.isActive = false;
 
         io.to(lobbyCode).emit("updatePlayersList", updatedPlayers);
+        if (lobby.gameStarted) {
+          await checkForWinIfNecessary(lobby);
+          io.to(lobbyCode).emit("gameStatsUpdated", lobbies[lobbyCode].game);
+        }
       }
-    });
+    }
   };
 
-  const disconnect = function () {
+  const disconnect = async function () {
     const socket = this;
 
     console.log("User disconnected:", socket.id);
-    leaveLobby(socket.id);
+    await leaveLobby(socket.id);
   };
 
   return {
