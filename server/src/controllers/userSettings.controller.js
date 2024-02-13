@@ -13,8 +13,8 @@ async function handleRequest(handler, req, res, next) {
 
 module.exports = {
   changeEmail: async (req, res, next) => await handleRequest(userSettingsService.changeEmail, req, res, next),
-  changeUsername: async (req, res, next) => await handleRequest(userSettingsService.changeUsername, req, res, next),
-  changePassword: async (req, res, next) => await handleRequest(userSettingsService.changePassword, req, res, next),
+  changeUserID: async (req, res, next) => await handleRequest(userSettingsService.changeUserID, req, res, next),
+  changeUserPWD: async (req, res, next) => await handleRequest(userSettingsService.changeUserPWD, req, res, next),
   deleteStats: async (req, res, next) => await handleRequest(userSettingsService.deleteStats, req, res, next),
   deleteAccount: async (req, res, next) => await handleRequest(userSettingsService.deleteAccount, req, res, next)
 };

@@ -1,18 +1,20 @@
 const express = require("express");
+const verifyToken = require("../middlewares/authenticateToken.middleware");
+
 const router = express.Router();
 const {
   changeEmail,
-  changePassword,
-  changeUsername,
+  changeUserPWD,
+  changeUserID,
   deleteAccount,
   deleteStats
 } = require("../controllers/userSettings.controller");
 
 router
-  .post("/changeEmail", changeEmail)
-  .post("/changeUsername", changeUsername)
-  .post("/changePassword", changePassword)
-  .post("/deleteStats", deleteStats)
-  .post("/deleteAccount", deleteAccount);
+  .post("/changeEmail", verifyToken, changeEmail)
+  .post("/changeUsername", verifyToken, changeUserID)
+  .post("/changePassword", verifyToken, changeUserPWD)
+  .post("/deleteStats", verifyToken, deleteStats)
+  .post("/deleteAccount", verifyToken, deleteAccount);
 
 module.exports = router;

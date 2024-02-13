@@ -59,20 +59,20 @@ function Settings(props: SettingsProps) {
     const repeatInput = document.getElementById(`${option}-repeat`) as HTMLInputElement;
 
     const formData: any = {
-      password: password.value
+      userPWD: password.value
     };
 
     if (option === "changeUsername") {
-      formData.newUsername = newInput.value;
-      formData.repeatedNewUsername = repeatInput?.value;
+      formData.newUserID = newInput.value;
+      formData.repeatedNewUserID = repeatInput?.value;
     } else if (option === "changeEmail") {
-      formData.newEmail = newInput.value;
-      formData.repeatedNewEmail = repeatInput?.value;
+      formData.newUserMail = newInput.value;
+      formData.repeatedNewUserMail = repeatInput?.value;
     } else if (option === "changePassword") {
-      formData.newPassword = newInput.value;
-      formData.repeatedNewPassword = repeatInput?.value;
+      formData.newUserPWD = newInput.value;
+      formData.repeatedNewUserPWD = repeatInput?.value;
     } else if (option === "deleteStats" || option === "deleteAccount") {
-      formData.repeatedPassword = repeatInput?.value;
+      formData.repeatedUserPWD = repeatInput?.value;
     }
 
     axios
@@ -80,12 +80,12 @@ function Settings(props: SettingsProps) {
         option === "changeEmail"
           ? CHANGE_EMAIL_URL
           : option === "changeUsername"
-            ? CHANGE_USERNAME_URL
-            : option === "changePassword"
-              ? CHANGE_PASSWORD_URL
-              : option === "deleteStats"
-                ? DELETE_STATS_URL
-                : DELETE_ACCOUNT_URL,
+          ? CHANGE_USERNAME_URL
+          : option === "changePassword"
+          ? CHANGE_PASSWORD_URL
+          : option === "deleteStats"
+          ? DELETE_STATS_URL
+          : DELETE_ACCOUNT_URL,
         formData,
         { withCredentials: true }
       )
