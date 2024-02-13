@@ -25,7 +25,15 @@ const handleOnLeave = function (lobby) {
   }
 };
 
-const handleOnRejoin = function (lobby) {
+function countActivePlayers(lobby) {
+  return lobby.players.filter((player) => player.isActive).length;
+}
+
+const handleOnRejoin = function (lobby, playerIndex) {
+  if (countActivePlayers(lobby) === 1) {
+    lobby.game.currentPlayerIndex = playerIndex;
+  }
+
   const gamemode = lobby.gameSettings.selectedGamemode;
   if (gamemode === "cri") {
     checkIfAnyNumberIsNotClosedByAllPlayers(lobby);
