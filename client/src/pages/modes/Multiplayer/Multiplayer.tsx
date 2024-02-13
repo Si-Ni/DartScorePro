@@ -26,7 +26,9 @@ function Multiplayer(props: MultiplayerProps) {
     <>
       {selectedMultiplayerMode ? (
         <div>
-          {selectedMultiplayerMode === "local" && <LocalMultiplayer cbBackBtnClicked={handleBackBtnClicked} />}
+          {selectedMultiplayerMode === "local" && (
+            <LocalMultiplayer cbBackBtnClicked={handleBackBtnClicked} displayUserID={props.displayUserID} />
+          )}
           {selectedMultiplayerMode === "create" && (
             <CreateLobby {...lobbyProps} setIsLobbyLeader={props.setIsLobbyLeader} />
           )}
