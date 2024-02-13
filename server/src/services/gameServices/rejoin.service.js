@@ -9,7 +9,7 @@ const checkForWinIfNecessary = async function (lobby) {
 };
 
 const switchPlayerIfNecessary = function (lobby, disconnectedPlayerID) {
-  if (lobby.players[lobby.game.currenPlayerIndex].userID === disconnectedPlayerID) {
+  if (lobby.players[lobby.game.currentPlayerIndex].userID === disconnectedPlayerID) {
     switchToNextPlayer(lobby);
   }
 };
