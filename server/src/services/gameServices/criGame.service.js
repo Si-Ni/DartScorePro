@@ -54,12 +54,10 @@ const updateCricketStatusAndScore = (lobby, player, points, multiplier) => {
     updatedCricketStatus++;
   }
 
-  const numberIsClosedForAllPlayers =
-    updatedCricketStatus === 3 && checkIfNumberIsClosedByOtherPlayers(lobby, player, statsKey);
+  lobby.game.playerStats[player].cricketStats[statsKey] = updatedCricketStatus;
 
-  if (numberIsClosedForAllPlayers) {
+  if (checkIfNumberIsClosedByAllPlayers(lobby, statsKey)) {
     setCricketStatusClosedForEverybody(lobby, statsKey);
-    updatedCricketStatus++;
   }
 
   let remainingScore = 0;
@@ -68,33 +66,30 @@ const updateCricketStatusAndScore = (lobby, player, points, multiplier) => {
     remainingScore = points * timesHitted;
   }
 
-  updateCricketStatusAndAddScoreForPlayer(lobby, player, statsKey, updatedCricketStatus, remainingScore);
+  increasePlayerScore(lobby, player, remainingScore);
 };
 
-const checkIfNumberIsClosedByOtherPlayers = (lobby, currentPlayer, statsKey) => {
-  let numberClosedByOtherPlayers = true;
+const checkIfNumberIsClosedByAllPlayers = (lobby, statsKey) => {
+  let numberClosedForAllPlayers = true;
   const playerStats = lobby.game.playerStats;
-  Object.keys(playerStats).forEach((playerKey) => {
-    const numberNotClosed = playerKey != currentPlayer && playerStats[playerKey].cricketStats[statsKey] < 3;
-    if (numberNotClosed) {
-      numberClosedByOtherPlayers = false;
+
+  lobby.players.forEach((player) => {
+    if (player.isActive && playerStats[player.userID].cricketStats[statsKey] < 3) {
+      numberClosedForAllPlayers = false;
       return;
     }
   });
-  return numberClosedByOtherPlayers;
+
+  return numberClosedForAllPlayers;
 };
 
 const setCricketStatusClosedForEverybody = (lobby, statsKey) => {
   const playerStats = lobby.game.playerStats;
-  Object.keys(playerStats).forEach((playerKey) => {
-    playerStats[playerKey].cricketStats[statsKey] = 4;
+  lobby.players.forEach((player) => {
+    if (player.isActive) {
+      playerStats[player.userID].cricketStats[statsKey] = 4;
+    }
   });
-};
-
-const updateCricketStatusAndAddScoreForPlayer = (lobby, player, statsKey, updatedCricketStatus, thrownPoints) => {
-  const currentPlayerStats = lobby.game.playerStats[player];
-  currentPlayerStats.cricketStats[statsKey] = updatedCricketStatus;
-  currentPlayerStats.score += thrownPoints;
 };
 
 const checkIfPlayerHasWon = (lobby, playerKey) => {
@@ -143,4 +138,13 @@ const checkIfAnyPlayerHasWonCri = async (lobby) => {
   });
 };
 
-module.exports = { updateScoreForCurrentPlayerCri, checkIfAnyPlayerHasWonCri };
+const checkIfAnyNumberIsClosedByAllPlayers = (lobby) => {
+  const cricketStats = lobby.game.playerStats[lobby.players[0].userID].cricketStats;
+  Object.keys(cricketStats).forEach((statsKey) => {
+    if (checkIfNumberIsClosedByAllPlayers(lobby, statsKey)) {
+      setCricketStatusClosedForEverybody(lobby, statsKey);
+    }
+  });
+};
+
+module.exports = { updateScoreForCurrentPlayerCri, checkIfAnyPlayerHasWonCri, checkIfAnyNumberIsClosedByAllPlayers };
