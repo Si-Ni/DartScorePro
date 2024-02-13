@@ -8,7 +8,7 @@ const {
   resetRoundStatsForNextGame
 } = require("../../helpers/game.helper");
 
-const updateScoreForCurrentPlayerStandardGames = (lobby, { multiplier, points }) => {
+const updateScoreForCurrentPlayerStandardGames = async (lobby, { multiplier, points }) => {
   if (!validatePoints) return;
 
   const currentPlayerIndex = lobby.game.currentPlayerIndex;
@@ -24,7 +24,7 @@ const updateScoreForCurrentPlayerStandardGames = (lobby, { multiplier, points })
 
   addThrowToLastThrows(lobby, currentPlayer, points, multiplier);
 
-  updateScoreForPlayerAndContinueGame(lobby, currentPlayer, points, multiplier);
+  await updateScoreForPlayerAndContinueGame(lobby, currentPlayer, points, multiplier);
 };
 
 const validatePoints = (points) => {
@@ -57,7 +57,7 @@ const addThrowToLastThrows = (lobby, currentPlayer, points, multiplier) => {
   lobby.game.playerStats[currentPlayer].lastThrows.push(formattedThrow);
 };
 
-const updateScoreForPlayerAndContinueGame = (lobby, currentPlayer, points, multiplier) => {
+const updateScoreForPlayerAndContinueGame = async (lobby, currentPlayer, points, multiplier) => {
   const thrownPoints = points * multiplier;
   const updatedScore = calculateUpdatedScore(lobby, currentPlayer, thrownPoints);
 
@@ -72,7 +72,7 @@ const updateScoreForPlayerAndContinueGame = (lobby, currentPlayer, points, multi
   } else {
     updatePlayerStatsByThrownPoints(lobby, currentPlayer, thrownPoints);
     updateRemainingThrows(lobby);
-    checkIfPlayerHasWon(lobby, currentPlayer, updatedScore, multiplier);
+    await checkIfPlayerHasWon(lobby, currentPlayer, updatedScore, multiplier);
   }
 };
 

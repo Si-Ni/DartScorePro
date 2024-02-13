@@ -6,13 +6,13 @@ const {
   resetRoundStatsForNextGame
 } = require("../../helpers/game.helper");
 
-const updateScoreForCurrentPlayerRcl = (lobby, args) => {
+const updateScoreForCurrentPlayerRcl = async (lobby, args) => {
   const currentPlayerIndex = lobby.game.currentPlayerIndex;
   const currentPlayer = lobby.players[currentPlayerIndex].userID;
   if (args.skip) {
     handlePlayerSkippedTurn(lobby, currentPlayer);
   } else if (args.isHitted) {
-    handlePlayerHitTarget(lobby, currentPlayer);
+    await handlePlayerHitTarget(lobby, currentPlayer);
   } else if (!args.isHitted) {
     handlePlayerMissedTarget(lobby, currentPlayer);
   }

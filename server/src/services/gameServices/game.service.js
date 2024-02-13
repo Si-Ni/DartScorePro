@@ -35,9 +35,9 @@ const updateGameWithThrownPoints = async (socketId, lobby, args) => {
 const forwardRequestToResponsibleService = async (lobby, args) => {
   const gamemode = lobby.gameSettings.selectedGamemode;
   if (gamemode === "301" || gamemode === "501") {
-    updateScoreForCurrentPlayerStandardGames(lobby, args);
+    await updateScoreForCurrentPlayerStandardGames(lobby, args);
   } else if (gamemode === "rcl") {
-    updateScoreForCurrentPlayerRcl(lobby, args);
+    await updateScoreForCurrentPlayerRcl(lobby, args);
   } else if (gamemode === "cri") {
     await updateScoreForCurrentPlayerCri(lobby, args);
   } else {
