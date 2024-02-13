@@ -6,4 +6,6 @@ export interface PlayerMenuProps {
   setPlayers: React.Dispatch<React.SetStateAction<string[]>>;
   isEditable: boolean;
   playerCountInfo: string;
+  displayUserID: string;
+  isLobbyLeader: boolean;
 }

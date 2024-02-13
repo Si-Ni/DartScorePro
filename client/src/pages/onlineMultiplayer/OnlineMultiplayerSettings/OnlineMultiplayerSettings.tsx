@@ -38,6 +38,8 @@ function OnlineMultiplayerSettings(props: OnlineMultiplayerSettingsProps) {
                 setPlayers={props.setPlayers}
                 isEditable={false}
                 playerCountInfo="2-4 players required to start"
+                isLobbyLeader={props.isLobbyLeader}
+                displayUserID={props.displayUserID}
               />
               <NavigationButtons
                 cbBackBtnClicked={props.cbBackBtnClicked}

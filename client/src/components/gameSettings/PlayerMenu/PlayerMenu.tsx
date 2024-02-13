@@ -43,9 +43,15 @@ function PlayerMenu({ players, setPlayers, ...props }: PlayerMenuProps) {
         {players.map((player, index) => (
           <li key={index}>
             <div className="mb-2 is-flex">
-              <div className="is-flex-grow-1" style={{ lineHeight: "30px" }}>
-                {player}
+              <div className="is-flex-grow-1">
+                {player}{" "}
+                {player === props.displayUserID && props.isLobbyLeader && (
+                  <span className="tag is-info is-light ml-2" style={{ border: "1px solid #209cee" }}>
+                    Leader
+                  </span>
+                )}
               </div>
+
               {props.isEditable && (
                 <div>
                   <button className="button is-danger is-small ml-2" onClick={() => deletePlayer(index)}>
