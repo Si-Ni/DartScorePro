@@ -86,7 +86,8 @@ const checkIfNumberIsClosedByAllPlayers = (lobby, statsKey) => {
 const setCricketStatusClosedForEverybody = (lobby, statsKey) => {
   const playerStats = lobby.game.playerStats;
   lobby.players.forEach((player) => {
-    if (player.isActive) {
+    const currentCricketStats = playerStats[player.userID].cricketStats[statsKey];
+    if (player.isActive || currentCricketStats === 3) {
       playerStats[player.userID].cricketStats[statsKey] = 4;
     }
   });
@@ -95,7 +96,6 @@ const setCricketStatusClosedForEverybody = (lobby, statsKey) => {
 const checkIfPlayerHasWon = (lobby, playerKey) => {
   const highestScore = calculateHighestScore(lobby);
   const playersScore = lobby.game.playerStats[playerKey].score;
-  console.log(highestScore, playersScore);
   return playerHasClosedAll(lobby, playerKey) && playersScore >= highestScore;
 };
 
