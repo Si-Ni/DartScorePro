@@ -183,9 +183,12 @@ function LocalStandardGames({ currentPlayerIndex, throwsRemaining, ...props }: L
   const handleUndoClick = (): void => {
     if (Object.keys(previousPlayerStats).length === 0) return;
 
-    switchToPrevRoundForUndoIfNecessary();
-
     const playerIndex = getIndexOfPlayerFromLastTurn();
+
+    // Check if it's the first dart of the round being undone and round subtraction hasn't occurred yet
+    if (throwsRemaining === 3 && currentPlayerIndex === 0 && props.currentRound > 1) {
+      props.setCurrentRound((currentRound) => currentRound - 1);
+    }
 
     const switchToPrevPlayer = playerIndex !== currentPlayerIndex || (throwsRemaining === 3 && players.length === 1);
     if (switchToPrevPlayer) switchToPlayersLastTurn(playerIndex);
@@ -209,11 +212,6 @@ function LocalStandardGames({ currentPlayerIndex, throwsRemaining, ...props }: L
       playerIndex = players.length - 1;
     }
     return playerIndex;
-  };
-
-  const switchToPrevRoundForUndoIfNecessary = (): void => {
-    const switchToPrevRound = throwsRemaining === 3 && currentPlayerIndex === 0;
-    if (switchToPrevRound) props.setCurrentRound((currentRound) => currentRound - 1);
   };
 
   const switchToPlayersLastTurn = (playerIndex: number): void => {

@@ -64,6 +64,12 @@ function Settings(props: SettingsProps) {
                 className="is-clickable has-text-weight-semibold has-text-centered is-underlined mb-4"
                 onClick={() => {}}
               >
+                Delete your stats
+              </p>
+              <p
+                className="is-clickable has-text-weight-semibold has-text-centered is-underlined mb-4"
+                onClick={() => {}}
+              >
                 Delete your account
               </p>
             </div>
