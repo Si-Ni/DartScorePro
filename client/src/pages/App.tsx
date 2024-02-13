@@ -13,7 +13,7 @@ import OnlineMultiplayer from "./onlineMultiplayer/OnlineMultiplayer/OnlineMulti
 import CheckoutCalculator from "./information/CheckoutCalculator/CheckoutCalculator";
 import Tournament from "./tournament/Tournament";
 import Impressum from "./information/Impressum/Impressum";
-import Settings from "./settings/Settings";
+import Settings from "./settings/Settings.tsx";
 import Statistics from "./statistics/Statistics.tsx";
 import Footer from "../components/footer/Footer/Footer.tsx";
 
@@ -95,7 +95,7 @@ function App() {
         />
         <Route path="/tournament" element={<Tournament />} />
         <Route path="/checkoutCalculator" element={<CheckoutCalculator />} />
-        <Route path="/settings" element={<Settings />} />
+        <Route path="/settings" element={<Settings displayUserID={displayUserID} />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/impressum" element={<Impressum />} />
         <Route path="/statistics" element={<Statistics />} />
