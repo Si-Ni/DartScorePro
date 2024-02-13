@@ -16,7 +16,7 @@ const updateScoreForCurrentPlayerCri = async (lobby, { points, multiplier }) => 
   updatePlayerStats(lobby, currentPlayer, points, multiplier);
 
   if (checkIfPlayerHasWon(lobby, currentPlayer)) {
-    await setWinnerAndUpdate(lobby, currentPlayer);
+    await handlePlayerWon(lobby, currentPlayer);
   } else {
     updateRemainingThrows(lobby);
   }
@@ -104,7 +104,7 @@ const checkIfPlayerHasWon = (lobby, playerKey) => {
   return playerHasClosedAll(lobby, playerKey) && playersScore >= highestScore;
 };
 
-const setWinnerAndUpdate = async (lobby, playerKey) => {
+const handlePlayerWon = async (lobby, playerKey) => {
   updateGameStatsForWinningPlayer(lobby, playerKey);
   await savePlayerWinOrDefeat(lobby);
   resetRoundStatsForNextGame(lobby);
@@ -138,7 +138,7 @@ const increasePlayerScore = (lobby, player, thrownPoints) => {
 const checkIfAnyPlayerHasWonCri = async (lobby) => {
   await lobby.players.forEach(async (player) => {
     if (player.isActive) {
-      if (checkIfPlayerHasWon(lobby, player.userID)) await setWinnerAndUpdate(lobby, player.userID);
+      if (checkIfPlayerHasWon(lobby, player.userID)) await handlePlayerWon(lobby, player.userID);
     }
   });
 };

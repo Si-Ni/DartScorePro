@@ -31,9 +31,7 @@ const addMissesToLastThrows = (lobby, currentPlayer) => {
 
 const handlePlayerHitTarget = async (lobby, player) => {
   if (checkIfPlayerHasWon(lobby, player)) {
-    updateGameStatsForWinningPlayer(lobby, player);
-    await savePlayerWinOrDefeat(lobby);
-    resetRoundStatsForNextGame(lobby);
+    await handlePlayerWon(lobby, player);
   } else {
     increaseTargetByOne(lobby, player);
   }
@@ -43,6 +41,12 @@ const handlePlayerHitTarget = async (lobby, player) => {
 const checkIfPlayerHasWon = (lobby, player) => {
   const currentPlayerStats = lobby.game.playerStats[player];
   return currentPlayerStats.currentTarget === 20;
+};
+
+const handlePlayerWon = async (lobby, player) => {
+  updateGameStatsForWinningPlayer(lobby, player);
+  await savePlayerWinOrDefeat(lobby);
+  resetRoundStatsForNextGame(lobby);
 };
 
 const increaseTargetByOne = (lobby, player) => {

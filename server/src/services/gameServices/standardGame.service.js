@@ -105,11 +105,15 @@ const updatePlayerStatsByThrownPoints = async (lobby, player, thrownPoints) => {
 const checkIfPlayerHasWon = async (lobby, player, updatedScore, multiplier) => {
   const playerWon = updatedScore === 0 && (lobby.gameSettings.modeOut !== "double" || multiplier === 2);
   if (playerWon) {
-    updateGameStatsForWinningPlayer(lobby, player);
-    await savePlayerWinOrDefeat(lobby);
-    await savePlayerCheckout(lobby);
-    resetRoundStatsForNextGame(lobby);
+    await handlePlayerWon(lobby, player);
   }
+};
+
+const handlePlayerWon = async (lobby, player) => {
+  updateGameStatsForWinningPlayer(lobby, player);
+  await savePlayerWinOrDefeat(lobby);
+  await savePlayerCheckout(lobby);
+  resetRoundStatsForNextGame(lobby);
 };
 
 module.exports = { updateScoreForCurrentPlayerStandardGames };
