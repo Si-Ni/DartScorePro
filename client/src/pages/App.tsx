@@ -11,7 +11,7 @@ import axios from "../api/axios";
 import io from "socket.io-client";
 import OnlineMultiplayer from "./onlineMultiplayer/OnlineMultiplayer/OnlineMultiplayer.tsx";
 import CheckoutCalculator from "./information/CheckoutCalculator/CheckoutCalculator";
-import Tournament from "./tournament/Tournament";
+import Tournament from "./tournament/Tournament.tsx";
 import Impressum from "./information/Impressum/Impressum";
 import Settings from "./settings/Settings.tsx";
 import Statistics from "./statistics/Statistics.tsx";
@@ -93,7 +93,7 @@ function App() {
             />
           }
         />
-        <Route path="/tournament" element={<Tournament />} />
+        <Route path="/tournament" element={<Tournament displayUserID={displayUserID} />} />
         <Route path="/checkoutCalculator" element={<CheckoutCalculator />} />
         <Route path="/settings" element={<Settings displayUserID={displayUserID} />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
