@@ -35,7 +35,7 @@ function Statistics() {
       .catch(() => {});
   }, []);
 
-  const calculateWinRate = (wins, defeats) =>
+  const calculateWinRate = (wins: number, defeats: number) =>
     wins + defeats === 0 ? 0 : defeats === 0 ? 100 : Number(((wins / (wins + defeats)) * 100).toFixed(2));
 
   const { standard, cri, rcl } = statistics;
@@ -56,57 +56,57 @@ function Statistics() {
               <tr>
                 <td rowSpan={7}>Standard (301 and 501)</td>
                 <td>Average</td>
-                <td>{standard.totalAverage.toFixed(2)}</td>
+                <td>{standard.totalAverage.toFixed(2) ?? 0}</td>
               </tr>
               <tr>
                 <td>Darts Thrown</td>
-                <td>{standard.totalDartsThrown}</td>
+                <td>{standard.totalDartsThrown ?? 0}</td>
               </tr>
               <tr>
                 <td>Score</td>
-                <td>{standard.totalScore}</td>
+                <td>{standard.totalScore ?? 0}</td>
               </tr>
               <tr>
                 <td>180's</td>
-                <td>{standard["180's"]}</td>
+                <td>{standard["180's"] ?? 0}</td>
               </tr>
               <tr>
                 <td>Wins</td>
-                <td>{standard.totalWins}</td>
+                <td>{standard.totalWins ?? 0}</td>
               </tr>
               <tr>
                 <td>Defeats</td>
-                <td>{standard.totalDefeats}</td>
+                <td>{standard.totalDefeats ?? 0}</td>
               </tr>
               <tr>
                 <td>Win Rate</td>
-                <td>{calculateWinRate(standard.totalWins, standard.totalDefeats)} %</td>
+                <td>{calculateWinRate(standard.totalWins ?? 0, standard.totalDefeats ?? 0)} %</td>
               </tr>
               <tr>
                 <td rowSpan={3}>CRI</td>
                 <td>Wins</td>
-                <td>{cri.totalWins}</td>
+                <td>{cri.totalWins ?? 0}</td>
               </tr>
               <tr>
                 <td>Defeats</td>
-                <td>{cri.totalDefeats}</td>
+                <td>{cri.totalDefeats ?? 0}</td>
               </tr>
               <tr>
                 <td>Win Rate</td>
-                <td>{calculateWinRate(cri.totalWins, cri.totalDefeats)} %</td>
+                <td>{calculateWinRate(cri.totalWins ?? 0, cri.totalDefeats ?? 0)} %</td>
               </tr>
               <tr>
                 <td rowSpan={3}>RCL</td>
                 <td>Wins</td>
-                <td>{rcl.totalWins}</td>
+                <td>{rcl.totalWins ?? 0}</td>
               </tr>
               <tr>
                 <td>Defeats</td>
-                <td>{rcl.totalDefeats}</td>
+                <td>{rcl.totalDefeats ?? 0}</td>
               </tr>
               <tr>
                 <td>Win Rate</td>
-                <td>{calculateWinRate(rcl.totalWins, rcl.totalDefeats)} %</td>
+                <td>{calculateWinRate(rcl.totalWins ?? 0, rcl.totalDefeats ?? 0)} %</td>
               </tr>
             </tbody>
           </table>
