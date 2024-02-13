@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { SettingsProps } from "./Settings";
 import axios from "../../api/axios";
 import useAuth from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import "../../styles/Settings.css";
+import NavigationButtons from "../../components/buttons/NavigationButtons/NavigationButtons.tsx";
 
 const LOGOUT_URL = "/logout";
 const CHANGE_EMAIL_URL = "/changeEmail";
@@ -80,12 +81,12 @@ function Settings(props: SettingsProps) {
         option === "changeEmail"
           ? CHANGE_EMAIL_URL
           : option === "changeUsername"
-            ? CHANGE_USERNAME_URL
-            : option === "changePassword"
-              ? CHANGE_PASSWORD_URL
-              : option === "deleteStats"
-                ? DELETE_STATS_URL
-                : DELETE_ACCOUNT_URL,
+          ? CHANGE_USERNAME_URL
+          : option === "changePassword"
+          ? CHANGE_PASSWORD_URL
+          : option === "deleteStats"
+          ? DELETE_STATS_URL
+          : DELETE_ACCOUNT_URL,
         formData,
         { withCredentials: true }
       )
@@ -174,6 +175,7 @@ function Settings(props: SettingsProps) {
                 {renderInput("Delete your stats", "deleteStats", "password")}
                 {renderInput("Delete your account", "deleteAccount", "password")}
               </form>
+              <NavigationButtons contentBackBtn="Back" cbBackBtnClicked={() => navigate("/")} marginTop={6} />
             </div>
           </div>
         </div>
