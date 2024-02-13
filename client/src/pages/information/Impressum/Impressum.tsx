@@ -1,6 +1,5 @@
 import VoiceControl from "../../../components/voiceControl/VoiceControl";
 
-
 function Impressum() {
   return (
     <div className="hero is-justify-content-center is-align-items-center is-fullheight">
