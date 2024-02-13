@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { SettingsProps } from "./Settings";
 import axios from "../../api/axios";
 import useAuth from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import "../../styles/Settings.css";
+import NavigationButtons from "../../components/buttons/NavigationButtons/NavigationButtons.tsx";
 
 const LOGOUT_URL = "/logout";
 const CHANGE_EMAIL_URL = "/changeEmail";
@@ -174,6 +175,7 @@ function Settings(props: SettingsProps) {
                 {renderInput("Delete your stats", "deleteStats", "password")}
                 {renderInput("Delete your account", "deleteAccount", "password")}
               </form>
+              <NavigationButtons contentBackBtn="Back" cbBackBtnClicked={() => navigate("/")} marginTop={6} />
             </div>
           </div>
         </div>
