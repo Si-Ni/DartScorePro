@@ -19,7 +19,7 @@ function GameMultiplierButtons(props: GameMultiplierButtonsProps) {
   };
 
   return (
-    <>
+    <div className="is-flex is-centered">
       <button
         className={`button is-info m-1 is-size-5 uniformButton ${
           isCurrentlySelected(1) && !props.disabled ? "selectedButton" : ""
@@ -47,7 +47,7 @@ function GameMultiplierButtons(props: GameMultiplierButtonsProps) {
       >
         Triple
       </button>
-    </>
+    </div>
   );
 }
 

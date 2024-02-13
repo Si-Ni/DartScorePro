@@ -1,9 +1,9 @@
-import { NavigationButtonsProps } from "./NavigationButtons.tsx";
+import { NavigationButtonsProps } from "./NavigationButtons";
 import "../../../styles/Games.css";
 
 function NavigationButtons(props: NavigationButtonsProps) {
   return (
-    <div className={`buttons is-centered mt-${props.marginTop ?? 5}`}>
+    <div className={`buttons is-flex is-centered mt-${props.marginTop ?? 5} mb-2`}>
       {props.cbBackBtnClicked && (
         <button className="button is-danger m-1 is-medium uniformButton" onClick={props.cbBackBtnClicked}>
           {props.contentBackBtn ? props.contentBackBtn : "Back"}

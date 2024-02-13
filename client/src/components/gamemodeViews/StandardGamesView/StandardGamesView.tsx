@@ -30,20 +30,18 @@ function StandardGamesView(props: StandardGamesViewProps) {
       </div>
       <div className="columns is-centered">
         <div className="column">
-          <div className="box">
-            {
-              <GameInputButtons
-                values={[...Array(21).keys()].map((num) => num).concat(25)}
-                cbHandleButtonClicked={props.cbHandleScoreBtnClicked}
-                showMissButton={false}
-                btnSize={20}
-                disabled={props.isPlayersTurn === false}
-              />
-            }
-          </div>
+          {
+            <GameInputButtons
+              values={[...Array(21).keys()].map((num) => num).concat(25)}
+              cbHandleButtonClicked={props.cbHandleScoreBtnClicked}
+              showMissButton={false}
+              btnSize={20}
+              disabled={props.isPlayersTurn === false}
+            />
+          }
         </div>
       </div>
-      <div className="columns is-centered">
+      <div className="columns is-flex is-centered">
         <GameMultiplierButtons
           multiplier={props.multiplier}
           cbHandleMultiplierClicked={props.cbHandleMultiplierClicked}

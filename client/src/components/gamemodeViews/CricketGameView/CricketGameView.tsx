@@ -27,17 +27,15 @@ function CricketGameView(props: CricketGameViewProps) {
       </div>
       <div className="columns is-centered">
         <div className="column">
-          <div className="box">
-            {
-              <GameInputButtons
-                values={[...Array(6).keys()].map((num) => 20 - num).concat(25)}
-                cbHandleButtonClicked={props.cbHandleScoreBtnClicked}
-                showMissButton={true}
-                btnSize={60}
-                disabled={props.isPlayersTurn === false}
-              />
-            }
-          </div>
+          {
+            <GameInputButtons
+              values={[...Array(6).keys()].map((num) => 20 - num).concat(25)}
+              cbHandleButtonClicked={props.cbHandleScoreBtnClicked}
+              showMissButton={true}
+              btnSize={60}
+              disabled={props.isPlayersTurn === false}
+            />
+          }
         </div>
       </div>
       <div className="columns is-centered">
