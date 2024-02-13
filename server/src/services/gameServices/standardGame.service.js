@@ -96,7 +96,6 @@ const updatePlayerStatsByThrownPoints = async (lobby, player, thrownPoints) => {
     dartsThrown: currentPlayerStats.dartsThrown + 1,
     turns: lobby.game.throwsRemaining === 1 ? currentPlayerStats.turns + 1 : currentPlayerStats.turns,
     average: ((currentPlayerStats.totalScore + thrownPoints) * 3) / (currentPlayerStats.dartsThrown + 1)
-    //ToDo: checkoutOptions: getAllOptions(3).filter((r) => sumRound(r) === currentPlayerStats.score - thrownPoints)
   };
   lobby.game.playerStats[player] = currentPlayerStats;
 

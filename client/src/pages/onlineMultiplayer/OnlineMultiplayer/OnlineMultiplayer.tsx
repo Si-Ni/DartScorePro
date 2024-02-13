@@ -25,6 +25,7 @@ function OnlineMultiplayer(props: OnlineMultiplayerProps) {
 
   useEffect(() => {
     const handleGameStarted = (data: DSettingsAndGameData) => {
+      console.log(data);
       setGameSettings(data.gameSettings as DStandardGameSettings);
       setInitialGameStats(data.game);
     };
@@ -60,8 +61,6 @@ function OnlineMultiplayer(props: OnlineMultiplayerProps) {
     };
 
     props.socket.on("updatePlayersList", handleSetPlayerList);
-
-    props.socket.on("isGameStarted", () => setGameStarted(true));
 
     return () => {
       props.socket.off("updatePlayersList", handleSetPlayerList);

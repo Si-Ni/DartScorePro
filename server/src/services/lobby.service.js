@@ -14,16 +14,15 @@ module.exports = (io) => {
 
   const joinLobby = function ({ lobbyCode, userID }) {
     const socket = this;
-
     const socketId = socket.id;
-
     const lobby = lobbies[lobbyCode];
 
     if (!lobbyCodeRegex.test(lobbyCode) || !lobby) return socket.emit(lobbyCode ? "lobbyNotFound" : "invalidLobbyCode");
 
     const playerIndex = lobby.players.findIndex((player) => player.userID === userID);
+    const playerRejoining = playerIndex !== -1;
 
-    if (playerIndex !== -1) lobby.players[playerIndex].socketId = socketId;
+    if (playerRejoining) lobby.players[playerIndex].socketId = socketId;
     else lobby.players.push({ userID, socketId, isLeader: false });
 
     socket.join(lobbyCode);
@@ -35,7 +34,11 @@ module.exports = (io) => {
 
     io.to(lobbyCode).emit("updatePlayersList", updatedPlayers);
 
-    lobby.gameSettings && io.to(lobbyCode).emit("isGameStarted");
+    if (playerRejoining && lobby.gameStarted) {
+      const settingsAndGame = { gameSettings: lobbies[lobbyCode].gameSettings, game: lobbies[lobbyCode].game };
+      socket.emit("leaderStartedGame", settingsAndGame);
+      io.to(lobbyCode).emit("gameStatsUpdated", lobbies[lobbyCode].game);
+    }
   };
 
   const leaveLobby = function (socketId = this.id) {
