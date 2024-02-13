@@ -1,3 +1,4 @@
+const { switchToNextPlayer } = require("../../helpers/game.helper");
 const { checkIfAnyPlayerHasWonCri } = require("./criGame.service");
 
 const checkForWinIfNecessary = async function (lobby) {
@@ -7,4 +8,10 @@ const checkForWinIfNecessary = async function (lobby) {
   }
 };
 
-module.exports = { checkForWinIfNecessary };
+const switchPlayerIfNecessary = function (lobby, disconnectedPlayerID) {
+  if (lobby.players[lobby.game.currenPlayerIndex].userID === disconnectedPlayerID) {
+    switchToNextPlayer(lobby);
+  }
+};
+
+module.exports = { checkForWinIfNecessary, switchPlayerIfNecessary };

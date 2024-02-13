@@ -1,5 +1,5 @@
 const generateCode = require("../helpers/generateCode.helper");
-const { checkForWinIfNecessary } = require("./gameServices/rejoin.service");
+const { checkForWinIfNecessary, switchPlayerIfNecessary } = require("./gameServices/rejoin.service");
 const lobbies = {};
 const lobbyCodeRegex = /^[A-Z0-9]{6}$/;
 
@@ -36,11 +36,7 @@ module.exports = (io) => {
     socket.join(lobbyCode);
     socket.emit("lobbyJoined", lobbyCode);
 
-    const updatedPlayers = lobby.players
-      .filter((player) => player.socketId !== "")
-      .map((player) => ({ userID: player.userID, isLeader: player.isLeader, isActive: player.isActive }));
-
-    io.to(lobbyCode).emit("updatePlayersList", updatedPlayers);
+    io.to(lobbyCode).emit("updatePlayersList", lobby.players);
 
     if (playerRejoining && lobby.gameStarted) {
       const settingsAndGame = { gameSettings: lobbies[lobbyCode].gameSettings, game: lobbies[lobbyCode].game };
@@ -60,8 +56,9 @@ module.exports = (io) => {
         disconnectedPlayer.socketId = "";
         disconnectedPlayer.isActive = false;
 
-        io.to(lobbyCode).emit("updatePlayersList", updatedPlayers);
+        io.to(lobbyCode).emit("updatePlayersList", lobby.players);
         if (lobby.gameStarted) {
+          switchPlayerIfNecessary(lobby, disconnectedPlayer.userID);
           await checkForWinIfNecessary(lobby);
           io.to(lobbyCode).emit("gameStatsUpdated", lobbies[lobbyCode].game);
         }
