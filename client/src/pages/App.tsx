@@ -95,7 +95,12 @@ function App() {
         />
         <Route path="/tournament" element={<Tournament displayUserID={displayUserID} />} />
         <Route path="/checkoutCalculator" element={<CheckoutCalculator />} />
-        <Route path="/settings" element={<Settings displayUserID={displayUserID} />} />
+        <Route
+          path="/settings"
+          element={
+            <Settings displayUserID={displayUserID} setDisplayUserID={setDisplayUserID} setLoggedIn={setLoggedIn} />
+          }
+        />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/impressum" element={<Impressum />} />
         <Route path="/statistics" element={<Statistics />} />
