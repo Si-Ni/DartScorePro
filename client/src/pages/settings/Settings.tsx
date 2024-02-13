@@ -80,12 +80,12 @@ function Settings(props: SettingsProps) {
         option === "changeEmail"
           ? CHANGE_EMAIL_URL
           : option === "changeUsername"
-          ? CHANGE_USERNAME_URL
-          : option === "changePassword"
-          ? CHANGE_PASSWORD_URL
-          : option === "deleteStats"
-          ? DELETE_STATS_URL
-          : DELETE_ACCOUNT_URL,
+            ? CHANGE_USERNAME_URL
+            : option === "changePassword"
+              ? CHANGE_PASSWORD_URL
+              : option === "deleteStats"
+                ? DELETE_STATS_URL
+                : DELETE_ACCOUNT_URL,
         formData,
         { withCredentials: true }
       )
