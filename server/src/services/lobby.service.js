@@ -1,5 +1,10 @@
 const generateCode = require("../helpers/generateCode.helper");
-const { checkForWinIfNecessary, switchPlayerIfNecessary, handleOnLeave } = require("./gameServices/rejoin.service");
+const {
+  checkForWinIfNecessary,
+  switchPlayerIfNecessary,
+  handleOnLeave,
+  handleOnRejoin
+} = require("./gameServices/rejoin.service");
 const lobbies = {};
 const lobbyCodeRegex = /^[A-Z0-9]{6}$/;
 
@@ -41,6 +46,7 @@ module.exports = (io) => {
     if (playerRejoining && lobby.gameStarted) {
       const settingsAndGame = { gameSettings: lobbies[lobbyCode].gameSettings, game: lobbies[lobbyCode].game };
       socket.emit("leaderStartedGame", settingsAndGame);
+      handleOnRejoin(lobby);
       await checkForWinIfNecessary(lobby);
       io.to(lobbyCode).emit("gameStatsUpdated", lobbies[lobbyCode].game);
     }

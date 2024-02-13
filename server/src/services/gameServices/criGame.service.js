@@ -147,4 +147,27 @@ const checkIfAnyNumberIsClosedByAllPlayers = (lobby) => {
   });
 };
 
-module.exports = { updateScoreForCurrentPlayerCri, checkIfAnyPlayerHasWonCri, checkIfAnyNumberIsClosedByAllPlayers };
+const checkIfAnyNumberIsNotClosedByAllPlayers = (lobby) => {
+  const cricketStats = lobby.game.playerStats[lobby.players[0].userID].cricketStats;
+  Object.keys(cricketStats).forEach((statsKey) => {
+    if (!checkIfNumberIsClosedByAllPlayers(lobby, statsKey)) {
+      setCricketStatusOpenForEverybody(lobby, statsKey);
+    }
+  });
+};
+
+const setCricketStatusOpenForEverybody = (lobby, statsKey) => {
+  const playerStats = lobby.game.playerStats;
+  lobby.players.forEach((player) => {
+    if (playerStats[player.userID].cricketStats[statsKey] === 4) {
+      playerStats[player.userID].cricketStats[statsKey] = 3;
+    }
+  });
+};
+
+module.exports = {
+  updateScoreForCurrentPlayerCri,
+  checkIfAnyPlayerHasWonCri,
+  checkIfAnyNumberIsClosedByAllPlayers,
+  checkIfAnyNumberIsNotClosedByAllPlayers
+};
