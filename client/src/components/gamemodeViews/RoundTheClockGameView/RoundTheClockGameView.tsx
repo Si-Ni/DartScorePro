@@ -2,6 +2,7 @@ import PlayerScoreCard from "../../playerScoreCards/PlayerScoreCard/PlayerScoreC
 import { RoundTheClockGameViewProps } from "./RoundTheClockGameView";
 
 function RoundTheClockGameView(props: RoundTheClockGameViewProps) {
+  console.log(typeof props.players);
   return (
     <>
       <div className="is-centered roundsInfo">
@@ -10,18 +11,37 @@ function RoundTheClockGameView(props: RoundTheClockGameViewProps) {
         </p>
       </div>
       <div className="columns is-centered playerCardsContainer">
-        {props.players.map((player) => (
-          <PlayerScoreCard
-            key={player}
-            playerName={player}
-            isStartingPlayer={props.players[props.startingPlayerIndex] === player}
-            isCurrentPlayer={props.players[props.currentPlayerIndex] === player}
-            score={props.playerStats[player].currentTarget}
-            lastThrows={props.playerStats[player].lastThrows}
-            sets={props.playerTotalGameStats[player].sets}
-            legs={props.playerTotalGameStats[player].legs}
-          />
-        ))}
+        {props.players.map((player, index) => {
+          if (typeof player === "string") {
+            return (
+              <PlayerScoreCard
+                key={index}
+                playerName={player}
+                isStartingPlayer={props.players[props.startingPlayerIndex] === player}
+                isCurrentPlayer={props.players[props.currentPlayerIndex] === player}
+                score={props.playerStats[player].currentTarget}
+                lastThrows={props.playerStats[player].lastThrows}
+                sets={props.playerTotalGameStats[player].sets}
+                legs={props.playerTotalGameStats[player].legs}
+              />
+            );
+          } else {
+            const { userID, isActive } = player;
+            return (
+              <PlayerScoreCard
+                key={index}
+                playerName={userID}
+                isStartingPlayer={props.players[props.startingPlayerIndex] === player}
+                isCurrentPlayer={props.players[props.currentPlayerIndex] === player}
+                score={props.playerStats[userID].currentTarget}
+                lastThrows={props.playerStats[userID].lastThrows}
+                sets={props.playerTotalGameStats[userID].sets}
+                legs={props.playerTotalGameStats[userID].legs}
+                disabled={!isActive}
+              />
+            );
+          }
+        })}
       </div>
       <div className="columns is-centered mt-6">
         <button

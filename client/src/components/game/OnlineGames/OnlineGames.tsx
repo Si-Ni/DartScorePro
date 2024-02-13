@@ -31,7 +31,7 @@ function OnlineGames(props: OnlineGamesProps) {
   const [winningPlayer, setWinningPlayer] = useState<string | null>(null);
 
   const checkIsPlayersTurn = (currentPlayerIndex: number): boolean => {
-    return props.players[currentPlayerIndex] === props.displayUserID;
+    return props.players[currentPlayerIndex].userID === props.displayUserID;
   };
   const [isPlayersTurn, setIsPlayersTurn] = useState<boolean>(
     checkIsPlayersTurn(props.initialGameStats.currentPlayerIndex)
@@ -58,13 +58,6 @@ function OnlineGames(props: OnlineGamesProps) {
       props.socket.off("gameStatsUpdated", handleStatsUpdated);
     };
   }, [props.socket]);
-
-  const getWinnerPopUpText = (): string => {
-    if (props.players.length === 1) {
-      return "You have won!";
-    }
-    return `Player: ${winningPlayer} has won this game!`;
-  };
 
   const gameProps = {
     socket: props.socket,

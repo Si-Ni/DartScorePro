@@ -12,18 +12,37 @@ function CricketGameView(props: CricketGameViewProps) {
         </p>
       </div>
       <div className="columns is-centered playerCardsContainerCricket">
-        {props.players.map((player) => (
-          <PlayerScoreCardCricket
-            key={player}
-            playerName={player}
-            isStartingPlayer={props.players[props.startingPlayerIndex] === player}
-            isCurrentPlayer={props.players[props.currentPlayerIndex] === player}
-            score={props.playerStats[player].score}
-            cricketStats={props.playerStats[player].cricketStats}
-            sets={props.playerTotalGameStats[player].sets}
-            legs={props.playerTotalGameStats[player].legs}
-          />
-        ))}
+        {props.players.map((player, index) => {
+          if (typeof player === "string") {
+            return (
+              <PlayerScoreCardCricket
+                key={player}
+                playerName={player}
+                isStartingPlayer={props.players[props.startingPlayerIndex] === player}
+                isCurrentPlayer={props.players[props.currentPlayerIndex] === player}
+                score={props.playerStats[player].score}
+                cricketStats={props.playerStats[player].cricketStats}
+                sets={props.playerTotalGameStats[player].sets}
+                legs={props.playerTotalGameStats[player].legs}
+              />
+            );
+          } else {
+            const { userID, isActive } = player;
+            return (
+              <PlayerScoreCardCricket
+                key={index}
+                playerName={userID}
+                isStartingPlayer={props.players[props.startingPlayerIndex] === player}
+                isCurrentPlayer={props.players[props.currentPlayerIndex] === player}
+                score={props.playerStats[userID].score}
+                cricketStats={props.playerStats[userID].cricketStats}
+                sets={props.playerTotalGameStats[userID].sets}
+                legs={props.playerTotalGameStats[userID].legs}
+                disabled={!isActive}
+              />
+            );
+          }
+        })}
       </div>
       <div className="columns is-centered">
         <div className="column">

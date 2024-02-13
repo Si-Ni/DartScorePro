@@ -17,7 +17,7 @@ function PlayerMenu({ players, setPlayers, ...props }: PlayerMenuProps) {
         setError("Player already exists!");
         return;
       }
-      setPlayers([...players, truncatedPlayer]);
+      if (setPlayers) setPlayers([...players, truncatedPlayer]);
       setCurrentPlayer("");
     }
   };
@@ -25,7 +25,7 @@ function PlayerMenu({ players, setPlayers, ...props }: PlayerMenuProps) {
   const deletePlayer = (index: number) => {
     const updatedPlayers = [...players];
     updatedPlayers.splice(index, 1);
-    setPlayers(updatedPlayers);
+    if (setPlayers) setPlayers(updatedPlayers);
     setError("");
   };
 
