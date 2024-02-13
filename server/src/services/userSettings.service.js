@@ -7,9 +7,7 @@ const deleteUserStats = require("../helpers/deleteUserStats.helper");
 const deleteUserAccount = require("../helpers/deleteUserAccount.helper");
 const mailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const userIDRegex = /^[a-zA-Z0-9._-]+$/;
-let pwdRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-
-pwdRegex = /.*/;
+const pwdRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
 async function changeEmail(req) {
   let { userPWD, newUserMail, repeatedNewUserMail } = req.body;
