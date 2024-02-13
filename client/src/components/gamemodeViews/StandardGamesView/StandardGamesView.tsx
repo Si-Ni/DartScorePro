@@ -41,7 +41,7 @@ function StandardGamesView(props: StandardGamesViewProps) {
           }
         </div>
       </div>
-      <div className="columns is-flex is-centered">
+      <div className="columns is-flex is-centered" style={{ flexWrap: "wrap" }}>
         <GameMultiplierButtons
           multiplier={props.multiplier}
           cbHandleMultiplierClicked={props.cbHandleMultiplierClicked}
