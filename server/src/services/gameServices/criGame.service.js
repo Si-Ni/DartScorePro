@@ -107,9 +107,11 @@ const handlePlayerWon = async (lobby, playerKey) => {
 
 const calculateHighestScore = (lobby) => {
   let highestScore = 0;
-  Object.keys(lobby.game.playerStats).forEach((playerKey) => {
-    const playersScore = lobby.game.playerStats[playerKey].score;
-    if (playersScore > highestScore) highestScore = playersScore;
+  lobby.players.forEach((player) => {
+    const playersScore = lobby.game.playerStats[player.userID].score;
+    if (player.isActive && playersScore > highestScore) {
+      highestScore = playersScore;
+    }
   });
   return highestScore;
 };
@@ -148,7 +150,7 @@ const checkIfAnyNumberIsClosedByAllPlayers = (lobby) => {
 };
 
 const checkIfAnyNumberIsNotClosedByAllPlayers = (lobby) => {
-  const cricketStats = lobby.game.playerStats[lobby.players[0].userID].cricketStats;
+  const cricketStats = lobby.game.playerStats[lobby.players[lobby.game.currentPlayerIndex].userID].cricketStats;
   Object.keys(cricketStats).forEach((statsKey) => {
     if (!checkIfNumberIsClosedByAllPlayers(lobby, statsKey)) {
       setCricketStatusOpenForEverybody(lobby, statsKey);

@@ -41,7 +41,13 @@ module.exports = (io) => {
     socket.join(lobbyCode);
     socket.emit("lobbyJoined", lobbyCode);
 
-    io.to(lobbyCode).emit("updatePlayersList", lobby.players);
+    const updatedPlayers = lobby.players.map((player) => ({
+      userID: player.userID,
+      isLeader: player.isLeader,
+      isActive: player.isActive
+    }));
+
+    io.to(lobbyCode).emit("updatePlayersList", updatedPlayers);
 
     if (playerRejoining && lobby.gameStarted) {
       const settingsAndGame = { gameSettings: lobbies[lobbyCode].gameSettings, game: lobbies[lobbyCode].game };
@@ -62,7 +68,13 @@ module.exports = (io) => {
         disconnectedPlayer.socketId = "";
         disconnectedPlayer.isActive = false;
 
-        io.to(lobbyCode).emit("updatePlayersList", lobby.players);
+        const updatedPlayers = lobby.players.map((player) => ({
+          userID: player.userID,
+          isLeader: player.isLeader,
+          isActive: player.isActive
+        }));
+
+        io.to(lobbyCode).emit("updatePlayersList", updatedPlayers);
         if (lobby.gameStarted) {
           handleOnLeave(lobby);
           switchPlayerIfNecessary(lobby, disconnectedPlayer.userID);
