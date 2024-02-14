@@ -1,10 +1,6 @@
-import VoiceControl from "../../../components/voiceControl/VoiceControl";
-
-
 function Impressum() {
   return (
     <div className="hero is-justify-content-center is-align-items-center is-fullheight">
-      <VoiceControl />
       <div className="hero-body">
         <div className="content">
           <title>Impressum</title>

@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "../../../styles/App.css";
 import "../../../styles/Games.css";
 import { PlayerStats, PlayerToPlayerStats } from "../../../types/playerStats.ts";
 import { getAllOptions, sumRound } from "../../../helpers/calcCheckouts";
 import StandardGamesView from "../../gamemodeViews/StandardGamesView/StandardGamesView.tsx";
 import { LocalStandardGamesProps } from "./LocalStandardGames";
+import { startRecognition, /* stopRecognition,*/ score } from "../../../helpers/VoiceControl.tsx";
 
 const initializePlayerStats = (
   players: string[],
@@ -35,12 +36,14 @@ const initializePlayerStats = (
 };
 
 function LocalStandardGames({ currentPlayerIndex, throwsRemaining, ...props }: LocalStandardGamesProps) {
+  startRecognition();
   const [players] = useState<string[]>(props.players);
   const [multiplier, setMultiplier] = useState<number>(1);
   const [previousPlayerStats, setPreviousPlayerStats] = useState<PlayerStats | Record<string, never>>({});
   const [playerStats, setPlayerStats] = useState<PlayerToPlayerStats>(() =>
     initializePlayerStats(props.players, props.gamemodeTotalScore)
   );
+
 
   const handleScoreChange = (points: number): void => {
     if (multiplier === 3 && points === 25) return;
@@ -56,6 +59,17 @@ function LocalStandardGames({ currentPlayerIndex, throwsRemaining, ...props }: L
     addThrowToLastThrows(currentPlayerIndex, points, multiplier);
     updateScoreForPlayerAndContinueGame(currentPlayerIndex, points);
   };
+
+  useEffect(() => {
+    const handleVoiceScoreInput = (): void => {
+      savePreviousPlayerStats(currentPlayerIndex);
+      updateScoreForPlayerAndContinueGame(currentPlayerIndex, parseInt(score))
+    };
+
+    if (score !== "") {
+      handleVoiceScoreInput();
+    }
+  }, [score, currentPlayerIndex]);
 
   const shouldSetPointsToZero = () => {
     const violatesDoubleInMode =
