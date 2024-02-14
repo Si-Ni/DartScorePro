@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { SettingsProps } from "./Settings";
+import { useEffect, useRef, useState } from "react";
+import { Options, SettingsProps, FormData } from "./Settings";
 import axios from "../../api/axios";
 import useAuth from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
@@ -7,23 +7,33 @@ import "../../styles/Settings.css";
 import NavigationButtons from "../../components/buttons/NavigationButtons/NavigationButtons.tsx";
 
 const LOGOUT_URL = "/logout";
-const CHANGE_EMAIL_URL = "/changeEmail";
-const CHANGE_USERNAME_URL = "/changeUsername";
-const CHANGE_PASSWORD_URL = "/changePassword";
-const DELETE_STATS_URL = "/deleteStats";
-const DELETE_ACCOUNT_URL = "/deleteAccount";
-
-type Options = {
-  changeUsername: boolean;
-  deleteAccount: boolean;
-  changeEmail: boolean;
-  deleteStats: boolean;
-  changePassword: boolean;
+const USER_SETTINGS_URLS = {
+  changeEmail: "/changeEmail",
+  changeUsername: "/changeUsername",
+  changePassword: "/changePassword",
+  deleteStats: "/deleteStats",
+  deleteAccount: "/deleteAccount"
 };
 
 function Settings(props: SettingsProps) {
   const { setAuth } = useAuth();
   const navigate = useNavigate();
+  const errorMessage1Ref = useRef<HTMLParagraphElement | null>(null);
+  const errorMessage2Ref = useRef<HTMLParagraphElement | null>(null);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const isSmallScreen = window.innerWidth <= 768;
+      errorMessage1Ref.current!.style.display = isSmallScreen ? "block" : "none";
+      errorMessage2Ref.current!.style.display = isSmallScreen ? "none" : "block";
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   const [showOptions, setShowOptions] = useState<Options>({
     changeEmail: false,
@@ -32,6 +42,8 @@ function Settings(props: SettingsProps) {
     deleteStats: false,
     deleteAccount: false
   });
+
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const logout = () => {
     axios
@@ -48,6 +60,8 @@ function Settings(props: SettingsProps) {
   };
 
   const handleClick = (option: keyof Options) => {
+    setErrorMessage("");
+
     setShowOptions((prevOptions: Options) => ({
       ...(Object.fromEntries(Object.keys(prevOptions).map((key) => [key, false])) as Options),
       [option]: true
@@ -59,7 +73,7 @@ function Settings(props: SettingsProps) {
     const newInput = document.getElementById(`${option}-new`) as HTMLInputElement;
     const repeatInput = document.getElementById(`${option}-repeat`) as HTMLInputElement;
 
-    const formData: any = {
+    const formData: FormData = {
       userPWD: password.value
     };
 
@@ -77,81 +91,110 @@ function Settings(props: SettingsProps) {
     }
 
     axios
-      .post(
-        option === "changeEmail"
-          ? CHANGE_EMAIL_URL
-          : option === "changeUsername"
-            ? CHANGE_USERNAME_URL
-            : option === "changePassword"
-              ? CHANGE_PASSWORD_URL
-              : option === "deleteStats"
-                ? DELETE_STATS_URL
-                : DELETE_ACCOUNT_URL,
-        formData,
-        { withCredentials: true }
-      )
+      .post(USER_SETTINGS_URLS[option], formData, { withCredentials: true })
       .then(() => {
         logout();
       })
       .catch((error) => {
-        console.error("Error:", error);
+        window.innerWidth > 768
+          ? (errorMessage2Ref.current!.style.display = "block")
+          : (errorMessage1Ref.current!.style.display = "block");
+
+        setErrorMessage(error.response.data);
       });
+  };
+
+  const onChangeHideErrorMessage = () => {
+    errorMessage1Ref.current && (errorMessage1Ref.current!.style.display = "none");
+    errorMessage2Ref.current && (errorMessage2Ref.current!.style.display = "none");
   };
 
   const renderInput = (label: string, option: keyof Options, type: string = "text") => (
     <>
-      <p
-        className={`is-clickable has-text-weight-semibold has-text-centered is-underlined mb-4`}
-        onClick={() => handleClick(option)}
-      >
-        {label}
-      </p>
-      {showOptions[option] && (
-        <div className="field is-horizontal">
-          <div className="field-body">
-            <div className="field">
-              <p className="control is-expanded">
-                <input id={`${option}-password`} className="input" type={"password"} placeholder={"password"} />
-              </p>
-            </div>
-            {option !== "deleteStats" && option !== "deleteAccount" && (
+      <div>
+        <p
+          className={`is-clickable has-text-weight-semibold has-text-centered is-underlined mb-4`}
+          onClick={() => handleClick(option)}
+        >
+          {label}
+        </p>
+        {showOptions[option] && (
+          <div className="field is-horizontal ">
+            <div className="field-body ">
               <div className="field">
                 <p className="control is-expanded">
                   <input
-                    id={`${option}-new`}
+                    id={`${option}-password`}
+                    onChange={onChangeHideErrorMessage}
                     className="input"
-                    type={type}
-                    placeholder={`new ${type === "text" ? "username" : type}`}
+                    type={"password"}
+                    placeholder={"password"}
                   />
                 </p>
               </div>
-            )}
+              {option !== "deleteStats" && option !== "deleteAccount" && (
+                <div className="field">
+                  <p className="control is-expanded">
+                    <input
+                      id={`${option}-new`}
+                      onChange={onChangeHideErrorMessage}
+                      className="input"
+                      type={type}
+                      placeholder={`new ${type === "text" ? "username" : type}`}
+                    />
+                  </p>
+                </div>
+              )}
 
-            <div className="field">
-              <p className="control is-expanded">
-                <input
-                  id={`${option}-repeat`}
-                  className="input"
-                  type={type}
-                  placeholder={
-                    option === "deleteStats" || option === "deleteAccount"
-                      ? `repeat ${type === "text" ? "username" : type}`
-                      : `repeat new ${type === "text" ? "username" : type}`
-                  }
-                />
-              </p>
-            </div>
-
-            <div className="field field-submit">
-              <p className="control">
-                <button className="button is-primary" type="submit" onClick={() => handleSubmit(option)}>
-                  Submit
-                </button>
-              </p>
+              <div className="field">
+                <p className="control is-expanded">
+                  <input
+                    id={`${option}-repeat`}
+                    onChange={onChangeHideErrorMessage}
+                    className="input"
+                    type={type}
+                    placeholder={
+                      option === "deleteStats" || option === "deleteAccount"
+                        ? `repeat ${type === "text" ? "username" : type}`
+                        : `repeat new ${type === "text" ? "username" : type}`
+                    }
+                  />
+                </p>
+                {showOptions[option] && (
+                  <p
+                    className="help is-danger "
+                    ref={errorMessage1Ref}
+                    style={{ marginBottom: ".75rem", display: "none" }}
+                  >
+                    {errorMessage}
+                  </p>
+                )}
+              </div>
+              <div className="field field-submit">
+                <p className="control ">
+                  <button
+                    className="button is-primary"
+                    id="button-submit"
+                    type="submit"
+                    onClick={() => handleSubmit(option)}
+                  >
+                    Submit
+                  </button>
+                </p>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
+        {showOptions[option] && (
+          <p
+            className="help is-danger"
+            ref={errorMessage2Ref}
+            style={{ marginLeft: ".75rem", marginTop: "-0.4375rem", display: "none" }}
+          >
+            {errorMessage}
+          </p>
+        )}
+      </div>
     </>
   );
 
@@ -160,7 +203,7 @@ function Settings(props: SettingsProps) {
       <div className="hero-body">
         <div className="container">
           <div className="card">
-            <div className="card-content" style={{ minWidth: "799.05px" }}>
+            <div className="card-content">
               <p className="has-text-weight-semibold has-text-centered is-size-3 mb-5">{props.displayUserID}</p>
               <form onSubmit={(e) => e.preventDefault()}>
                 {renderInput("Change your email address", "changeEmail", "email")}
