@@ -44,7 +44,6 @@ function LocalStandardGames({ currentPlayerIndex, throwsRemaining, ...props }: L
     initializePlayerStats(props.players, props.gamemodeTotalScore)
   );
 
-
   const handleScoreChange = (points: number): void => {
     if (multiplier === 3 && points === 25) return;
     if (shouldSetPointsToZero()) points = 0;
@@ -63,7 +62,7 @@ function LocalStandardGames({ currentPlayerIndex, throwsRemaining, ...props }: L
   useEffect(() => {
     const handleVoiceScoreInput = (): void => {
       savePreviousPlayerStats(currentPlayerIndex);
-      updateScoreForPlayerAndContinueGame(currentPlayerIndex, parseInt(score))
+      updateScoreForPlayerAndContinueGame(currentPlayerIndex, parseInt(score));
     };
 
     if (score !== "") {
