@@ -50,10 +50,10 @@ module.exports = (io) => {
     io.to(lobbyCode).emit("updatePlayersList", updatedPlayers);
 
     if (playerRejoining && lobby.gameStarted) {
-      const settingsAndGame = { gameSettings: lobbies[lobbyCode].gameSettings, game: lobbies[lobbyCode].game };
-      socket.emit("leaderStartedGame", settingsAndGame);
       handleOnRejoin(lobby, playerIndex);
       await checkForWinIfNecessary(lobby);
+      const settingsAndGame = { gameSettings: lobbies[lobbyCode].gameSettings, game: lobbies[lobbyCode].game };
+      socket.emit("leaderStartedGame", settingsAndGame);
       io.to(lobbyCode).emit("gameStatsUpdated", lobbies[lobbyCode].game);
     }
   };

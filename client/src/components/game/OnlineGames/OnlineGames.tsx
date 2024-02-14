@@ -105,7 +105,7 @@ function OnlineGames(props: OnlineGamesProps) {
       {props.selectedGamemode === "cri" && (
         <OnlineCricketGame {...gameProps} playerStats={playerStats as PlayerToPlayerStatsCricket} />
       )}
-      <NavigationButtons cbBackBtnClicked={props.cbBackBtnClicked} marginTop={0} />
+      <NavigationButtons cbBackBtnClicked={() => setShowGoToMainMenuPopUp(true)} marginTop={0} />
     </div>
   );
 }

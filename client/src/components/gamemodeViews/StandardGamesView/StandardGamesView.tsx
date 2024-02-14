@@ -1,9 +1,33 @@
+import { DPlayer } from "../../../pages/onlineMultiplayer/OnlineMultiplayer/OnlineMultiplayerDTOs.tsx";
 import GameInputButtons from "../../buttons/GameInputButtons/GameInputButtons.tsx";
 import GameMultiplierButtons from "../../buttons/GameMultiplierButtons/GameMultiplierButtons.tsx";
 import PlayerScoreCard from "../../playerScoreCards/PlayerScoreCard/PlayerScoreCard.tsx";
 import { StandardGamesViewProps } from "./StandardGamesView";
 
 function StandardGamesView(props: StandardGamesViewProps) {
+  const renderPlayerScoreCard = (player: string | DPlayer) => {
+    const { userID, isActive } = typeof player === "string" ? { userID: player, isActive: true } : player;
+    const isStartingPlayer = props.players[props.startingPlayerIndex] === player;
+    const isCurrentPlayer = props.players[props.currentPlayerIndex] === player;
+
+    return (
+      <PlayerScoreCard
+        key={userID}
+        playerName={userID}
+        isStartingPlayer={isStartingPlayer}
+        isCurrentPlayer={isCurrentPlayer}
+        score={props.playerStats[userID].score}
+        average={props.playerStats[userID].average}
+        lastThrows={props.playerStats[userID].lastThrows}
+        checkoutOptions={props.playerStats[userID].checkoutOptions}
+        sets={props.playerTotalGameStats[userID].sets}
+        legs={props.playerTotalGameStats[userID].legs}
+        modeOut={props.modeOut}
+        disabled={!isActive}
+      />
+    );
+  };
+
   return (
     <>
       <div className="is-centered roundsInfo roundsInfo">
@@ -12,43 +36,7 @@ function StandardGamesView(props: StandardGamesViewProps) {
         </p>
       </div>
       <div className="columns is-centered playerCardsContainer">
-        {props.players.map((player, index) => {
-          if (typeof player === "string") {
-            return (
-              <PlayerScoreCard
-                key={player}
-                playerName={player}
-                isStartingPlayer={props.players[props.startingPlayerIndex] === player}
-                isCurrentPlayer={props.players[props.currentPlayerIndex] === player}
-                score={props.playerStats[player].score}
-                average={props.playerStats[player].average}
-                lastThrows={props.playerStats[player].lastThrows}
-                checkoutOptions={props.playerStats[player].checkoutOptions}
-                sets={props.playerTotalGameStats[player].sets}
-                legs={props.playerTotalGameStats[player].legs}
-                modeOut={props.modeOut}
-              />
-            );
-          } else {
-            const { userID, isActive } = player;
-            return (
-              <PlayerScoreCard
-                key={index}
-                playerName={userID}
-                isStartingPlayer={props.players[props.startingPlayerIndex] === player}
-                isCurrentPlayer={props.players[props.currentPlayerIndex] === player}
-                score={props.playerStats[userID].score}
-                average={props.playerStats[userID].average}
-                lastThrows={props.playerStats[userID].lastThrows}
-                checkoutOptions={props.playerStats[userID].checkoutOptions}
-                sets={props.playerTotalGameStats[userID].sets}
-                legs={props.playerTotalGameStats[userID].legs}
-                modeOut={props.modeOut}
-                disabled={!isActive}
-              />
-            );
-          }
-        })}
+        {props.players.map((player) => renderPlayerScoreCard(player))}
       </div>
       <div className="columns is-centered">
         <div className="column">
