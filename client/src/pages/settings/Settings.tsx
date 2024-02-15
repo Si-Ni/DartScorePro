@@ -45,18 +45,16 @@ function Settings(props: SettingsProps) {
 
   const [errorMessage, setErrorMessage] = useState<string>("");
 
-  const logout = () => {
+  const logout = (option: keyof Options) => {
     axios
       .post(LOGOUT_URL, {}, { withCredentials: true })
       .then(() => {
         props.setLoggedIn(false);
         props.setDisplayUserID("");
         setAuth({});
-        navigate("/login");
+        option === "changeEmail" ? navigate("/register/verify") : navigate("/login");
       })
-      .catch((error) => {
-        console.error("Error logging out:", error);
-      });
+      .catch(() => {});
   };
 
   const handleClick = (option: keyof Options) => {
@@ -93,7 +91,7 @@ function Settings(props: SettingsProps) {
     axios
       .post(USER_SETTINGS_URLS[option], formData, { withCredentials: true })
       .then(() => {
-        logout();
+        logout(option);
       })
       .catch((error) => {
         window.innerWidth > 768

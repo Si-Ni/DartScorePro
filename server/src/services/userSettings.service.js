@@ -5,6 +5,9 @@ const updateUserPWD = require("../helpers/updateUserPWD.helper");
 const checkUserRegistered = require("../helpers/checkUserRegistered.helper");
 const deleteUserStats = require("../helpers/deleteUserStats.helper");
 const deleteUserAccount = require("../helpers/deleteUserAccount.helper");
+const generateCode = require("../helpers/generateCode.helper");
+const sendRegistrationEmail = require("../helpers/sendRegistrationEmail.helper");
+
 const mailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const userIDRegex = /^[a-zA-Z0-9._-]+$/;
 const pwdRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
@@ -40,9 +43,15 @@ async function changeEmail(req) {
 
   if (!isPWDValid) return { status: 400, json: "This password or username is invalid" };
 
-  await updateUserEmail(userID, newUserMail);
+  const registerCode = generateCode();
 
-  return { status: 200, json: "Email updated successfully" };
+  await updateUserEmail(userID, newUserMail, registerCode);
+
+  const emailSent = await sendRegistrationEmail(userID, newUserMail, registerCode);
+
+  return emailSent
+    ? { status: 200, json: "Email updated and registration code sent successfully" }
+    : { status: 500, json: "Failed to send registration email" };
 }
 
 async function changeUserID(req) {
