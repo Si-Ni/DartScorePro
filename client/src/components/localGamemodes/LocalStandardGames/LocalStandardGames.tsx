@@ -5,6 +5,7 @@ import { PlayerStats, PlayerToPlayerStats } from "../../../types/playerStats.ts"
 import { getAllOptions, sumRound } from "../../../helpers/calcCheckouts";
 import StandardGamesView from "../../gamemodeViews/StandardGamesView/StandardGamesView.tsx";
 import { LocalStandardGamesProps } from "./LocalStandardGames";
+import { stringifyThrow } from "../../../helpers/stringifyThrow";
 
 const initializePlayerStats = (
   players: string[],
@@ -92,11 +93,8 @@ function LocalStandardGames({ currentPlayerIndex, throwsRemaining, ...props }: L
     }));
   };
 
-  const formatThrowToString = (value: number | string, multiplier: number): string =>
-    multiplier === 2 && value === 25 ? "BULL" : `${multiplier > 1 ? ["D", "T"][multiplier - 2] : ""}${value}`;
-
   const addThrowToLastThrows = (playerIndex: number, points: number, multiplier: number): void => {
-    const formattedThrow = formatThrowToString(points, multiplier);
+    const formattedThrow = stringifyThrow(points, multiplier);
     const playerKey = players[playerIndex];
     setPlayerStats((prevPlayerStats) => ({
       ...prevPlayerStats,
