@@ -24,8 +24,8 @@ function Settings(props: SettingsProps) {
   useEffect(() => {
     const handleResize = () => {
       const isSmallScreen = window.innerWidth <= 768;
-      errorMessage1Ref.current!.style.display = isSmallScreen ? "block" : "none";
-      errorMessage2Ref.current!.style.display = isSmallScreen ? "none" : "block";
+      if (errorMessage1Ref.current) errorMessage1Ref.current.style.display = isSmallScreen ? "block" : "none";
+      if (errorMessage2Ref.current) errorMessage2Ref.current.style.display = isSmallScreen ? "none" : "block";
     };
 
     window.addEventListener("resize", handleResize);
