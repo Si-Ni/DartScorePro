@@ -71,16 +71,17 @@ function LocalGames(props: LocalGamesProps) {
   const resetRoundStatsForNewSet = () => {
     const updatedStartingPlayerOfSetIndex = (startingPlayerOfSetIndex + 1) % props.players.length;
     setStartingPlayerOfSetIndex(updatedStartingPlayerOfSetIndex);
-    setStartingPlayerIndex(updatedStartingPlayerOfSetIndex);
-    setCurrentPlayerIndex(updatedStartingPlayerOfSetIndex);
-    setCurrentRound(1);
-    setThrowsRemaining(3);
+    resetRoundStats(updatedStartingPlayerOfSetIndex);
   };
 
   const resetRoundStatsForNextGame = () => {
     const updatedStartingPlayerIndex = (startingPlayerIndex + 1) % props.players.length;
-    setStartingPlayerIndex(updatedStartingPlayerIndex);
-    setCurrentPlayerIndex(updatedStartingPlayerIndex);
+    resetRoundStats(updatedStartingPlayerIndex);
+  };
+
+  const resetRoundStats = (startingPlayerIndex: number) => {
+    setStartingPlayerIndex(startingPlayerIndex);
+    setCurrentPlayerIndex(startingPlayerIndex);
     setCurrentRound(1);
     setThrowsRemaining(3);
   };
