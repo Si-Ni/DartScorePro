@@ -1,7 +1,9 @@
 import "../../styles/Menu.css";
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "../../api/axios";
 import { BarLoader } from "react-spinners";
+import NavigationButtons from "../../components/buttons/NavigationButtons/NavigationButtons.tsx";
+import { useNavigate } from "react-router-dom";
 
 const STATISTICS_URL = "/api/userStats";
 
@@ -27,6 +29,7 @@ const defaultStatistics = {
 function Statistics() {
   const [statistics, setStatistics] = useState(defaultStatistics);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios
@@ -118,6 +121,7 @@ function Statistics() {
               </tbody>
             </table>
           )}
+          <NavigationButtons cbBackBtnClicked={() => navigate("/")} />
         </div>
       </div>
     </div>
