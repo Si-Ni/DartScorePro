@@ -1,9 +1,5 @@
 const savePlayerWinOrDefeat = require("../../helpers/savePlayerWinOrDefeat.helper");
-const {
-  updateRemainingThrows,
-  updateGameStatsForWinningPlayer,
-  resetRoundStatsForNextGame
-} = require("../../helpers/game.helper");
+const { updateRemainingThrows, updateGameStatsForWinningPlayer } = require("../../helpers/game.helper");
 
 const validPoints = new Set([15, 16, 17, 18, 19, 20, 25, 0]);
 
@@ -102,7 +98,6 @@ const checkIfPlayerHasWon = (lobby, playerKey) => {
 const handlePlayerWon = async (lobby, playerKey) => {
   updateGameStatsForWinningPlayer(lobby, playerKey);
   await savePlayerWinOrDefeat(lobby);
-  resetRoundStatsForNextGame(lobby);
 };
 
 const calculateHighestScore = (lobby) => {

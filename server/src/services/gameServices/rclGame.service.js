@@ -2,8 +2,7 @@ const savePlayerWinOrDefeat = require("../../helpers/savePlayerWinOrDefeat.helpe
 const {
   switchToNextPlayer,
   updateRemainingThrows,
-  updateGameStatsForWinningPlayer,
-  resetRoundStatsForNextGame
+  updateGameStatsForWinningPlayer
 } = require("../../helpers/game.helper");
 
 const updateScoreForCurrentPlayerRcl = async (lobby, args) => {
@@ -46,7 +45,6 @@ const checkIfPlayerHasWon = (lobby, player) => {
 const handlePlayerWon = async (lobby, player) => {
   updateGameStatsForWinningPlayer(lobby, player);
   await savePlayerWinOrDefeat(lobby);
-  resetRoundStatsForNextGame(lobby);
 };
 
 const increaseTargetByOne = (lobby, player) => {

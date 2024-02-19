@@ -1,22 +1,16 @@
-const initialisePlayerStatsForStandardGame = (
-  players,
-  playerStats = {},
-  totalScore,
-  thrownPoints,
-  winningPlayerIndex
-) => {
+const initialisePlayerStatsForStandardGame = (players, playerStats = {}, totalScore, thrownPoints, winningPlayer) => {
   const initialPoints = {};
-  players.forEach((player, index) => {
+  players.forEach((player) => {
     const stats = playerStats[player.userID] || { average: 0, dartsThrown: 0, totalScore: 0 };
     initialPoints[player.userID] = {
       score: totalScore,
       scoreAtBeginningOfRound: totalScore,
       average:
-        index === winningPlayerIndex
+        player.userID === winningPlayer
           ? ((stats.totalScore + (thrownPoints || 0)) * 3) / (stats.dartsThrown + 1) || 0
           : stats.average,
-      dartsThrown: stats.dartsThrown + (index === winningPlayerIndex ? 1 : 0),
-      totalScore: index === winningPlayerIndex ? stats.totalScore + (thrownPoints || 0) : stats.totalScore,
+      dartsThrown: stats.dartsThrown + (player.userID === winningPlayer ? 1 : 0),
+      totalScore: player.userID === winningPlayer ? stats.totalScore + (thrownPoints || 0) : stats.totalScore,
       turns: 0,
       lastThrows: [],
       throwsRemaining: 0
@@ -55,7 +49,7 @@ const initialisePlayerStatsForCriGame = (players) => {
   return initialStats;
 };
 
-const initialiseForNewRound = (lobby, thrownPoints, winningPlayerIndex) => {
+const initialiseForNewRound = (lobby, thrownPoints, winningPlayer) => {
   const gamemode = lobby.gameSettings.selectedGamemode;
   lobby.game.currentRound = 1;
   lobby.game.currentPlayerIndex = lobby.game.startingPlayerIndex;
@@ -69,7 +63,7 @@ const initialiseForNewRound = (lobby, thrownPoints, winningPlayerIndex) => {
       lobby.game.playerStats,
       totalScore,
       thrownPoints,
-      winningPlayerIndex
+      winningPlayer
     );
   } else if (gamemode === "rcl") {
     lobby.game.playerStats = initialisePlayerStatsForRclGame(lobby.players);

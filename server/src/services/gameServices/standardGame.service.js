@@ -4,8 +4,7 @@ const savePlayerCheckout = require("../../helpers/savePlayerCheckout.helper");
 const {
   switchToNextPlayer,
   updateRemainingThrows,
-  updateGameStatsForWinningPlayer,
-  resetRoundStatsForNextGame
+  updateGameStatsForWinningPlayer
 } = require("../../helpers/game.helper");
 
 const updateScoreForCurrentPlayerStandardGames = async (lobby, { multiplier, points }) => {
@@ -110,10 +109,9 @@ const checkIfPlayerHasWon = async (lobby, player, updatedScore, multiplier, thro
 };
 
 const handlePlayerWon = async (lobby, player, thrownPoints) => {
-  updateGameStatsForWinningPlayer(lobby, player);
+  updateGameStatsForWinningPlayer(lobby, player, thrownPoints);
   await savePlayerWinOrDefeat(lobby);
   await savePlayerCheckout(lobby);
-  resetRoundStatsForNextGame(lobby, thrownPoints, player);
 };
 
 module.exports = { updateScoreForCurrentPlayerStandardGames };
