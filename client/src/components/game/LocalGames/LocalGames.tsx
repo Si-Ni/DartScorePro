@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { PlayerToPlayerTotalGameStats } from "../../../types/playerStats.ts";
 
 import "../../../styles/Games.css";
@@ -113,6 +113,19 @@ function LocalGames(props: LocalGamesProps) {
     setCurrentPlayerIndex: setCurrentPlayerIndex,
     setCurrentRound: setCurrentRound
   };
+
+  useEffect(() => {
+    const handleBeforeUnload = (event: any) => {
+      event.preventDefault();
+      event.returnValue = "";
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
 
   return (
     <div className="App hero is-flex is-justify-content-center is-align-items-center is-fullheight">
