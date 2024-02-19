@@ -12,7 +12,7 @@ const initialiseForNewGame = (lobby) => {
   lobby.game.startingPlayerOfSetIndex = 0;
   lobby.game.startingPlayerIndex = 0;
   lobby.gameStarted = true;
-  initialiseForNewRound(lobby, null, null);
+  initialiseForNewRound(lobby);
 };
 
 const initialiseTotalGameStats = (players) => {
