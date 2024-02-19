@@ -3,6 +3,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import NavigationButtons from "../../../components/buttons/NavigationButtons/NavigationButtons.tsx";
 import { useNavigate } from "react-router-dom";
 import { stringifyThrow } from "../../../helpers/stringifyThrow";
+import "../../../styles/CheckoutCalculator.css";
 
 const COMMON_CHECKOUTS = "/api/commonCheckout?";
 const ALL_CHECKOUTS_URL = "/api/allCheckouts?";
@@ -24,7 +25,7 @@ function CheckoutCalculator() {
       .get(URL + new URLSearchParams({ score: currentScore }))
       .then((res) => {
         const checkouts = getAllCheckouts
-          ? res.data.map((e) => e.map((r) => stringifyThrow(r.number, r.multiplier)).join(", "))
+          ? res.data.map((e: any) => e.map((r: any) => stringifyThrow(r.number, r.multiplier)).join(", "))
           : [res.data.join(", ")];
         setPossibleCheckouts(checkouts);
       })
@@ -61,38 +62,35 @@ function CheckoutCalculator() {
               placeholder="Enter your score"
             />
           </div>
-          <div className="column is-flex is-justify-content-center">
+          <div className="column is-flex is-justify-content-center" style={{ marginBottom: ".625rem" }}>
             <label className="checkbox">
               <input className="mr-2" type="checkbox" checked={getAllCheckouts} onChange={handleCheckboxChange} />
               Show all checkouts
             </label>
           </div>
-          <div className="column is-flex is-justify-content-center" style={{ textAlign: "center" }}>
-            <div style={{ marginBottom: ".625rem" }}>
-              {possibleCheckouts.length > 1
-                ? possibleCheckouts.length + " options"
-                : possibleCheckouts.length + " option"}
-            </div>
-          </div>
-          <div
-            className="column is-flex is-justify-content-center"
-            style={{ maxHeight: "200px", overflowY: "auto", textAlign: "center" }}
-          >
-            {possibleCheckouts.length > 0 ? (
+          {possibleCheckouts.length > 0 ? (
+            <ul className="column is-justify-content-center checkoutList">
+              {possibleCheckouts.map((checkout, index) => (
+                <li key={index}>
+                  <h1 className="is-size-4" style={{ textAlign: "center" }}>
+                    {checkout}
+                  </h1>
+                  {index != possibleCheckouts.length - 1 && <hr className="m-0 mt-1 mb-1" />}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <div className="has-text-danger">No checkout possible</div>
+          )}
+          {getAllCheckouts && (
+            <div className="column is-flex is-justify-content-center mt-1 mb-1" style={{ textAlign: "center" }}>
               <div>
-                <h1 className="is-size-4 " style={{ margin: "0 auto" }}>
-                  {possibleCheckouts.map((checkout, index) => (
-                    <div key={index} style={{ textAlign: "center" }}>
-                      {checkout}
-                    </div>
-                  ))}
-                </h1>
+                {possibleCheckouts.length > 1
+                  ? possibleCheckouts.length + " options"
+                  : possibleCheckouts.length + " option"}
               </div>
-            ) : (
-              <div className="has-text-danger">No checkout possible</div>
-            )}
-          </div>
-
+            </div>
+          )}
           <NavigationButtons cbBackBtnClicked={() => navigate("/")} />
         </div>
       </div>

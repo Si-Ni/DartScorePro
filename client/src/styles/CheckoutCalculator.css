@@ -1,0 +1,15 @@
+.checkoutList {
+  max-height: 30vh;
+  text-align: center;
+  overflow-y: scroll;
+  border: 2px solid #e8e8e8;
+  box-shadow: inset 0px 0px 3px 1px rgba(0, 0, 0, 0.1);
+}
+
+.checkoutList li:first-child {
+  margin-top: 0.25rem;
+}
+
+.checkoutList li:last-child {
+  margin-bottom: 0.25rem;
+}
