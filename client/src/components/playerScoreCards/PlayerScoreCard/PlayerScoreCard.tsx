@@ -12,7 +12,12 @@ function PlayerScoreCard(props: PlayerScoreCardProps) {
             {props.score}
           </p>
           {props.modeOut && (
-            <CheckoutDisplay playerName={props.playerName} score={props.score} modeOut={props.modeOut} />
+            <CheckoutDisplay
+              isLoggedIn={props.isLoggedIn}
+              playerName={props.playerName}
+              score={props.score}
+              modeOut={props.modeOut}
+            />
           )}
         </div>
         <div className="columns ml-0" style={{ minHeight: "24px", display: "block" }}>

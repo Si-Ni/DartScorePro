@@ -24,6 +24,7 @@ function LocalMultiplayer(props: LocalMultiplayerProps) {
   };
 
   const gameProps = {
+    isLoggedIn: props.isLoggedIn,
     players: players,
     selectedGamemode: selectedGamemode,
     setsToWin: setsToWin,

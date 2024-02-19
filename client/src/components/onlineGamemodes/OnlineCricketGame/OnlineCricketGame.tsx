@@ -17,6 +17,7 @@ function OnlineCricketGame(props: OnlineCricketGameProps) {
 
   return (
     <CricketGameView
+      isLoggedIn={props.isLoggedIn}
       currentRound={props.currentRound}
       players={props.players}
       startingPlayerIndex={props.startingPlayerIndex}

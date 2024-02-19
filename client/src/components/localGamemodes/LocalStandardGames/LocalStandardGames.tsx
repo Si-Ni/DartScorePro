@@ -219,6 +219,7 @@ function LocalStandardGames({ currentPlayerIndex, throwsRemaining, ...props }: L
 
   return (
     <StandardGamesView
+      isLoggedIn={props.isLoggedIn}
       currentRound={props.currentRound}
       players={players}
       startingPlayerIndex={props.startingPlayerIndex}

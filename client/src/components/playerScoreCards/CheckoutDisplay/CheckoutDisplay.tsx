@@ -28,19 +28,20 @@ function CheckoutDisplay(props: CheckoutDisplayProps) {
         setPossibleCheckout(checkout);
       })
       .catch(() => {});
-    axios
-      .get(STATISTICS_URL, { withCredentials: true })
-      .then((res) => {
-        const maxCheckout = res.data.playerStats.standard.checkouts[props.modeOut][props.score];
+    if (props.isLoggedIn)
+      axios
+        .get(STATISTICS_URL, { withCredentials: true })
+        .then((res) => {
+          const maxCheckout = res.data.playerStats.standard.checkouts[props.modeOut][props.score];
 
-        if (props.playerName === res.data.userIDorMail && maxCheckout && maxCheckout.length > 0) {
-          const mostPlayed = findMaxTimesPlayed(maxCheckout);
-          setMostPlayedCheckout(mostPlayed);
-        } else {
-          setMostPlayedCheckout(null);
-        }
-      })
-      .catch(() => {});
+          if (props.playerName === res.data.userIDorMail && maxCheckout && maxCheckout.length > 0) {
+            const mostPlayed = findMaxTimesPlayed(maxCheckout);
+            setMostPlayedCheckout(mostPlayed);
+          } else {
+            setMostPlayedCheckout(null);
+          }
+        })
+        .catch(() => {});
   }, [props.score]);
 
   return (

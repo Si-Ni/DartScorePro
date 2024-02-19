@@ -128,6 +128,7 @@ function Tournament(props: TournamentProps) {
       {gameStarted ? (
         <LocalGames
           {...gameProps}
+          isLoggedIn={props.isLoggedIn}
           gameType="tournament"
           players={currentPlayers}
           cbBackBtnClicked={handleBackToPlayerMenu}
