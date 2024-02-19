@@ -4,16 +4,18 @@ import MainMenu from "./menus/MainMenu/MainMenu.tsx";
 import { useEffect, useRef, useState } from "react";
 import Register from "./authentication/Register/Register.tsx";
 import RegisterVerify from "./authentication/RegisterVerify/RegisterVerify";
-import Singleplayer from "./modes/SinglePlayer/Singleplayer";
+import Singleplayer from "./modes/SinglePlayer/Singleplayer.tsx";
 import PrivacyPolicy from "./information/PrivacyPolicy/PrivacyPolicy";
 import Multiplayer from "./modes/Multiplayer/Multiplayer.tsx";
 import axios from "../api/axios";
 import io from "socket.io-client";
 import OnlineMultiplayer from "./onlineMultiplayer/OnlineMultiplayer/OnlineMultiplayer.tsx";
 import CheckoutCalculator from "./information/CheckoutCalculator/CheckoutCalculator";
-import Tournament from "./tournament/Tournament";
+import Tournament from "./tournament/Tournament.tsx";
 import Impressum from "./information/Impressum/Impressum";
-import Settings from "./settings/Settings";
+import Settings from "./settings/Settings.tsx";
+import Statistics from "./statistics/Statistics.tsx";
+import Footer from "../components/footer/Footer/Footer.tsx";
 
 const socket = io("http://localhost:4000");
 
@@ -40,9 +42,11 @@ function App() {
 
   return (
     <>
-      {isLoggedIn && <div className="fixed-bottom-left">Logged in as {displayUserID}</div>}
       <Routes>
-        <Route path="/" element={<MainMenu setDisplayUserID={setDisplayUserID} setLoggedIn={setLoggedIn} />} />
+        <Route
+          path="/"
+          element={<MainMenu setDisplayUserID={setDisplayUserID} isLoggedIn={isLoggedIn} setLoggedIn={setLoggedIn} />}
+        />
         <Route
           path="/login"
           element={
@@ -60,7 +64,7 @@ function App() {
           element={<Register loginErrorMsg={loginErrorMsg} pwdRef={pwdRef} setLoginErrorMsg={setLoginErrorMsg} />}
         />
         <Route path="/register/verify" element={<RegisterVerify />} />
-        <Route path="/singleplayer" element={<Singleplayer />} />
+        <Route path="/singleplayer" element={<Singleplayer displayUserID={displayUserID} />} />
         <Route
           path="/multiplayer/lobby/:lobbyCode"
           element={
@@ -85,15 +89,23 @@ function App() {
               setLobbyCode={setLobbyCode}
               setIsLobbyLeader={setIsLobbyLeader}
               displayUserID={displayUserID}
+              isLoggedIn={isLoggedIn}
             />
           }
         />
-        <Route path="/tournament" element={<Tournament />} />
+        <Route path="/tournament" element={<Tournament displayUserID={displayUserID} />} />
         <Route path="/checkoutCalculator" element={<CheckoutCalculator />} />
-        <Route path="/settings" element={<Settings />} />
+        <Route
+          path="/settings"
+          element={
+            <Settings displayUserID={displayUserID} setDisplayUserID={setDisplayUserID} setLoggedIn={setLoggedIn} />
+          }
+        />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/impressum" element={<Impressum />} />
+        <Route path="/statistics" element={<Statistics />} />
       </Routes>
+      <Footer isLoggedIn={isLoggedIn} userID={displayUserID} />
     </>
   );
 }

@@ -6,7 +6,7 @@ import LocalGames from "../../components/game/LocalGames/LocalGames.tsx";
 import PlayersAndSettings from "../../components/gameSettings/PlayersAndSettings/PlayersAndSettings.tsx";
 
 function LocalMultiplayer(props: LocalMultiplayerProps) {
-  const [players, setPlayers] = useState(["Player1"]);
+  const [players, setPlayers] = useState([props.displayUserID ? props.displayUserID : "Player 1"]);
   const [selectedGamemode, setSelectedGamemode] = useState<Gamemode>("301");
   const [gameStarted, setGameStarted] = useState<boolean>(false);
   const [setsToWin, setSetsToWin] = useState<number>(1);
@@ -35,7 +35,7 @@ function LocalMultiplayer(props: LocalMultiplayerProps) {
   return (
     <>
       {gameStarted ? (
-        <LocalGames {...gameProps} cbBackBtnClicked={handleBackToPlayerMenu} />
+        <LocalGames {...gameProps} gameType={"local"} cbBackBtnClicked={handleBackToPlayerMenu} />
       ) : (
         <PlayersAndSettings
           {...gameProps}

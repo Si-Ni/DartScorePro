@@ -25,21 +25,21 @@ const initialiseTotalGameStats = (players) => {
   return initialStats;
 };
 
-const updateGameWithThrownPoints = (socketId, lobby, args) => {
+const updateGameWithThrownPoints = async (socketId, lobby, args) => {
   const playerIndex = findPlayerIndexBySocketId(socketId, lobby.players);
   if (playerIndex === lobby.game.currentPlayerIndex) {
-    forwardRequestToResponsibleService(lobby, args);
+    await forwardRequestToResponsibleService(lobby, args);
   }
 };
 
-const forwardRequestToResponsibleService = (lobby, args) => {
+const forwardRequestToResponsibleService = async (lobby, args) => {
   const gamemode = lobby.gameSettings.selectedGamemode;
   if (gamemode === "301" || gamemode === "501") {
-    updateScoreForCurrentPlayerStandardGames(lobby, args);
+    await updateScoreForCurrentPlayerStandardGames(lobby, args);
   } else if (gamemode === "rcl") {
-    updateScoreForCurrentPlayerRcl(lobby, args);
+    await updateScoreForCurrentPlayerRcl(lobby, args);
   } else if (gamemode === "cri") {
-    updateScoreForCurrentPlayerCri(lobby, args);
+    await updateScoreForCurrentPlayerCri(lobby, args);
   } else {
     console.error("selected gamemode not supported");
   }
@@ -62,10 +62,10 @@ module.exports = (io) => {
     }
   };
 
-  const handleGameInput = function ({ lobbyCode, ...args }) {
+  const handleGameInput = async function ({ lobbyCode, ...args }) {
     const socket = this;
     if (lobbies[lobbyCode] && lobbies[lobbyCode].gameStarted) {
-      updateGameWithThrownPoints(socket.id, lobbies[lobbyCode], args);
+      await updateGameWithThrownPoints(socket.id, lobbies[lobbyCode], args);
       io.to(lobbyCode).emit("gameStatsUpdated", lobbies[lobbyCode].game);
     }
   };

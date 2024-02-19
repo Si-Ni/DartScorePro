@@ -12,9 +12,9 @@ import OnlineStandardGames from "../../onlineGamemodes/OnlineStandardGames/Onlin
 import OnlineRoundTheClockGame from "../../onlineGamemodes/OnlineRoundTheClockGame/OnlineRoundTheClockGame.tsx";
 import OnlineCricketGame from "../../onlineGamemodes/OnlineCricketGame/OnlineCricketGame.tsx";
 import { OnlineGamesProps } from "./OnlineGames";
-import GameInformationHeader from "../../GameInformationHeader/GameInformationHeader.tsx";
+import GameInformationHeader from "../../gameInformationHeader/GameInformationHeader.tsx";
 import { DGameData } from "../../../pages/onlineMultiplayer/OnlineMultiplayer/OnlineMultiplayerDTOs.tsx";
-import PopUp from "../../popUps/PopUp/PopUp.tsx";
+import EndGamePopUp from "../../popUps/EndGamePopUp/EndGamePopUp.tsx";
 
 function OnlineGames(props: OnlineGamesProps) {
   const [showGoToMainMenuPopUp, setShowGoToMainMenuPopUp] = useState<boolean>(false);
@@ -31,7 +31,7 @@ function OnlineGames(props: OnlineGamesProps) {
   const [winningPlayer, setWinningPlayer] = useState<string | null>(null);
 
   const checkIsPlayersTurn = (currentPlayerIndex: number): boolean => {
-    return props.players[currentPlayerIndex] === props.displayUserID;
+    return props.players[currentPlayerIndex].userID === props.displayUserID;
   };
   const [isPlayersTurn, setIsPlayersTurn] = useState<boolean>(
     checkIsPlayersTurn(props.initialGameStats.currentPlayerIndex)
@@ -59,13 +59,6 @@ function OnlineGames(props: OnlineGamesProps) {
     };
   }, [props.socket]);
 
-  const getWinnerPopUpText = (): string => {
-    if (props.players.length === 1) {
-      return "You have won!";
-    }
-    return `Player: ${winningPlayer} has won this game!`;
-  };
-
   const gameProps = {
     socket: props.socket,
     lobbyCode: props.lobbyCode,
@@ -81,7 +74,13 @@ function OnlineGames(props: OnlineGamesProps) {
   return (
     <div className="App hero is-flex is-justify-content-center is-align-items-center is-fullheight">
       {winningPlayer && (
-        <PopUp content={getWinnerPopUpText()} btnContent="End game" cbBtnClicked={props.cbBackBtnClicked} />
+        <EndGamePopUp
+          winnerName={winningPlayer}
+          totalGameStats={playerTotalGameStats[winningPlayer]}
+          gameType={"online"}
+          gamemode={props.selectedGamemode}
+          cbBtnClicked={props.cbBackBtnClicked}
+        />
       )}
       {showGoToMainMenuPopUp && (
         <YesNoPopUp
@@ -98,7 +97,7 @@ function OnlineGames(props: OnlineGamesProps) {
         modeOut={props.modeOut}
       />
       {(props.selectedGamemode === "301" || props.selectedGamemode === "501") && (
-        <OnlineStandardGames {...gameProps} playerStats={playerStats as PlayerToPlayerStats} />
+        <OnlineStandardGames {...gameProps} modeOut={props.modeOut} playerStats={playerStats as PlayerToPlayerStats} />
       )}
       {props.selectedGamemode === "rcl" && (
         <OnlineRoundTheClockGame {...gameProps} playerStats={playerStats as PlayerToPlayerStatsRCl} />
@@ -106,7 +105,7 @@ function OnlineGames(props: OnlineGamesProps) {
       {props.selectedGamemode === "cri" && (
         <OnlineCricketGame {...gameProps} playerStats={playerStats as PlayerToPlayerStatsCricket} />
       )}
-      <NavigationButtons cbBackBtnClicked={props.cbBackBtnClicked} marginTop={0} />
+      <NavigationButtons cbBackBtnClicked={() => setShowGoToMainMenuPopUp(true)} marginTop={0} />
     </div>
   );
 }

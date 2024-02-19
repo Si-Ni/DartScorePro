@@ -1,4 +1,4 @@
-import { CricketStats } from "../../localGamemodes/LocalCricketGame/LocalCricketGame";
+import { CricketStats } from "../../../types/playerStats";
 
 export interface PlayerScoreCardCricketProps {
   playerName: string;
@@ -8,4 +8,5 @@ export interface PlayerScoreCardCricketProps {
   cricketStats: CricketStats;
   sets: number;
   legs: number;
+  disabled?: boolean;
 }

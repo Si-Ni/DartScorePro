@@ -35,7 +35,6 @@ function OnlineMultiplayerSettings(props: OnlineMultiplayerSettingsProps) {
               <PlayerMenu
                 players={props.players}
                 maxPlayers={4}
-                setPlayers={props.setPlayers}
                 isEditable={false}
                 playerCountInfo="2-4 players required to start"
               />

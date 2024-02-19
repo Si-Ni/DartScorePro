@@ -4,8 +4,9 @@ import { Gamemode, InAndOutMode } from "../../../types/global";
 import LocalGames from "../../../components/game/LocalGames/LocalGames.tsx";
 import { useNavigate } from "react-router-dom";
 import SettingsMenu from "../../../components/gameSettings/SettingsMenu/SettingsMenu.tsx";
+import { SingleplayerProps } from "./Singleplayer";
 
-function Singleplayer() {
+function Singleplayer(props: SingleplayerProps) {
   const navigate = useNavigate();
   const [selectedGamemode, setSelectedGamemode] = useState<Gamemode>("301");
   const [gameStarted, setGameStarted] = useState<boolean>(false);
@@ -31,7 +32,12 @@ function Singleplayer() {
   return (
     <>
       {gameStarted ? (
-        <LocalGames {...gameProps} players={["Player1"]} cbBackBtnClicked={backBtnGameClicked} />
+        <LocalGames
+          {...gameProps}
+          gameType={"singleplayer"}
+          players={[props.displayUserID ? `${props.displayUserID}` : "You"]}
+          cbBackBtnClicked={backBtnGameClicked}
+        />
       ) : (
         <SettingsMenu
           {...gameProps}

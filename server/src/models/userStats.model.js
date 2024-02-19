@@ -2,17 +2,41 @@ const mongoose = require("mongoose");
 
 const userStatsModel = new mongoose.Schema({
   stats: {
-    totalAverage: {
-      required: true,
-      type: Number
+    standard: {
+      totalAverage: {
+        type: Number
+      },
+      totalDartsThrown: {
+        type: Number
+      },
+      totalScore: {
+        type: Number
+      },
+      totalWins: {
+        type: Number
+      },
+      totalDefeats: {
+        type: Number
+      },
+      "180's": {
+        type: Number
+      },
+      checkouts: {
+        type: Object // You can adjust this type based on the structure of your checkouts
+      }
     },
-    totalDartsThrown: {
-      required: true,
-      type: Number
+    cri: {
+      totalWins: {
+        type: Number
+      },
+      totalDefeats: {
+        type: Number
+      }
     },
-    totalScore: {
-      required: true,
-      type: Number
+    rcl: {
+      totalDefeats: {
+        type: Number
+      }
     }
   },
   userID: {

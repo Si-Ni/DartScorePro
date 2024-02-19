@@ -4,7 +4,6 @@ import { Gamemode, InAndOutMode } from "../../../types/global";
 
 export interface OnlineMultiplayerSettingsProps {
   players: string[];
-  setPlayers: React.Dispatch<React.SetStateAction<string[]>>;
   selectedGamemode: Gamemode;
   setSelectedGamemode: React.Dispatch<React.SetStateAction<Gamemode>>;
   socket: Socket;

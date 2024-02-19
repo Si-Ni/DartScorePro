@@ -1,35 +1,17 @@
 import { useNavigate } from "react-router-dom";
 import "../../../styles/Menu.css";
 import logo from "../../../assets/logo.svg";
-import { useContext } from "react";
-import AuthContext from "../../../context/AuthProvider";
 import { MainMenuProps } from "./MainMenu";
-import axios from "../../../api/axios";
+import ErrorMessageBoxButton from "../../../components/buttons/ErrorMessageBoxButton/ErrorMessageBoxButton.tsx";
 
-const LOGOUT_URL = "/logout";
 function MainMenu(props: MainMenuProps) {
-  const { setAuth } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  function logout() {
-    axios
-      .post(
-        LOGOUT_URL,
-        {},
-        {
-          withCredentials: true
-        }
-      )
-      .then(() => {
-        props.setLoggedIn(false);
-        props.setDisplayUserID("");
-        setAuth({});
-        navigate("/login");
-      })
-      .catch((error) => {
-        console.error("Error logging out:", error);
-      });
-  }
+  const errorMessageBoxButtonProps = {
+    className: "button is-primary m-1 is-large sideBySideMenuBtn",
+    messageContent: "Log in to access",
+    disabled: !props.isLoggedIn
+  };
 
   return (
     <div className="hero is-justify-content-center is-align-items-center is-fullheight">
@@ -56,21 +38,24 @@ function MainMenu(props: MainMenuProps) {
             </button>
           </div>
           <div className="buttons is-centered">
-            <button
-              className="button is-primary m-1 is-large sideBySideMenuBtn"
-              onClick={() => navigate("/statistics")}
-            >
-              Statistics
-            </button>
-            <button className="button is-primary m-1 is-large sideBySideMenuBtn" onClick={() => navigate("/settings")}>
-              Settings
-            </button>
+            <ErrorMessageBoxButton
+              cbBtnClicked={() => navigate("/statistics")}
+              btnContent="Statistics"
+              {...errorMessageBoxButtonProps}
+            />
+            <ErrorMessageBoxButton
+              cbBtnClicked={() => navigate("/settings")}
+              btnContent="Settings"
+              {...errorMessageBoxButtonProps}
+            />
           </div>
-          <div className="buttons is-centered">
-            <button className="button is-danger m-1 is-large" onClick={logout}>
-              Logout
-            </button>
-          </div>
+          {!props.isLoggedIn && (
+            <div className="buttons is-centered">
+              <button className="button is-primary m-1 is-large" onClick={() => navigate("/login")}>
+                Login
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -4,9 +4,11 @@ import LocalGames from "../../components/game/LocalGames/LocalGames.tsx";
 import PlayersAndSettings from "../../components/gameSettings/PlayersAndSettings/PlayersAndSettings.tsx";
 import { useNavigate } from "react-router-dom";
 import PopUp from "../../components/popUps/PopUp/PopUp.tsx";
+import EndGamePopUp from "../../components/popUps/EndGamePopUp/EndGamePopUp.tsx";
+import { TournamentProps } from "./Tournament";
 
-function Tournament() {
-  const [allPlayers, setAllPlayers] = useState(["Player1"]);
+function Tournament(props: TournamentProps) {
+  const [allPlayers, setAllPlayers] = useState([props.displayUserID ? props.displayUserID : "Player 1"]);
   const [waitingPlayers, setWaitingPlayers] = useState<string[]>([]);
   const [currentPlayers, setCurrentPlayers] = useState<string[]>([]);
   const [winners, setWinners] = useState<string[]>([]);
@@ -16,10 +18,9 @@ function Tournament() {
   const [legsForSet, setLegsForSet] = useState<number>(1);
   const [modeIn, setModeIn] = useState<InAndOutMode>("straight");
   const [modeOut, setModeOut] = useState<InAndOutMode>("double");
-  const [endPopUpContent, setEndPopUpContent] = useState<string>("");
   const [endOfRoundPopUpContent, setEndOfRoundPopUpContent] = useState<string>("");
-  const [showWinnerPopUp, setShowWinnerPopUp] = useState<boolean>(false);
   const [showEndOfRoundPopUp, setShowEndOfRoundPopUp] = useState<boolean>(false);
+  const [tournamentWinner, setTournamentWinner] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const handleBackToPlayerMenu = (): void => {
@@ -67,7 +68,7 @@ function Tournament() {
     const endOfTournament = waitingPlayers.length === 0 && winners.length === 0;
     const endOfRound = waitingPlayers.length === 0;
     if (endOfTournament) {
-      endTournamentAnnounceWinner(winner);
+      setTournamentWinner(winner);
       return;
     } else if (endOfRound) {
       setRemainingPlayersForNewRound([...winners, winner]);
@@ -76,11 +77,6 @@ function Tournament() {
     }
     setShowEndOfRoundPopUp(true);
     setEndOfRoundPopUpContent(`Player: ${winner} has won this round!`);
-  };
-
-  const endTournamentAnnounceWinner = (winner: string) => {
-    setEndPopUpContent(`Player: ${winner} has won the tournament!`);
-    setShowWinnerPopUp(true);
   };
 
   const setRemainingPlayersForNewRound = (remainingPlayers: string[]) => {
@@ -99,7 +95,7 @@ function Tournament() {
   };
 
   const handleEndPopUpClicked = (): void => {
-    setShowWinnerPopUp(false);
+    setTournamentWinner(null);
     setGameStarted(false);
   };
 
@@ -121,12 +117,18 @@ function Tournament() {
       {showEndOfRoundPopUp && (
         <PopUp content={endOfRoundPopUpContent} btnContent="Next round" cbBtnClicked={nextRoundClicked} />
       )}
-      {showWinnerPopUp && (
-        <PopUp content={endPopUpContent} btnContent="End tournament" cbBtnClicked={handleEndPopUpClicked} />
+      {tournamentWinner && (
+        <EndGamePopUp
+          winnerName={tournamentWinner}
+          gameType={"tournament"}
+          gamemode={selectedGamemode}
+          cbBtnClicked={handleEndPopUpClicked}
+        />
       )}
       {gameStarted ? (
         <LocalGames
           {...gameProps}
+          gameType="tournament"
           players={currentPlayers}
           cbBackBtnClicked={handleBackToPlayerMenu}
           cbPlayerWon={playerWon}

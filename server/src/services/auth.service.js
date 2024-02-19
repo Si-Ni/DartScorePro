@@ -8,7 +8,7 @@ const generateToken = require("../helpers/generateToken.helper");
 
 const mailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const userIDRegex = /^[a-zA-Z0-9._-]+$/;
-let pwdRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+const pwdRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
 async function login(req) {
   let { userIDorMail, userPWD } = req.body;

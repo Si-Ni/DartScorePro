@@ -15,7 +15,7 @@
   border-radius: 50%;
   margin-left: 5px;
   position: absolute;
-  top: 50%;
+  top: 58%;
   transform: translateY(-50%);
 }
 
@@ -78,4 +78,21 @@
 
 .playerList li:last-child {
   margin-bottom: 1.5rem;
+}
+
+.roundsInfo {
+  margin-top: 2rem;
+}
+
+@media (max-width: 650px) {
+  .roundsInfo {
+    margin-top: 4rem;
+  }
+}
+
+.inactiveCard {
+  opacity: 0.5;
+  filter: grayscale(100%);
+  pointer-events: none;
+  color: #555;
 }

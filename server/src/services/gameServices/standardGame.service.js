@@ -1,3 +1,6 @@
+const saveUpdatedPlayerStats = require("../../helpers/saveUpdatedPlayerStats.helper");
+const savePlayerWinOrDefeat = require("../../helpers/savePlayerWinOrDefeat.helper");
+const savePlayerCheckout = require("../../helpers/savePlayerCheckout.helper");
 const {
   switchToNextPlayer,
   updateRemainingThrows,
@@ -5,7 +8,7 @@ const {
   resetRoundStatsForNextGame
 } = require("../../helpers/game.helper");
 
-const updateScoreForCurrentPlayerStandardGames = (lobby, { multiplier, points }) => {
+const updateScoreForCurrentPlayerStandardGames = async (lobby, { multiplier, points }) => {
   if (!validatePoints) return;
 
   const currentPlayerIndex = lobby.game.currentPlayerIndex;
@@ -21,7 +24,7 @@ const updateScoreForCurrentPlayerStandardGames = (lobby, { multiplier, points })
 
   addThrowToLastThrows(lobby, currentPlayer, points, multiplier);
 
-  updateScoreForPlayerAndContinueGame(lobby, currentPlayer, points, multiplier);
+  await updateScoreForPlayerAndContinueGame(lobby, currentPlayer, points, multiplier);
 };
 
 const validatePoints = (points) => {
@@ -54,13 +57,14 @@ const addThrowToLastThrows = (lobby, currentPlayer, points, multiplier) => {
   lobby.game.playerStats[currentPlayer].lastThrows.push(formattedThrow);
 };
 
-const updateScoreForPlayerAndContinueGame = (lobby, currentPlayer, points, multiplier) => {
+const updateScoreForPlayerAndContinueGame = async (lobby, currentPlayer, points, multiplier) => {
   const thrownPoints = points * multiplier;
   const updatedScore = calculateUpdatedScore(lobby, currentPlayer, thrownPoints);
 
   const updatedScoreIsInvalid =
     updatedScore < 0 ||
-    (lobby.gameSettings.modeOut === "double" && (updatedScore === 1 || (multiplier === 1 && updatedScore === 0)));
+    (lobby.gameSettings.modeOut === "double" && (multiplier === 1 || multiplier === 3) && updatedScore <= 1) ||
+    (multiplier === 2 && updatedScore === 1);
 
   if (updatedScoreIsInvalid) {
     resetScoreToBeginningOfRound(lobby, currentPlayer);
@@ -68,7 +72,7 @@ const updateScoreForPlayerAndContinueGame = (lobby, currentPlayer, points, multi
   } else {
     updatePlayerStatsByThrownPoints(lobby, currentPlayer, thrownPoints);
     updateRemainingThrows(lobby);
-    checkIfPlayerHasWon(lobby, currentPlayer, updatedScore, multiplier);
+    await checkIfPlayerHasWon(lobby, currentPlayer, updatedScore, multiplier);
   }
 };
 
@@ -83,7 +87,7 @@ const resetScoreToBeginningOfRound = (lobby, currentPlayer) => {
   currentPlayerStats.score = currentPlayerStats.scoreAtBeginningOfRound;
 };
 
-const updatePlayerStatsByThrownPoints = (lobby, player, thrownPoints) => {
+const updatePlayerStatsByThrownPoints = async (lobby, player, thrownPoints) => {
   let currentPlayerStats = lobby.game.playerStats[player];
   currentPlayerStats = {
     ...currentPlayerStats,
@@ -92,17 +96,24 @@ const updatePlayerStatsByThrownPoints = (lobby, player, thrownPoints) => {
     dartsThrown: currentPlayerStats.dartsThrown + 1,
     turns: lobby.game.throwsRemaining === 1 ? currentPlayerStats.turns + 1 : currentPlayerStats.turns,
     average: ((currentPlayerStats.totalScore + thrownPoints) * 3) / (currentPlayerStats.dartsThrown + 1)
-    //ToDo: checkoutOptions: getAllOptions(3).filter((r) => sumRound(r) === currentPlayerStats.score - thrownPoints)
   };
   lobby.game.playerStats[player] = currentPlayerStats;
+
+  await saveUpdatedPlayerStats(thrownPoints, player, lobby);
 };
 
-const checkIfPlayerHasWon = (lobby, player, updatedScore, multiplier) => {
+const checkIfPlayerHasWon = async (lobby, player, updatedScore, multiplier) => {
   const playerWon = updatedScore === 0 && (lobby.gameSettings.modeOut !== "double" || multiplier === 2);
   if (playerWon) {
-    updateGameStatsForWinningPlayer(lobby, player);
-    resetRoundStatsForNextGame(lobby);
+    await handlePlayerWon(lobby, player);
   }
+};
+
+const handlePlayerWon = async (lobby, player) => {
+  updateGameStatsForWinningPlayer(lobby, player);
+  await savePlayerWinOrDefeat(lobby);
+  await savePlayerCheckout(lobby);
+  resetRoundStatsForNextGame(lobby);
 };
 
 module.exports = { updateScoreForCurrentPlayerStandardGames };

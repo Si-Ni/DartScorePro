@@ -26,14 +26,16 @@ function Multiplayer(props: MultiplayerProps) {
     <>
       {selectedMultiplayerMode ? (
         <div>
-          {selectedMultiplayerMode === "local" && <LocalMultiplayer cbBackBtnClicked={handleBackBtnClicked} />}
+          {selectedMultiplayerMode === "local" && (
+            <LocalMultiplayer cbBackBtnClicked={handleBackBtnClicked} displayUserID={props.displayUserID} />
+          )}
           {selectedMultiplayerMode === "create" && (
             <CreateLobby {...lobbyProps} setIsLobbyLeader={props.setIsLobbyLeader} />
           )}
           {selectedMultiplayerMode === "join" && <JoinLobby {...lobbyProps} />}
         </div>
       ) : (
-        <MultiplayerMenu cbMultiplayerModeSelected={setSelectedMultiplayerMode} />
+        <MultiplayerMenu isLoggedIn={props.isLoggedIn} cbMultiplayerModeSelected={setSelectedMultiplayerMode} />
       )}
     </>
   );

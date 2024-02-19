@@ -1,3 +1,4 @@
+const savePlayerWinOrDefeat = require("../../helpers/savePlayerWinOrDefeat.helper");
 const {
   updateRemainingThrows,
   updateGameStatsForWinningPlayer,
@@ -6,13 +7,19 @@ const {
 
 const validPoints = new Set([15, 16, 17, 18, 19, 20, 25, 0]);
 
-const updateScoreForCurrentPlayerCri = (lobby, { points, multiplier }) => {
+const updateScoreForCurrentPlayerCri = async (lobby, { points, multiplier }) => {
   if (!validatePoints(points)) return;
 
   const currentPlayerIndex = lobby.game.currentPlayerIndex;
   const currentPlayer = lobby.players[currentPlayerIndex].userID;
 
   updatePlayerStats(lobby, currentPlayer, points, multiplier);
+
+  if (checkIfPlayerHasWon(lobby, currentPlayer)) {
+    await handlePlayerWon(lobby, currentPlayer);
+  } else {
+    updateRemainingThrows(lobby);
+  }
 };
 
 const validatePoints = (points) => {
@@ -20,10 +27,7 @@ const validatePoints = (points) => {
 };
 
 const updatePlayerStats = (lobby, player, points, multiplier) => {
-  if (points === 0) {
-    updateRemainingThrows(lobby);
-    return;
-  }
+  if (points === 0) return;
 
   const statsKey = getCricketStatsKey(points);
   const currentCricketStatusValue = lobby.game.playerStats[player].cricketStats[statsKey];
@@ -32,9 +36,6 @@ const updatePlayerStats = (lobby, player, points, multiplier) => {
     updateCricketStatusAndScore(lobby, player, points, multiplier);
   } else if (currentCricketStatusValue === 3) {
     increasePlayerScore(lobby, player, points * multiplier);
-    checkIfPlayerHasWon(lobby, player, points * multiplier, statsKey, currentCricketStatusValue);
-  } else {
-    updateRemainingThrows(lobby);
   }
 };
 
@@ -53,12 +54,10 @@ const updateCricketStatusAndScore = (lobby, player, points, multiplier) => {
     updatedCricketStatus++;
   }
 
-  const numberIsClosedForAllPlayers =
-    updatedCricketStatus === 3 && checkIfNumberIsClosedByOtherPlayers(lobby, player, statsKey);
+  lobby.game.playerStats[player].cricketStats[statsKey] = updatedCricketStatus;
 
-  if (numberIsClosedForAllPlayers) {
+  if (checkIfNumberIsClosedByAllPlayers(lobby, statsKey)) {
     setCricketStatusClosedForEverybody(lobby, statsKey);
-    updatedCricketStatus++;
   }
 
   let remainingScore = 0;
@@ -67,65 +66,61 @@ const updateCricketStatusAndScore = (lobby, player, points, multiplier) => {
     remainingScore = points * timesHitted;
   }
 
-  updateCricketStatusAndAddScoreForPlayer(lobby, player, statsKey, updatedCricketStatus, remainingScore);
-  checkIfPlayerHasWon(lobby, player, points * timesHitted, statsKey, updatedCricketStatus);
+  increasePlayerScore(lobby, player, remainingScore);
 };
 
-const checkIfNumberIsClosedByOtherPlayers = (lobby, currentPlayer, statsKey) => {
-  let numberClosedByOtherPlayers = true;
+const checkIfNumberIsClosedByAllPlayers = (lobby, statsKey) => {
+  let numberClosedForAllPlayers = true;
   const playerStats = lobby.game.playerStats;
-  Object.keys(playerStats).forEach((playerKey) => {
-    const numberNotClosed = playerKey != currentPlayer && playerStats[playerKey].cricketStats[statsKey] < 3;
-    if (numberNotClosed) {
-      numberClosedByOtherPlayers = false;
+
+  lobby.players.forEach((player) => {
+    if (player.isActive && playerStats[player.userID].cricketStats[statsKey] < 3) {
+      numberClosedForAllPlayers = false;
       return;
     }
   });
-  return numberClosedByOtherPlayers;
+
+  return numberClosedForAllPlayers;
 };
 
 const setCricketStatusClosedForEverybody = (lobby, statsKey) => {
   const playerStats = lobby.game.playerStats;
-  Object.keys(playerStats).forEach((playerKey) => {
-    playerStats[playerKey].cricketStats[statsKey] = 4;
+  lobby.players.forEach((player) => {
+    const currentCricketStats = playerStats[player.userID].cricketStats[statsKey];
+    if (player.isActive || currentCricketStats === 3) {
+      playerStats[player.userID].cricketStats[statsKey] = 4;
+    }
   });
 };
 
-const updateCricketStatusAndAddScoreForPlayer = (lobby, player, statsKey, updatedCricketStatus, thrownPoints) => {
-  const currentPlayerStats = lobby.game.playerStats[player];
-  currentPlayerStats.cricketStats[statsKey] = updatedCricketStatus;
-  currentPlayerStats.score += thrownPoints;
+const checkIfPlayerHasWon = (lobby, playerKey) => {
+  const highestScore = calculateHighestScore(lobby);
+  const playersScore = lobby.game.playerStats[playerKey].score;
+  return playerHasClosedAll(lobby, playerKey) && playersScore >= highestScore;
 };
 
-const checkIfPlayerHasWon = (lobby, player, thrownPoints, currentCricketStatus, currentCricketStatusValue) => {
-  const highestScore = calculateHighestScore(lobby);
-  const playersScore = lobby.game.playerStats[player].score + thrownPoints;
-  if (
-    playerHasClosedAll(lobby, player, currentCricketStatus, currentCricketStatusValue) &&
-    playersScore >= highestScore
-  ) {
-    updateGameStatsForWinningPlayer(lobby, player);
-    resetRoundStatsForNextGame(lobby);
-  } else {
-    updateRemainingThrows(lobby);
-  }
+const handlePlayerWon = async (lobby, playerKey) => {
+  updateGameStatsForWinningPlayer(lobby, playerKey);
+  await savePlayerWinOrDefeat(lobby);
+  resetRoundStatsForNextGame(lobby);
 };
 
 const calculateHighestScore = (lobby) => {
   let highestScore = 0;
-  Object.keys(lobby.game.playerStats).forEach((playerKey) => {
-    const playersScore = lobby.game.playerStats[playerKey].score;
-    if (playersScore > highestScore) highestScore = playersScore;
+  lobby.players.forEach((player) => {
+    const playersScore = lobby.game.playerStats[player.userID].score;
+    if (player.isActive && playersScore > highestScore) {
+      highestScore = playersScore;
+    }
   });
   return highestScore;
 };
 
-const playerHasClosedAll = (lobby, playerKey, currentCricketStatus, currentUpdatedCricketStatusValue) => {
-  if (currentUpdatedCricketStatusValue < 3) return false;
+const playerHasClosedAll = (lobby, playerKey) => {
   const currentPlayerCricketStats = lobby.game.playerStats[playerKey].cricketStats;
   let closedAll = true;
   Object.keys(currentPlayerCricketStats).forEach((cricketStatus) => {
-    if (cricketStatus != currentCricketStatus && currentPlayerCricketStats[cricketStatus] < 3) {
+    if (currentPlayerCricketStats[cricketStatus] < 3) {
       closedAll = false;
       return;
     }
@@ -137,4 +132,44 @@ const increasePlayerScore = (lobby, player, thrownPoints) => {
   lobby.game.playerStats[player].score += thrownPoints;
 };
 
-module.exports = { updateScoreForCurrentPlayerCri };
+const checkIfAnyPlayerHasWonCri = async (lobby) => {
+  await lobby.players.forEach(async (player) => {
+    if (player.isActive) {
+      if (checkIfPlayerHasWon(lobby, player.userID)) await handlePlayerWon(lobby, player.userID);
+    }
+  });
+};
+
+const checkIfAnyNumberIsClosedByAllPlayers = (lobby) => {
+  const cricketStats = lobby.game.playerStats[lobby.players[0].userID].cricketStats;
+  Object.keys(cricketStats).forEach((statsKey) => {
+    if (checkIfNumberIsClosedByAllPlayers(lobby, statsKey)) {
+      setCricketStatusClosedForEverybody(lobby, statsKey);
+    }
+  });
+};
+
+const checkIfAnyNumberIsNotClosedByAllPlayers = (lobby) => {
+  const cricketStats = lobby.game.playerStats[lobby.players[lobby.game.currentPlayerIndex].userID].cricketStats;
+  Object.keys(cricketStats).forEach((statsKey) => {
+    if (!checkIfNumberIsClosedByAllPlayers(lobby, statsKey)) {
+      setCricketStatusOpenForEverybody(lobby, statsKey);
+    }
+  });
+};
+
+const setCricketStatusOpenForEverybody = (lobby, statsKey) => {
+  const playerStats = lobby.game.playerStats;
+  lobby.players.forEach((player) => {
+    if (playerStats[player.userID].cricketStats[statsKey] === 4) {
+      playerStats[player.userID].cricketStats[statsKey] = 3;
+    }
+  });
+};
+
+module.exports = {
+  updateScoreForCurrentPlayerCri,
+  checkIfAnyPlayerHasWonCri,
+  checkIfAnyNumberIsClosedByAllPlayers,
+  checkIfAnyNumberIsNotClosedByAllPlayers
+};

@@ -1,6 +1,6 @@
 import "../../../styles/CricketSymbols.css";
 import { PlayerScoreCardCricketProps } from "./PlayerScoreCardCricket";
-import { CricketStatus } from "../../localGamemodes/LocalCricketGame/LocalCricketGame";
+import { CricketStatus } from "../../../types/playerStats";
 
 const sortTableHeaders = (tableHeaders: string[]) => {
   tableHeaders.sort((a, b) => {
@@ -27,7 +27,7 @@ function PlayerScoreCardCricket(props: PlayerScoreCardCricketProps) {
   };
 
   return (
-    <div className="column playerCardCricket">
+    <div className={`column playerCardCricket ${props.disabled === true && "inactiveCard"}`}>
       <div className="box" style={{ borderLeft: props.isCurrentPlayer ? "5px solid red" : "" }}>
         <h1 className={`title is-5 ${props.isStartingPlayer && "red-dot"}`}>{props.playerName}</h1>
         <table className="table is-bordered">

@@ -1,3 +1,4 @@
+const savePlayerWinOrDefeat = require("../../helpers/savePlayerWinOrDefeat.helper");
 const {
   switchToNextPlayer,
   updateRemainingThrows,
@@ -5,13 +6,13 @@ const {
   resetRoundStatsForNextGame
 } = require("../../helpers/game.helper");
 
-const updateScoreForCurrentPlayerRcl = (lobby, args) => {
+const updateScoreForCurrentPlayerRcl = async (lobby, args) => {
   const currentPlayerIndex = lobby.game.currentPlayerIndex;
   const currentPlayer = lobby.players[currentPlayerIndex].userID;
   if (args.skip) {
     handlePlayerSkippedTurn(lobby, currentPlayer);
   } else if (args.isHitted) {
-    handlePlayerHitTarget(lobby, currentPlayer);
+    await handlePlayerHitTarget(lobby, currentPlayer);
   } else if (!args.isHitted) {
     handlePlayerMissedTarget(lobby, currentPlayer);
   }
@@ -28,10 +29,9 @@ const addMissesToLastThrows = (lobby, currentPlayer) => {
   lobby.game.playerStats[currentPlayer].lastThrows = throws;
 };
 
-const handlePlayerHitTarget = (lobby, player) => {
+const handlePlayerHitTarget = async (lobby, player) => {
   if (checkIfPlayerHasWon(lobby, player)) {
-    updateGameStatsForWinningPlayer(lobby, player);
-    resetRoundStatsForNextGame(lobby);
+    await handlePlayerWon(lobby, player);
   } else {
     increaseTargetByOne(lobby, player);
   }
@@ -41,6 +41,12 @@ const handlePlayerHitTarget = (lobby, player) => {
 const checkIfPlayerHasWon = (lobby, player) => {
   const currentPlayerStats = lobby.game.playerStats[player];
   return currentPlayerStats.currentTarget === 20;
+};
+
+const handlePlayerWon = async (lobby, player) => {
+  updateGameStatsForWinningPlayer(lobby, player);
+  await savePlayerWinOrDefeat(lobby);
+  resetRoundStatsForNextGame(lobby);
 };
 
 const increaseTargetByOne = (lobby, player) => {

@@ -1,27 +1,37 @@
+import { DPlayer } from "../../../pages/onlineMultiplayer/OnlineMultiplayer/OnlineMultiplayerDTOs.tsx";
 import PlayerScoreCard from "../../playerScoreCards/PlayerScoreCard/PlayerScoreCard.tsx";
 import { RoundTheClockGameViewProps } from "./RoundTheClockGameView";
 
 function RoundTheClockGameView(props: RoundTheClockGameViewProps) {
+  const renderPlayerScoreCard = (player: string | DPlayer) => {
+    const { userID, isActive } = typeof player === "string" ? { userID: player, isActive: true } : player;
+    const isStartingPlayer = props.players[props.startingPlayerIndex] === player;
+    const isCurrentPlayer = props.players[props.currentPlayerIndex] === player;
+
+    return (
+      <PlayerScoreCard
+        key={userID}
+        playerName={userID}
+        isStartingPlayer={isStartingPlayer}
+        isCurrentPlayer={isCurrentPlayer}
+        score={props.playerStats[userID].currentTarget}
+        lastThrows={props.playerStats[userID].lastThrows}
+        sets={props.playerTotalGameStats[userID].sets}
+        legs={props.playerTotalGameStats[userID].legs}
+        disabled={!isActive}
+      />
+    );
+  };
+
   return (
     <>
-      <div className="is-centered">
-        <p className="is-size-3 mb-6" style={{ textAlign: "center" }}>
+      <div className="is-centered roundsInfo">
+        <p className="is-size-3 mb-3" style={{ textAlign: "center" }}>
           Round: {props.currentRound}
         </p>
       </div>
       <div className="columns is-centered playerCardsContainer">
-        {props.players.map((player) => (
-          <PlayerScoreCard
-            key={player}
-            playerName={player}
-            isStartingPlayer={props.players[props.startingPlayerIndex] === player}
-            isCurrentPlayer={props.players[props.currentPlayerIndex] === player}
-            score={props.playerStats[player].currentTarget}
-            lastThrows={props.playerStats[player].lastThrows}
-            sets={props.playerTotalGameStats[player].sets}
-            legs={props.playerTotalGameStats[player].legs}
-          />
-        ))}
+        {props.players.map((player) => renderPlayerScoreCard(player))}
       </div>
       <div className="columns is-centered mt-6">
         <button

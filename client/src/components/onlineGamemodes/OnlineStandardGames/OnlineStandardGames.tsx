@@ -27,6 +27,7 @@ function OnlineStandardGames(props: OnlineStandardGamesProps) {
       multiplier={multiplier}
       cbHandleMultiplierClicked={setMultiplier}
       isPlayersTurn={props.isPlayersTurn}
+      modeOut={props.modeOut}
     />
   );
 }

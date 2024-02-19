@@ -7,12 +7,20 @@ const findPlayerIndexBySocketId = (socketId, players) => {
 
 const switchToNextPlayer = (lobby) => {
   const currentGame = lobby.game;
-  currentGame.currentPlayerIndex = (currentGame.currentPlayerIndex + 1) % lobby.players.length;
-  currentGame.turns++;
-  if (lobby.game.turns === lobby.players.length) {
-    currentGame.currentRound++;
-    currentGame.turns = 0;
-  }
+  let tempPlayer = lobby.players[currentGame.currentPlayerIndex];
+
+  do {
+    currentGame.currentPlayerIndex = (currentGame.currentPlayerIndex + 1) % lobby.players.length;
+    currentGame.turns++;
+    if (lobby.game.turns === lobby.players.length) {
+      currentGame.currentRound++;
+      currentGame.turns = 0;
+    }
+  } while (
+    !lobby.players[currentGame.currentPlayerIndex].isActive &&
+    tempPlayer != lobby.players[currentGame.currentPlayerIndex]
+  );
+
   currentGame.throwsRemaining = 3;
 };
 

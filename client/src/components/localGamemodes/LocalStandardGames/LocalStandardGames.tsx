@@ -5,6 +5,7 @@ import { PlayerStats, PlayerToPlayerStats } from "../../../types/playerStats.ts"
 import { getAllOptions, sumRound } from "../../../helpers/calcCheckouts";
 import StandardGamesView from "../../gamemodeViews/StandardGamesView/StandardGamesView.tsx";
 import { LocalStandardGamesProps } from "./LocalStandardGames";
+import { stringifyThrow } from "../../../helpers/stringifyThrow";
 
 const initializePlayerStats = (
   players: string[],
@@ -53,10 +54,7 @@ function LocalStandardGames({ currentPlayerIndex, throwsRemaining, ...props }: L
       clearLastThrowsOfPlayer(currentPlayerIndex);
     }
 
-    console.log(playerStats);
-
     addThrowToLastThrows(currentPlayerIndex, points, multiplier);
-
     updateScoreForPlayerAndContinueGame(currentPlayerIndex, points);
   };
 
@@ -95,11 +93,8 @@ function LocalStandardGames({ currentPlayerIndex, throwsRemaining, ...props }: L
     }));
   };
 
-  const formatThrowToString = (value: number | string, multiplier: number): string =>
-    multiplier === 2 && value === 25 ? "BULL" : `${multiplier > 1 ? ["D", "T"][multiplier - 2] : ""}${value}`;
-
   const addThrowToLastThrows = (playerIndex: number, points: number, multiplier: number): void => {
-    const formattedThrow = formatThrowToString(points, multiplier);
+    const formattedThrow = stringifyThrow(points, multiplier);
     const playerKey = players[playerIndex];
     setPlayerStats((prevPlayerStats) => ({
       ...prevPlayerStats,
@@ -117,7 +112,9 @@ function LocalStandardGames({ currentPlayerIndex, throwsRemaining, ...props }: L
     const updatedScore = calculateUpdatedScore(playerIndex, thrownPoints);
 
     const updatedScoreIsInvalid =
-      updatedScore < 0 || (props.modeOut === "double" && (multiplier === 1 || multiplier === 3) && updatedScore <= 1);
+      updatedScore < 0 ||
+      (props.modeOut === "double" && (multiplier === 1 || multiplier === 3) && updatedScore <= 1) ||
+      (multiplier === 2 && updatedScore === 1);
 
     if (updatedScoreIsInvalid) {
       resetScoreToBeginningOfRound(playerIndex);
@@ -184,9 +181,12 @@ function LocalStandardGames({ currentPlayerIndex, throwsRemaining, ...props }: L
   const handleUndoClick = (): void => {
     if (Object.keys(previousPlayerStats).length === 0) return;
 
-    switchToPrevRoundForUndoIfNecessary();
-
     const playerIndex = getIndexOfPlayerFromLastTurn();
+
+    // Check if it's the first dart of the round being undone and round subtraction hasn't occurred yet
+    if (throwsRemaining === 3 && currentPlayerIndex === 0 && props.currentRound > 1) {
+      props.setCurrentRound((currentRound) => currentRound - 1);
+    }
 
     const switchToPrevPlayer = playerIndex !== currentPlayerIndex || (throwsRemaining === 3 && players.length === 1);
     if (switchToPrevPlayer) switchToPlayersLastTurn(playerIndex);
@@ -212,11 +212,6 @@ function LocalStandardGames({ currentPlayerIndex, throwsRemaining, ...props }: L
     return playerIndex;
   };
 
-  const switchToPrevRoundForUndoIfNecessary = (): void => {
-    const switchToPrevRound = throwsRemaining === 3 && currentPlayerIndex === 0;
-    if (switchToPrevRound) props.setCurrentRound((currentRound) => currentRound - 1);
-  };
-
   const switchToPlayersLastTurn = (playerIndex: number): void => {
     props.setCurrentPlayerIndex(playerIndex);
     props.setThrowsRemaining(1);
@@ -234,6 +229,7 @@ function LocalStandardGames({ currentPlayerIndex, throwsRemaining, ...props }: L
       multiplier={multiplier}
       cbHandleMultiplierClicked={handleMultiplierClick}
       cbHandleUndoClicked={handleUndoClick}
+      modeOut={props.modeOut}
     />
   );
 }
