@@ -12,6 +12,7 @@ function StandardGamesView(props: StandardGamesViewProps) {
 
     return (
       <PlayerScoreCard
+        isLoggedIn={props.isLoggedIn}
         key={userID}
         playerName={userID}
         isStartingPlayer={isStartingPlayer}

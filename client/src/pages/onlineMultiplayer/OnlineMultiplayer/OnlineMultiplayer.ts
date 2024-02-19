@@ -2,6 +2,7 @@ import { Socket } from "socket.io-client";
 import React from "react";
 
 export interface OnlineMultiplayerProps {
+  isLoggedIn: boolean;
   cbBackBtnClicked(): void;
   displayUserID: string;
   socket: Socket;

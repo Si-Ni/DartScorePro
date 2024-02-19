@@ -1,6 +1,7 @@
 import { InAndOutMode } from "../../../types/global";
 
 export interface CheckoutDisplayProps {
+  isLoggedIn: boolean;
   playerName: string;
   score: number;
   modeOut: InAndOutMode;

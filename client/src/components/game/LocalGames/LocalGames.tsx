@@ -93,6 +93,7 @@ function LocalGames(props: LocalGamesProps) {
   };
 
   const gameProps = {
+    isLoggedIn: props.isLoggedIn,
     players: props.players,
     playerTotalGameStats: playerTotalGameStats,
     setsToWin: props.setsToWin,

@@ -34,6 +34,7 @@ function Singleplayer(props: SingleplayerProps) {
       {gameStarted ? (
         <LocalGames
           {...gameProps}
+          isLoggedIn={props.isLoggedIn}
           gameType={"singleplayer"}
           players={[props.displayUserID ? `${props.displayUserID}` : "You"]}
           cbBackBtnClicked={backBtnGameClicked}

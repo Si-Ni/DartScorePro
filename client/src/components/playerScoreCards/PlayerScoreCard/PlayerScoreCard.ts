@@ -11,6 +11,7 @@ export interface PlayerScoreCardProps {
   checkoutOptions?: Round[];
   sets: number;
   legs: number;
+  isLoggedIn: boolean;
   modeOut?: InAndOutMode;
   disabled?: boolean;
 }
