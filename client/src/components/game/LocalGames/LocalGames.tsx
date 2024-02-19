@@ -30,8 +30,9 @@ function LocalGames(props: LocalGamesProps) {
   const [winningPlayer, setWinningPlayer] = useState<string | null>(null);
   const [throwsRemaining, setThrowsRemaining] = useState<number>(3);
   const [currentRound, setCurrentRound] = useState<number>(1);
-  const [startingPlayerIndex, setStartingPlayerIndex] = useState<number>(0);
-  const [currentPlayerIndex, setCurrentPlayerIndex] = useState<number>(startingPlayerIndex);
+  const [startingPlayerOfSetIndex, setStartingPlayerOfSetIndex] = useState<number>(0);
+  const [startingPlayerIndex, setStartingPlayerIndex] = useState<number>(startingPlayerOfSetIndex);
+  const [currentPlayerIndex, setCurrentPlayerIndex] = useState<number>(startingPlayerOfSetIndex);
   const [turns, setTurns] = useState<number>(0);
 
   const updateGameStatsForWinningPlayer = (playerKey: string): void => {
@@ -40,6 +41,9 @@ function LocalGames(props: LocalGamesProps) {
     if (currentLegs === Number(props.legsForSet)) {
       currentSets++;
       currentLegs = 0;
+      resetRoundStatsForNewSet();
+    } else {
+      resetRoundStatsForNextGame();
     }
 
     setPlayerTotalGameStats((prevPlayerTotalGameStats) => ({
@@ -54,8 +58,6 @@ function LocalGames(props: LocalGamesProps) {
     if (currentSets === Number(props.setsToWin)) {
       handlePlayerWon(playerKey);
     }
-
-    resetRoundStatsForNextGame();
   };
 
   const handlePlayerWon = (playerKey: string) => {
@@ -64,6 +66,15 @@ function LocalGames(props: LocalGamesProps) {
     } else {
       setWinningPlayer(playerKey);
     }
+  };
+
+  const resetRoundStatsForNewSet = () => {
+    const updatedStartingPlayerOfSetIndex = (startingPlayerOfSetIndex + 1) % props.players.length;
+    setStartingPlayerOfSetIndex(updatedStartingPlayerOfSetIndex);
+    setStartingPlayerIndex(updatedStartingPlayerOfSetIndex);
+    setCurrentPlayerIndex(updatedStartingPlayerOfSetIndex);
+    setCurrentRound(1);
+    setThrowsRemaining(3);
   };
 
   const resetRoundStatsForNextGame = () => {
