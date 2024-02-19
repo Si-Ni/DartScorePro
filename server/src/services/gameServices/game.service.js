@@ -9,9 +9,10 @@ const initialiseForNewGame = (lobby) => {
   lobby.game = {};
   lobby.game.totalGameStats = initialiseTotalGameStats(lobby.players);
   lobby.game.winner = null;
+  lobby.game.startingPlayerOfSetIndex = 0;
   lobby.game.startingPlayerIndex = 0;
   lobby.gameStarted = true;
-  initialiseForNewRound(lobby);
+  initialiseForNewRound(lobby, null, null);
 };
 
 const initialiseTotalGameStats = (players) => {
