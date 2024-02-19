@@ -47,9 +47,9 @@ const updateGameStatsForWinningPlayer = (lobby, player) => {
   }
 };
 
-const resetRoundStatsForNextGame = (lobby) => {
+const resetRoundStatsForNextGame = (lobby, thrownPoints, winningPlayerIndex) => {
   lobby.game.startingPlayerIndex = (lobby.game.startingPlayerIndex + 1) % lobby.players.length;
-  initialiseForNewRound(lobby);
+  initialiseForNewRound(lobby, thrownPoints, winningPlayerIndex);
 };
 
 module.exports = {
