@@ -60,6 +60,7 @@ function OnlineGames(props: OnlineGamesProps) {
   }, [props.socket]);
 
   const gameProps = {
+    isLoggedIn: props.isLoggedIn,
     socket: props.socket,
     lobbyCode: props.lobbyCode,
     players: props.players,

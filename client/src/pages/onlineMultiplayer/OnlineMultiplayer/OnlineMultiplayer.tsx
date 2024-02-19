@@ -94,6 +94,7 @@ function OnlineMultiplayer(props: OnlineMultiplayerProps) {
   };
 
   const gameProps = {
+    isLoggedIn: props.isLoggedIn,
     socket: props.socket,
     lobbyCode: props.lobbyCode,
     displayUserID: props.displayUserID,

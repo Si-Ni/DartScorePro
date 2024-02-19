@@ -45,7 +45,7 @@ function Settings(props: SettingsProps) {
 
   const [errorMessage, setErrorMessage] = useState<string>("");
 
-  const logout = (option: keyof Options) => {
+  const logout = (option: keyof Options | null) => {
     axios
       .post(LOGOUT_URL, {}, { withCredentials: true })
       .then(() => {
@@ -209,7 +209,7 @@ function Settings(props: SettingsProps) {
                 {renderInput("Change your password", "changePassword", "password")}
                 <p
                   className="is-clickable has-text-weight-semibold has-text-centered is-underlined mb-4"
-                  onClick={logout}
+                  onClick={() => logout(null)}
                 >
                   Logout
                 </p>

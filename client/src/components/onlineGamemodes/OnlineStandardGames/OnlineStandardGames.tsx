@@ -17,6 +17,7 @@ function OnlineStandardGames(props: OnlineStandardGamesProps) {
 
   return (
     <StandardGamesView
+      isLoggedIn={props.isLoggedIn}
       currentRound={props.currentRound}
       players={props.players}
       startingPlayerIndex={props.startingPlayerIndex}

@@ -10,6 +10,7 @@ function RoundTheClockGameView(props: RoundTheClockGameViewProps) {
 
     return (
       <PlayerScoreCard
+        isLoggedIn={props.isLoggedIn}
         key={userID}
         playerName={userID}
         isStartingPlayer={isStartingPlayer}

@@ -64,11 +64,12 @@ function App() {
           element={<Register loginErrorMsg={loginErrorMsg} pwdRef={pwdRef} setLoginErrorMsg={setLoginErrorMsg} />}
         />
         <Route path="/register/verify" element={<RegisterVerify />} />
-        <Route path="/singleplayer" element={<Singleplayer displayUserID={displayUserID} />} />
+        <Route path="/singleplayer" element={<Singleplayer isLoggedIn={isLoggedIn} displayUserID={displayUserID} />} />
         <Route
           path="/multiplayer/lobby/:lobbyCode"
           element={
             <OnlineMultiplayer
+              isLoggedIn={isLoggedIn}
               socket={socket}
               displayUserID={displayUserID}
               lobbyCode={lobbyCode}
@@ -93,7 +94,7 @@ function App() {
             />
           }
         />
-        <Route path="/tournament" element={<Tournament displayUserID={displayUserID} />} />
+        <Route path="/tournament" element={<Tournament isLoggedIn={isLoggedIn} displayUserID={displayUserID} />} />
         <Route path="/checkoutCalculator" element={<CheckoutCalculator />} />
         <Route
           path="/settings"
