@@ -71,7 +71,7 @@ const updateScoreForPlayerAndContinueGame = async (lobby, currentPlayer, points,
   } else {
     updatePlayerStatsByThrownPoints(lobby, currentPlayer, thrownPoints);
     updateRemainingThrows(lobby);
-    await checkIfPlayerHasWon(lobby, currentPlayer, updatedScore, multiplier, thrownPoints);
+    await checkIfPlayerHasWon(lobby, currentPlayer, updatedScore, multiplier);
   }
 };
 
@@ -101,15 +101,15 @@ const updatePlayerStatsByThrownPoints = async (lobby, player, thrownPoints) => {
   await saveUpdatedPlayerStats(thrownPoints, player, lobby);
 };
 
-const checkIfPlayerHasWon = async (lobby, player, updatedScore, multiplier, thrownPoints) => {
+const checkIfPlayerHasWon = async (lobby, player, updatedScore, multiplier) => {
   const playerWon = updatedScore === 0 && (lobby.gameSettings.modeOut !== "double" || multiplier === 2);
   if (playerWon) {
-    await handlePlayerWon(lobby, player, thrownPoints);
+    await handlePlayerWon(lobby, player);
   }
 };
 
-const handlePlayerWon = async (lobby, player, thrownPoints) => {
-  updateGameStatsForWinningPlayer(lobby, player, thrownPoints);
+const handlePlayerWon = async (lobby, player) => {
+  updateGameStatsForWinningPlayer(lobby, player);
   await savePlayerWinOrDefeat(lobby);
   await savePlayerCheckout(lobby);
 };

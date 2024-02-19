@@ -1,16 +1,13 @@
-const initialisePlayerStatsForStandardGame = (players, playerStats = {}, totalScore, thrownPoints, winningPlayer) => {
+const initialisePlayerStatsForStandardGame = (players, playerStats = {}, totalScore) => {
   const initialPoints = {};
   players.forEach((player) => {
     const stats = playerStats[player.userID] || { average: 0, dartsThrown: 0, totalScore: 0 };
     initialPoints[player.userID] = {
       score: totalScore,
       scoreAtBeginningOfRound: totalScore,
-      average:
-        player.userID === winningPlayer
-          ? ((stats.totalScore + (thrownPoints || 0)) * 3) / (stats.dartsThrown + 1) || 0
-          : stats.average,
-      dartsThrown: stats.dartsThrown + (player.userID === winningPlayer ? 1 : 0),
-      totalScore: player.userID === winningPlayer ? stats.totalScore + (thrownPoints || 0) : stats.totalScore,
+      average: stats.average,
+      dartsThrown: stats.dartsThrown,
+      totalScore: stats.totalScore,
       turns: 0,
       lastThrows: [],
       throwsRemaining: 0
@@ -49,7 +46,7 @@ const initialisePlayerStatsForCriGame = (players) => {
   return initialStats;
 };
 
-const initialiseForNewRound = (lobby, thrownPoints, winningPlayer) => {
+const initialiseForNewRound = (lobby) => {
   const gamemode = lobby.gameSettings.selectedGamemode;
   lobby.game.currentRound = 1;
   lobby.game.currentPlayerIndex = lobby.game.startingPlayerIndex;
@@ -58,13 +55,7 @@ const initialiseForNewRound = (lobby, thrownPoints, winningPlayer) => {
   if (gamemode === "301" || gamemode === "501") {
     const totalScore = Number(lobby.gameSettings.selectedGamemode);
     lobby.game.gamemodeTotalScore = Number(totalScore);
-    lobby.game.playerStats = initialisePlayerStatsForStandardGame(
-      lobby.players,
-      lobby.game.playerStats,
-      totalScore,
-      thrownPoints,
-      winningPlayer
-    );
+    lobby.game.playerStats = initialisePlayerStatsForStandardGame(lobby.players, lobby.game.playerStats, totalScore);
   } else if (gamemode === "rcl") {
     lobby.game.playerStats = initialisePlayerStatsForRclGame(lobby.players);
   } else if (gamemode === "cri") {

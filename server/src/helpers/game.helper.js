@@ -31,15 +31,15 @@ const updateRemainingThrows = (lobby) => {
   }
 };
 
-const updateGameStatsForWinningPlayer = (lobby, player, thrownPoints = null) => {
+const updateGameStatsForWinningPlayer = (lobby, player) => {
   let currentLegs = lobby.game.totalGameStats[player].legs + 1;
   let currentSets = lobby.game.totalGameStats[player].sets;
   if (currentLegs === Number(lobby.gameSettings.legsForSet)) {
     currentSets++;
     currentLegs = 0;
-    resetRoundStatsForNewSet(lobby, thrownPoints, player);
+    resetRoundStatsForNewSet(lobby, player);
   } else {
-    resetRoundStatsForNextGame(lobby, thrownPoints, player);
+    resetRoundStatsForNextGame(lobby, player);
   }
 
   lobby.game.totalGameStats[player].legs = currentLegs;
@@ -50,16 +50,16 @@ const updateGameStatsForWinningPlayer = (lobby, player, thrownPoints = null) => 
   }
 };
 
-const resetRoundStatsForNewSet = (lobby, thrownPoints, winningPlayer) => {
+const resetRoundStatsForNewSet = (lobby) => {
   const updatedStartingPlayerOfSetIndex = (lobby.game.startingPlayerOfSetIndex + 1) % lobby.players.length;
   lobby.game.startingPlayerOfSetIndex = updatedStartingPlayerOfSetIndex;
   lobby.game.startingPlayerIndex = updatedStartingPlayerOfSetIndex;
-  initialiseForNewRound(lobby, thrownPoints, winningPlayer);
+  initialiseForNewRound(lobby);
 };
 
-const resetRoundStatsForNextGame = (lobby, thrownPoints, winningPlayer) => {
+const resetRoundStatsForNextGame = (lobby) => {
   lobby.game.startingPlayerIndex = (lobby.game.startingPlayerIndex + 1) % lobby.players.length;
-  initialiseForNewRound(lobby, thrownPoints, winningPlayer);
+  initialiseForNewRound(lobby);
 };
 
 module.exports = {
