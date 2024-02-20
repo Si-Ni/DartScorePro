@@ -1,4 +1,3 @@
-const savePlayerWinOrDefeat = require("../../helpers/savePlayerWinOrDefeat.helper");
 const {
   switchToNextPlayer,
   updateRemainingThrows,
@@ -43,8 +42,7 @@ const checkIfPlayerHasWon = (lobby, player) => {
 };
 
 const handlePlayerWon = async (lobby, player) => {
-  updateGameStatsForWinningPlayer(lobby, player);
-  await savePlayerWinOrDefeat(lobby);
+  await updateGameStatsForWinningPlayer(lobby, player);
 };
 
 const increaseTargetByOne = (lobby, player) => {

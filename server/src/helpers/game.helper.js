@@ -1,4 +1,5 @@
 const { initialiseForNewRound } = require("./initPlayerStats.helper");
+const savePlayerWinOrDefeat = require("./savePlayerWinOrDefeat.helper");
 
 const findPlayerIndexBySocketId = (socketId, players) => {
   const index = players.findIndex((player) => player.socketId === socketId);
@@ -31,7 +32,7 @@ const updateRemainingThrows = (lobby) => {
   }
 };
 
-const updateGameStatsForWinningPlayer = (lobby, player) => {
+const updateGameStatsForWinningPlayer = async (lobby, player) => {
   let currentLegs = lobby.game.totalGameStats[player].legs + 1;
   let currentSets = lobby.game.totalGameStats[player].sets;
   if (currentLegs === Number(lobby.gameSettings.legsForSet)) {
@@ -47,6 +48,7 @@ const updateGameStatsForWinningPlayer = (lobby, player) => {
 
   if (currentSets === Number(lobby.gameSettings.setsToWin)) {
     lobby.game.winner = player;
+    await savePlayerWinOrDefeat(lobby, player);
   }
 };
 

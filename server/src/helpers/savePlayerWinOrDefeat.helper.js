@@ -1,7 +1,7 @@
 const UserStats = require("../models/userStats.model");
 const checkUserRegistered = require("./checkUserRegistered.helper");
 
-async function savePlayerWinOrDefeat(lobby) {
+async function savePlayerWinOrDefeat(lobby, winningPlayer) {
   try {
     for (const player of lobby.players) {
       const { userID } = player;
@@ -12,7 +12,7 @@ async function savePlayerWinOrDefeat(lobby) {
         continue;
       }
 
-      const isWinner = lobby.game.winner === userID;
+      const isWinner = winningPlayer === userID;
       const gameMode = lobby.gameSettings.selectedGamemode;
 
       let updateQuery = {};
