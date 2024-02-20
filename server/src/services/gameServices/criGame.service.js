@@ -4,7 +4,7 @@ const { updateRemainingThrows, updateGameStatsForWinningPlayer } = require("../.
 const validPoints = new Set([15, 16, 17, 18, 19, 20, 25, 0]);
 
 const updateScoreForCurrentPlayerCri = async (lobby, { points, multiplier }) => {
-  if (!validatePoints(points)) return;
+  if (!validatePoints(points) || !validateMultiplier(multiplier)) return;
 
   const currentPlayerIndex = lobby.game.currentPlayerIndex;
   const currentPlayer = lobby.players[currentPlayerIndex].userID;
@@ -20,6 +20,10 @@ const updateScoreForCurrentPlayerCri = async (lobby, { points, multiplier }) => 
 
 const validatePoints = (points) => {
   return validPoints.has(points);
+};
+
+const validateMultiplier = (mulitplier) => {
+  return [...Array.from({ length: 3 }, (_, i) => i + 1)].includes(mulitplier);
 };
 
 const updatePlayerStats = (lobby, player, points, multiplier) => {

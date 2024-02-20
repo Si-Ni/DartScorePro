@@ -4,6 +4,7 @@ const { lobbies, lobbyCodeRegex } = require("../lobby.service");
 const { updateScoreForCurrentPlayerStandardGames } = require("./standardGame.service");
 const { updateScoreForCurrentPlayerRcl } = require("./rclGame.service");
 const { updateScoreForCurrentPlayerCri } = require("./criGame.service");
+const validateSettings = require("../../helpers/validateSettings.helper");
 
 const initialiseForNewGame = (lobby) => {
   lobby.game = {};
@@ -50,12 +51,11 @@ module.exports = (io) => {
   const handleGameStarted = function ({ lobbyCode, gameSettings }) {
     const socket = this;
     const isLeader = lobbies[lobbyCode]?.players.find((player) => player.socketId === socket.id)?.isLeader ?? false;
-    const validGamemodes = ["301", "501", "rcl", "cri"];
-    const isValidGamemode = validGamemodes.includes(gameSettings.selectedGamemode);
+    validSettings = validateSettings(gameSettings);
 
     if (!lobbyCodeRegex.test(lobbyCode)) return socket.emit("invalidLobbyCode");
 
-    if (lobbies[lobbyCode] && isLeader && isValidGamemode && !gameSettings.hasOwnProperty("__proto__")) {
+    if (lobbies[lobbyCode] && isLeader && validSettings && !gameSettings.hasOwnProperty("__proto__")) {
       lobbies[lobbyCode].gameSettings = gameSettings;
       initialiseForNewGame(lobbies[lobbyCode]);
       const responseData = { gameSettings: lobbies[lobbyCode].gameSettings, game: lobbies[lobbyCode].game };
