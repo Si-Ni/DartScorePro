@@ -8,7 +8,7 @@ const {
 } = require("../../helpers/game.helper");
 
 const updateScoreForCurrentPlayerStandardGames = async (lobby, { multiplier, points }) => {
-  if (!validatePoints) return;
+  if (!validatePoints(points) || !validateMultiplier(multiplier)) return;
 
   const currentPlayerIndex = lobby.game.currentPlayerIndex;
   const currentPlayer = lobby.players[currentPlayerIndex].userID;
@@ -27,7 +27,11 @@ const updateScoreForCurrentPlayerStandardGames = async (lobby, { multiplier, poi
 };
 
 const validatePoints = (points) => {
-  return [0, ...Array.from({ length: 21 }, (_, i) => i + 1), 25].includes(points);
+  return [...Array.from({ length: 21 }, (_, i) => i), 25].includes(points);
+};
+
+const validateMultiplier = (mulitplier) => {
+  return [...Array.from({ length: 3 }, (_, i) => i + 1)].includes(mulitplier);
 };
 
 const shouldSetPointsToZero = (lobby, currentPlayer, multiplier) => {
