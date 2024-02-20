@@ -1,7 +1,7 @@
 const validateSettings = (gameSettings) => {
   const isValidGamemode = validateGamemode(gameSettings.selectedGamemode);
-  const validSets = isNumber(gameSettings.setsToWin) && gameSettings.setsToWin > 0;
-  const validLegs = isNumber(gameSettings.legsForSet) && gameSettings.legsForSet > 0;
+  const validSets = isNumeric(gameSettings.setsToWin) && gameSettings.setsToWin > 0;
+  const validLegs = isNumeric(gameSettings.legsForSet) && gameSettings.legsForSet > 0;
 
   if (gameSettings.selectedGamemode === "301" || gameSettings.selectedGamemode === "501") {
     const validModeIn = validateMode(gameSettings.modeIn);
@@ -17,8 +17,8 @@ const validateGamemode = (gamemode) => {
   return validGamemodes.includes(gamemode);
 };
 
-const isNumber = (value) => {
-  return typeof value === "number";
+const isNumeric = (value) => {
+  return typeof value === "number" || (typeof value === "string" && !isNaN(value) && !isNaN(parseFloat(value)));
 };
 
 const validateMode = (mode) => {
