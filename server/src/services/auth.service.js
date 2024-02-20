@@ -37,7 +37,6 @@ async function login(req) {
 
   if (isPWDValid) {
     const accessToken = generateToken(isUserRegistered.userID, process.env.ACCESS_TOKEN_SECRET, "15min");
-    const refreshToken = generateToken(isUserRegistered.userID, process.env.REFRESH_TOKEN_SECRET, "7d");
 
     return {
       status: 200,
@@ -45,8 +44,7 @@ async function login(req) {
         msg: "Login Success",
         userID: isUserRegistered.userID
       },
-      accessToken: accessToken,
-      refreshToken: refreshToken
+      accessToken: accessToken
     };
   } else {
     return { status: 400, json: "This password or username is invalid" };
