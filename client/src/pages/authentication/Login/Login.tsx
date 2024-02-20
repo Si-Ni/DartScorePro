@@ -6,6 +6,8 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "../../../api/axios";
 import useAuth from "../../../hooks/useAuth";
 import { LoginProps } from "./Login";
+import { useCookies } from "react-cookie";
+
 vhCheck("vh-check");
 
 const LOGIN_URL = "/login";
@@ -17,6 +19,7 @@ function Login(props: LoginProps) {
   const invalidPwdMsgRef = useRef<HTMLInputElement | null>(null);
   const [isPwdDisabled, setPwdDisabled] = useState(false);
   const userIDorMailRef = useRef<HTMLInputElement | null>(null);
+  const [, setCookie] = useCookies(["token"]);
   const navigate = useNavigate();
 
   const onSubmitPwd = () => {
@@ -27,13 +30,13 @@ function Login(props: LoginProps) {
     axios
       .post(LOGIN_URL, { userIDorMail, userPWD }, { withCredentials: true })
       .then((res) => {
-        const token = res.data.token;
         setPwdDisabled(false);
         props.setLoggedIn(true);
         props.setDisplayUserID(`${res.data.userID}`);
-        setAuth({ userIDorMail, userPWD, token });
-
+        setCookie("socket_token", res.data.socketToken);
+        setAuth({ userIDorMail, userPWD });
         navigate(navigateTo, { replace: true });
+        window.location.reload();
       })
       .catch((error) => {
         setPwdDisabled(false);

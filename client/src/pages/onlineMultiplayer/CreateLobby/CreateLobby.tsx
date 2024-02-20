@@ -9,7 +9,7 @@ function CreateLobby(props: CreateLobbyProps) {
   const codeCopiedRef = useRef<HTMLInputElement | null>(null);
 
   const createLobby = () => {
-    props.socket.emit("lobby:create", props.displayUserID);
+    props.socket.emit("lobby:create");
 
     props.socket.once("lobbyCreated", (newLobbyCode: string) => {
       props.setLobbyCode(newLobbyCode);

@@ -16,8 +16,7 @@ import Impressum from "./information/Impressum/Impressum";
 import Settings from "./settings/Settings.tsx";
 import Statistics from "./statistics/Statistics.tsx";
 import Footer from "../components/footer/Footer/Footer.tsx";
-
-const socket = io("http://localhost:4000");
+import { useCookies } from "react-cookie";
 
 const GENERAL_AUTH = "/generalAuth";
 function App() {
@@ -27,6 +26,13 @@ function App() {
   const [displayUserID, setDisplayUserID] = useState<string>("");
   const [lobbyCode, setLobbyCode] = useState<string>("");
   const [isLobbyLeader, setIsLobbyLeader] = useState<boolean>(false);
+  const [cookies, setCookie] = useCookies(["token"]);
+
+  const socket = io("http://localhost:4000", {
+    extraHeaders: {
+      authorization: `bearer ${cookies.socket_token}`
+    }
+  });
 
   useEffect(() => {
     axios
@@ -36,6 +42,7 @@ function App() {
       .then((res) => {
         setLoggedIn(true);
         setDisplayUserID(res.data.userID);
+        setCookie("socket_token", res.data.socketToken);
       })
       .catch(() => {});
   }, []);

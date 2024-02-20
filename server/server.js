@@ -9,6 +9,8 @@ const userSettings = require("./src/routes/userSettings.route");
 const rateLimiter = require("./src/middlewares/rateLimit.middleware");
 const cookieParser = require("cookie-parser");
 const { connectDB } = require("./src/services/db.service");
+const jwt = require("jsonwebtoken");
+const authenticateSocketToken = require("./src/middlewares/authenticateSocketToken.middleware");
 
 const app = express();
 const PORT = 4000 || process.env.PORT;
@@ -64,6 +66,8 @@ const onConnection = (socket) => {
 
   socket.on("game:sendGameInputFromPlayer", handleGameInput);
 };
+
+io.engine.use(authenticateSocketToken);
 
 io.on("connection", onConnection);
 

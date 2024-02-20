@@ -36,13 +36,15 @@ async function login(req) {
   const isPWDValid = await checkPWDvalid(isMail ? null : userIDorMail, isUserID ? null : userIDorMail, userPWD);
 
   if (isPWDValid) {
-    const accessToken = generateToken(isUserRegistered.userID, process.env.ACCESS_TOKEN_SECRET, "15min");
+    const accessToken = generateToken(isUserRegistered.userID, process.env.ACCESS_TOKEN_SECRET, "3h");
+    const socketToken = generateToken(isUserRegistered.userID, process.env.SOCKET_TOKEN_SECRET, "3h");
 
     return {
       status: 200,
       json: {
         msg: "Login Success",
-        userID: isUserRegistered.userID
+        userID: isUserRegistered.userID,
+        socketToken: socketToken
       },
       accessToken: accessToken
     };
@@ -108,9 +110,14 @@ async function registerVerify(req) {
 async function generalAuth(req) {
   const { userIDorMail } = req.user;
 
-  const accessToken = generateToken(userIDorMail, process.env.ACCESS_TOKEN_SECRET, "15min");
+  const accessToken = generateToken(userIDorMail, process.env.ACCESS_TOKEN_SECRET, "3h");
+  const socketToken = generateToken(userIDorMail, process.env.SOCKET_TOKEN_SECRET, "3h");
 
-  return { status: 200, json: { msg: "Authentication successful", userID: userIDorMail }, accessToken: accessToken };
+  return {
+    status: 200,
+    json: { msg: "Authentication successful", userID: userIDorMail, socketToken: socketToken },
+    accessToken: accessToken
+  };
 }
 
 module.exports = {
