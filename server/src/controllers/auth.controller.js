@@ -2,11 +2,18 @@ const authService = require("../services/auth.service");
 
 async function handleRequest(handler, req, res, next) {
   try {
-    const { status, json, accessToken } = await handler(req);
-    if (handler === authService.logout) res.clearCookie("access_token");
+    const { status, json, accessToken, socketToken } = await handler(req);
+    if (handler === authService.logout) res.clearCookie("access_token").clearCookie("socket_token");
     else {
       accessToken &&
         res.cookie("access_token", accessToken, {
+          httpOnly: true,
+          secure: true,
+          sameSite: "strict",
+          expires: new Date(Date.now() + 900000)
+        });
+      socketToken &&
+        res.cookie("socket_token", socketToken, {
           httpOnly: true,
           secure: true,
           sameSite: "strict",

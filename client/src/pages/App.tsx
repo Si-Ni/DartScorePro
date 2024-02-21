@@ -17,9 +17,8 @@ import Settings from "./settings/Settings.tsx";
 import Statistics from "./statistics/Statistics.tsx";
 import Footer from "../components/footer/Footer/Footer.tsx";
 
-const socket = io("http://localhost:4000");
-
 const GENERAL_AUTH = "/generalAuth";
+let socket = io();
 function App() {
   const pwdRef = useRef<HTMLInputElement | null>(null);
   const [loginErrorMsg, setLoginErrorMsg] = useState<string>("This password or username is invalid");
@@ -27,6 +26,18 @@ function App() {
   const [displayUserID, setDisplayUserID] = useState<string>("");
   const [lobbyCode, setLobbyCode] = useState<string>("");
   const [isLobbyLeader, setIsLobbyLeader] = useState<boolean>(false);
+
+  useEffect(() => {
+    socket = io("http://localhost:4000", {
+      transports: ["websocket"],
+      withCredentials: true,
+      autoConnect: false
+    });
+
+    if (!socket.connected) {
+      socket.connect();
+    }
+  }, []);
 
   useEffect(() => {
     axios

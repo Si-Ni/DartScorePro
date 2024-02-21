@@ -46,7 +46,7 @@ function OnlineMultiplayer(props: OnlineMultiplayerProps) {
 
   useEffect(() => {
     if (props.lobbyCode && props.displayUserID) {
-      props.socket.emit("lobby:join", { lobbyCode: props.lobbyCode, userID: props.displayUserID });
+      props.socket.emit("lobby:join", { lobbyCode: props.lobbyCode });
     }
   }, [props.lobbyCode, props.socket, props.displayUserID]);
 

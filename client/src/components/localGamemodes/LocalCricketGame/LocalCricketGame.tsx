@@ -201,6 +201,7 @@ function LocalCricketGame(props: LocalCricketGameProps) {
 
   return (
     <CricketGameView
+      isLoggedIn={props.isLoggedIn}
       currentRound={props.currentRound}
       players={players}
       startingPlayerIndex={props.startingPlayerIndex}

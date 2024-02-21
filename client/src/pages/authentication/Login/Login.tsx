@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "../../../api/axios";
 import useAuth from "../../../hooks/useAuth";
 import { LoginProps } from "./Login";
+
 vhCheck("vh-check");
 
 const LOGIN_URL = "/login";
@@ -27,12 +28,10 @@ function Login(props: LoginProps) {
     axios
       .post(LOGIN_URL, { userIDorMail, userPWD }, { withCredentials: true })
       .then((res) => {
-        const token = res.data.token;
         setPwdDisabled(false);
         props.setLoggedIn(true);
         props.setDisplayUserID(`${res.data.userID}`);
-        setAuth({ userIDorMail, userPWD, token });
-
+        setAuth({ userIDorMail, userPWD });
         navigate(navigateTo, { replace: true });
       })
       .catch((error) => {

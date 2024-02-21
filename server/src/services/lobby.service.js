@@ -9,8 +9,10 @@ const lobbies = {};
 const lobbyCodeRegex = /^[A-Z0-9]{6}$/;
 
 module.exports = (io) => {
-  const createLobby = function (userID) {
+  const createLobby = function () {
     const socket = this;
+    const userID = socket.request.user.userIDorMail;
+
     const lobbyCode = generateCode();
     lobbies[lobbyCode] = {
       gameStarted: false,
@@ -21,8 +23,9 @@ module.exports = (io) => {
     socket.emit("lobbyCreated", lobbyCode);
   };
 
-  const joinLobby = async function ({ lobbyCode, userID }) {
+  const joinLobby = async function ({ lobbyCode }) {
     const socket = this;
+    const userID = socket.request.user.userIDorMail;
     const socketId = socket.id;
     const lobby = lobbies[lobbyCode];
 
