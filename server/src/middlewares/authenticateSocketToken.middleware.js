@@ -4,7 +4,7 @@ function authenticateSocketToken(req, res, next) {
   const isHandshake = req._query.sid === undefined;
   const cookies = req.headers.cookie;
   if (!isHandshake || !cookies) {
-    return next();
+    return next(new Error("Unauthorized: Missing token"));
   }
   const socketTokenStartIndex = cookies.indexOf("socket_token=");
   if (socketTokenStartIndex === -1) {

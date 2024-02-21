@@ -9,7 +9,6 @@ const userSettings = require("./src/routes/userSettings.route");
 const rateLimiter = require("./src/middlewares/rateLimit.middleware");
 const cookieParser = require("cookie-parser");
 const { connectDB } = require("./src/services/db.service");
-const jwt = require("jsonwebtoken");
 const authenticateSocketToken = require("./src/middlewares/authenticateSocketToken.middleware");
 
 const app = express();
