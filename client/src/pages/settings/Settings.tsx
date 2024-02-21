@@ -5,7 +5,6 @@ import useAuth from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import "../../styles/Settings.css";
 import NavigationButtons from "../../components/buttons/NavigationButtons/NavigationButtons.tsx";
-import { useCookies } from "react-cookie";
 
 const LOGOUT_URL = "/logout";
 const USER_SETTINGS_URLS = {
@@ -21,7 +20,6 @@ function Settings(props: SettingsProps) {
   const navigate = useNavigate();
   const errorMessage1Ref = useRef<HTMLParagraphElement | null>(null);
   const errorMessage2Ref = useRef<HTMLParagraphElement | null>(null);
-  const [, setCookie] = useCookies(["socket_token"]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -54,9 +52,7 @@ function Settings(props: SettingsProps) {
         props.setLoggedIn(false);
         props.setDisplayUserID("");
         setAuth({});
-        setCookie("socket_token", "", { expires: new Date(0) });
         option === "changeEmail" ? navigate("/register/verify") : navigate("/login");
-        //window.location.reload();
       })
       .catch(() => {});
   };

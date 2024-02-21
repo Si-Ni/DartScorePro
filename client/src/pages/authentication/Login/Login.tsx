@@ -6,7 +6,6 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "../../../api/axios";
 import useAuth from "../../../hooks/useAuth";
 import { LoginProps } from "./Login";
-import { useCookies } from "react-cookie";
 
 vhCheck("vh-check");
 
@@ -19,7 +18,6 @@ function Login(props: LoginProps) {
   const invalidPwdMsgRef = useRef<HTMLInputElement | null>(null);
   const [isPwdDisabled, setPwdDisabled] = useState(false);
   const userIDorMailRef = useRef<HTMLInputElement | null>(null);
-  const [, setCookie] = useCookies(["socket_token"]);
   const navigate = useNavigate();
 
   const onSubmitPwd = () => {
@@ -33,10 +31,8 @@ function Login(props: LoginProps) {
         setPwdDisabled(false);
         props.setLoggedIn(true);
         props.setDisplayUserID(`${res.data.userID}`);
-        setCookie("socket_token", res.data.socketToken);
         setAuth({ userIDorMail, userPWD });
         navigate(navigateTo, { replace: true });
-        //window.location.reload();
       })
       .catch((error) => {
         setPwdDisabled(false);

@@ -43,10 +43,10 @@ async function login(req) {
       status: 200,
       json: {
         msg: "Login Success",
-        userID: isUserRegistered.userID,
-        socketToken: socketToken
+        userID: isUserRegistered.userID
       },
-      accessToken: accessToken
+      accessToken: accessToken,
+      socketToken: socketToken
     };
   } else {
     return { status: 400, json: "This password or username is invalid" };
