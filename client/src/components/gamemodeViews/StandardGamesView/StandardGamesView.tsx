@@ -52,6 +52,12 @@ function StandardGamesView(props: StandardGamesViewProps) {
             Undo
           </button>
         )}
+        {props.cbHandleVoiceControlClicked && (
+          <button className="button is-danger m-1 is-size-5 uniformButton" onClick={props.cbHandleVoiceControlClicked}>
+            VoiceControl
+          </button>
+        )}
+        {props.transcript}
       </div>
     </>
   );

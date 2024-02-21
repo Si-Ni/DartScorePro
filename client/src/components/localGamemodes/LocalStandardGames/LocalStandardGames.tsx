@@ -1,11 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import "../../../styles/App.css";
 import "../../../styles/Games.css";
 import { PlayerStats, PlayerToPlayerStats } from "../../../types/playerStats.ts";
 import { getAllOptions, sumRound } from "../../../helpers/calcCheckouts";
 import StandardGamesView from "../../gamemodeViews/StandardGamesView/StandardGamesView.tsx";
 import { LocalStandardGamesProps } from "./LocalStandardGames";
-import { startRecognition, /* stopRecognition,*/ score } from "../../../helpers/VoiceControl.tsx";
+import "regenerator-runtime/runtime";
+import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
+import { filterTranscript } from "../../../helpers/filterTranscript.tsx";
 
 const initializePlayerStats = (
   players: string[],
@@ -36,14 +38,60 @@ const initializePlayerStats = (
 };
 
 function LocalStandardGames({ currentPlayerIndex, throwsRemaining, ...props }: LocalStandardGamesProps) {
-  startRecognition();
+  const commands = [
+    {
+      command: "confirm",
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      callback: (_confirm: string) => {
+        handleScoreChange(parseInt(filterTranscript(transcript)));
+        resetTranscript();
+      },
+      isFuzzyMatch: true,
+      fuzzyMatchingThreshold: 0.2
+    },
+    {
+      command: "single",
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      callback: (_single: string) => {
+        setMultiplier(1);
+        console.log("single")
+      },
+      isFuzzyMatch: true,
+      fuzzyMatchingThreshold: 0.3
+    },
+    {
+      command: "double",
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      callback: (_double: string) => {
+        setMultiplier(2);
+      },
+      isFuzzyMatch: true,
+      fuzzyMatchingThreshold: 0.2
+    },
+    {
+      command: "triple",
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      callback: (_triple: string) => {
+        setMultiplier(3);
+      },
+      isFuzzyMatch: true,
+      fuzzyMatchingThreshold: 0.3
+    },
+    {
+      command: "clear",
+      callback: () => resetTranscript()
+    }
+  ];
   const [players] = useState<string[]>(props.players);
   const [multiplier, setMultiplier] = useState<number>(1);
   const [previousPlayerStats, setPreviousPlayerStats] = useState<PlayerStats | Record<string, never>>({});
   const [playerStats, setPlayerStats] = useState<PlayerToPlayerStats>(() =>
     initializePlayerStats(props.players, props.gamemodeTotalScore)
   );
+  const [listening, setListening] = useState<boolean>(false);
+  const { transcript, resetTranscript, browserSupportsSpeechRecognition } = useSpeechRecognition({commands});
 
+  
   const handleScoreChange = (points: number): void => {
     if (multiplier === 3 && points === 25) return;
     if (shouldSetPointsToZero()) points = 0;
@@ -58,17 +106,6 @@ function LocalStandardGames({ currentPlayerIndex, throwsRemaining, ...props }: L
     addThrowToLastThrows(currentPlayerIndex, points, multiplier);
     updateScoreForPlayerAndContinueGame(currentPlayerIndex, points);
   };
-
-  useEffect(() => {
-    const handleVoiceScoreInput = (): void => {
-      savePreviousPlayerStats(currentPlayerIndex);
-      updateScoreForPlayerAndContinueGame(currentPlayerIndex, parseInt(score));
-    };
-
-    if (score !== "") {
-      handleVoiceScoreInput();
-    }
-  }, [score, currentPlayerIndex]);
 
   const shouldSetPointsToZero = () => {
     const violatesDoubleInMode =
@@ -217,6 +254,19 @@ function LocalStandardGames({ currentPlayerIndex, throwsRemaining, ...props }: L
     }));
   };
 
+  const handleVoiceControlClick = () => {
+  if (listening){
+    SpeechRecognition.stopListening();
+    setListening(false)
+  }
+  else {
+    if (browserSupportsSpeechRecognition) {
+      SpeechRecognition.startListening({ continuous: true, language: "en-GB" });
+      setListening(true);
+    }
+  }
+  };
+
   const getIndexOfPlayerFromLastTurn = (): number => {
     let playerIndex = currentPlayerIndex;
     if (throwsRemaining === 3 && playerIndex != 0) {
@@ -244,6 +294,8 @@ function LocalStandardGames({ currentPlayerIndex, throwsRemaining, ...props }: L
       multiplier={multiplier}
       cbHandleMultiplierClicked={handleMultiplierClick}
       cbHandleUndoClicked={handleUndoClick}
+      cbHandleVoiceControlClicked={handleVoiceControlClick}
+      transcript={filterTranscript(transcript)}
       modeOut={props.modeOut}
     />
   );
