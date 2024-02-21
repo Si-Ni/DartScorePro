@@ -14,7 +14,6 @@ async function login(req) {
   let { userIDorMail, userPWD } = req.body;
 
   userIDorMail = userIDorMail.trim();
-  userPWD = userPWD.trim();
 
   const isMail = mailRegex.test(userIDorMail);
   const isUserID = userIDRegex.test(userIDorMail);
@@ -60,7 +59,6 @@ async function register(req) {
 
   userMail = userMail.trim();
   userID = userID.trim();
-  userPWD = userPWD.trim();
 
   if (!mailRegex.test(userMail) || !userIDRegex.test(userID)) {
     return { status: 400, json: "Invalid email or username format" };
