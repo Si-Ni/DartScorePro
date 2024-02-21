@@ -21,7 +21,7 @@ function Settings(props: SettingsProps) {
   const navigate = useNavigate();
   const errorMessage1Ref = useRef<HTMLParagraphElement | null>(null);
   const errorMessage2Ref = useRef<HTMLParagraphElement | null>(null);
-  const [, setCookie] = useCookies(["token"]);
+  const [, setCookie] = useCookies(["socket_token"]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -56,7 +56,7 @@ function Settings(props: SettingsProps) {
         setAuth({});
         setCookie("socket_token", "", { expires: new Date(0) });
         option === "changeEmail" ? navigate("/register/verify") : navigate("/login");
-        window.location.reload();
+        //window.location.reload();
       })
       .catch(() => {});
   };

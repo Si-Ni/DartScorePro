@@ -26,7 +26,7 @@ function App() {
   const [displayUserID, setDisplayUserID] = useState<string>("");
   const [lobbyCode, setLobbyCode] = useState<string>("");
   const [isLobbyLeader, setIsLobbyLeader] = useState<boolean>(false);
-  const [cookies, setCookie] = useCookies(["token"]);
+  const [cookies, setCookie] = useCookies(["socket_token"]);
 
   const socket = io("http://localhost:4000", {
     extraHeaders: {

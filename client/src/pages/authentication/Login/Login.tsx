@@ -19,7 +19,7 @@ function Login(props: LoginProps) {
   const invalidPwdMsgRef = useRef<HTMLInputElement | null>(null);
   const [isPwdDisabled, setPwdDisabled] = useState(false);
   const userIDorMailRef = useRef<HTMLInputElement | null>(null);
-  const [, setCookie] = useCookies(["token"]);
+  const [, setCookie] = useCookies(["socket_token"]);
   const navigate = useNavigate();
 
   const onSubmitPwd = () => {
@@ -36,7 +36,7 @@ function Login(props: LoginProps) {
         setCookie("socket_token", res.data.socketToken);
         setAuth({ userIDorMail, userPWD });
         navigate(navigateTo, { replace: true });
-        window.location.reload();
+        //window.location.reload();
       })
       .catch((error) => {
         setPwdDisabled(false);
