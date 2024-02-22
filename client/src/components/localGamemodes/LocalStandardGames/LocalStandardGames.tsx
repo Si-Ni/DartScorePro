@@ -91,9 +91,8 @@ function LocalStandardGames({ currentPlayerIndex, throwsRemaining, ...props }: L
     initializePlayerStats(props.players, props.gamemodeTotalScore)
   );
   const [listening, setListening] = useState<boolean>(false);
-  const { transcript, resetTranscript, browserSupportsSpeechRecognition } = useSpeechRecognition({commands});
+  const { transcript, resetTranscript, browserSupportsSpeechRecognition } = useSpeechRecognition({ commands });
 
-  
   const handleScoreChange = (points: number): void => {
     if (multiplier === 3 && points === 25) return;
     if (shouldSetPointsToZero()) points = 0;
@@ -257,16 +256,15 @@ function LocalStandardGames({ currentPlayerIndex, throwsRemaining, ...props }: L
   };
 
   const handleVoiceControlClick = () => {
-  if (listening){
-    SpeechRecognition.stopListening();
-    setListening(false)
-  }
-  else {
-    if (browserSupportsSpeechRecognition) {
-      SpeechRecognition.startListening({ continuous: true, language: "en-GB" });
-      setListening(true);
+    if (listening) {
+      SpeechRecognition.stopListening();
+      setListening(false);
+    } else {
+      if (browserSupportsSpeechRecognition) {
+        SpeechRecognition.startListening({ continuous: true, language: "en-GB" });
+        setListening(true);
+      }
     }
-  }
   };
 
   const getIndexOfPlayerFromLastTurn = (): number => {
