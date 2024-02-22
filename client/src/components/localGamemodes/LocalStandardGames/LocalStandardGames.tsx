@@ -43,21 +43,23 @@ function LocalStandardGames({ currentPlayerIndex, throwsRemaining, ...props }: L
       command: "confirm",
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       callback: (_confirm: string) => {
-        handleScoreChange(parseInt(filterTranscript(transcript)));
+        const parsedNumber = parseInt(filterTranscript(transcript));
+        if (!isNaN(parsedNumber)) {
+          handleScoreChange(parsedNumber);
+        }
         resetTranscript();
       },
       isFuzzyMatch: true,
-      fuzzyMatchingThreshold: 0.2
+      fuzzyMatchingThreshold: 0.3
     },
     {
       command: "single",
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       callback: (_single: string) => {
         setMultiplier(1);
-        console.log("single")
       },
       isFuzzyMatch: true,
-      fuzzyMatchingThreshold: 0.3
+      fuzzyMatchingThreshold: 0.25
     },
     {
       command: "double",
@@ -66,7 +68,7 @@ function LocalStandardGames({ currentPlayerIndex, throwsRemaining, ...props }: L
         setMultiplier(2);
       },
       isFuzzyMatch: true,
-      fuzzyMatchingThreshold: 0.2
+      fuzzyMatchingThreshold: 0.15
     },
     {
       command: "triple",
@@ -75,7 +77,7 @@ function LocalStandardGames({ currentPlayerIndex, throwsRemaining, ...props }: L
         setMultiplier(3);
       },
       isFuzzyMatch: true,
-      fuzzyMatchingThreshold: 0.3
+      fuzzyMatchingThreshold: 0.25
     },
     {
       command: "clear",

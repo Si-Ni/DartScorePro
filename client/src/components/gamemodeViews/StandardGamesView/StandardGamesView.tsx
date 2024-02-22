@@ -52,11 +52,14 @@ function StandardGamesView(props: StandardGamesViewProps) {
             Undo
           </button>
         )}
-        {props.cbHandleVoiceControlClicked && (
-          <button className="button is-danger m-1 is-size-5 uniformButton" onClick={props.cbHandleVoiceControlClicked}>
-            VoiceControl
-          </button>
-        )}
+        <button
+          style={{ outline: 'none', border: 'none', background: 'none'}}
+          className="button m-1 is-size-5 uniformButton"
+          onClick={props.cbHandleVoiceControlClicked}
+          onFocus={(e) => e.target.blur()}
+        >
+          <img src="/src/assets/mic.png" width={40} alt="microphone symbol"/>
+        </button>
         {props.transcript}
       </div>
     </>
