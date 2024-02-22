@@ -53,12 +53,12 @@ function StandardGamesView(props: StandardGamesViewProps) {
           </button>
         )}
         <button
-          style={{ outline: 'none', border: 'none', background: 'none'}}
+          style={{ outline: "none", border: "none", background: "none" }}
           className="button m-1 is-size-5 uniformButton"
           onClick={props.cbHandleVoiceControlClicked}
           onFocus={(e) => e.target.blur()}
         >
-          <img src="/src/assets/mic.png" width={40} alt="microphone symbol"/>
+          <img src="/src/assets/mic.png" width={40} alt="microphone symbol" />
         </button>
         {props.transcript}
       </div>
