@@ -133,9 +133,9 @@ function Register(props: RegisterProps) {
                 style={{ verticalAlign: "bottom", height: "100%" }}
               />
               I agree to the{" "}
-              <a className="policyLink" href="client/src/components" target="_blank">
+              <span className="policyLink">
                 <Link to={"/privacy-policy"}>privacy policy</Link>
-              </a>
+              </span>
             </div>
             <div className="column">
               <button
@@ -153,7 +153,7 @@ function Register(props: RegisterProps) {
                   <Link to={"/login"}>Login</Link>
                 </span>{" "}
                 -&nbsp;
-                <a href="client/src/components" className="has-text-danger">
+                <a href="https://github.com/Si-Ni/DartScorePro" target="_blank" className="has-text-danger">
                   Help?
                 </a>
               </p>
