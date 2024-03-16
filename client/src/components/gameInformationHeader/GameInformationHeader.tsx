@@ -1,6 +1,7 @@
 import { GameInformationHeaderProps } from "./GameInformationHeader";
 
 function GameInformationHeader(props: GameInformationHeaderProps) {
+  console.log(props);
   return (
     <div className="is-flex is-justify-content-center m-0 pt-2 pb-2 gameInfo" style={{ zIndex: 99 }}>
       <p className="is-size-6 mr-4" style={{ textAlign: "center" }}>
@@ -12,12 +13,16 @@ function GameInformationHeader(props: GameInformationHeaderProps) {
       <p className="is-size-6 mr-4" style={{ textAlign: "center" }}>
         <strong>Legs per set:</strong> {props.legsForSet}
       </p>
-      <p className="is-size-6 mr-4" style={{ textAlign: "center" }}>
-        <strong>{props.modeIn} in</strong>
-      </p>
-      <p className="is-size-6 mr-0" style={{ textAlign: "center" }}>
-        <strong>{props.modeOut} out</strong>
-      </p>
+      {props.modeIn && (
+        <p className="is-size-6 mr-4" style={{ textAlign: "center" }}>
+          <strong>{props.modeIn} in</strong>
+        </p>
+      )}
+      {props.modeOut && (
+        <p className="is-size-6 mr-0" style={{ textAlign: "center" }}>
+          <strong>{props.modeOut} out</strong>
+        </p>
+      )}
     </div>
   );
 }
