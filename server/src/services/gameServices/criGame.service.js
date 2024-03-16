@@ -55,12 +55,14 @@ const updateCricketStatusAndScore = (lobby, player, points, multiplier) => {
 
   lobby.game.playerStats[player].cricketStats[statsKey] = updatedCricketStatus;
 
-  if (checkIfNumberIsClosedByAllPlayers(lobby, statsKey)) {
+  let closedByAll = checkIfNumberIsClosedByAllPlayers(lobby, statsKey);
+
+  if (closedByAll) {
     setCricketStatusClosedForEverybody(lobby, statsKey);
   }
 
   let remainingScore = 0;
-  const playerCanIncreaseScore = updatedCricketStatus === 3 && timesHitted > 0;
+  const playerCanIncreaseScore = updatedCricketStatus === 3 && timesHitted > 0 && !closedByAll;
   if (playerCanIncreaseScore) {
     remainingScore = points * timesHitted;
   }
