@@ -107,7 +107,7 @@ function Login(props: LoginProps) {
                     <Link to={"/register"}>Register</Link>
                   </span>{" "}
                   -&nbsp;
-                  <a href="client/src/components" className="has-text-danger">
+                  <a href="https://github.com/Si-Ni/DartScorePro" target="_blank" className="has-text-danger">
                     Help?
                   </a>
                 </p>
