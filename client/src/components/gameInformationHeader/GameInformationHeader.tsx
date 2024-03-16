@@ -12,12 +12,16 @@ function GameInformationHeader(props: GameInformationHeaderProps) {
       <p className="is-size-6 mr-4" style={{ textAlign: "center" }}>
         <strong>Legs per set:</strong> {props.legsForSet}
       </p>
-      <p className="is-size-6 mr-4" style={{ textAlign: "center" }}>
-        <strong>{props.modeIn} in</strong>
-      </p>
-      <p className="is-size-6 mr-0" style={{ textAlign: "center" }}>
-        <strong>{props.modeOut} out</strong>
-      </p>
+      {props.modeIn && (
+        <p className="is-size-6 mr-4" style={{ textAlign: "center" }}>
+          <strong>{props.modeIn} in</strong>
+        </p>
+      )}
+      {props.modeOut && (
+        <p className="is-size-6 mr-0" style={{ textAlign: "center" }}>
+          <strong>{props.modeOut} out</strong>
+        </p>
+      )}
     </div>
   );
 }

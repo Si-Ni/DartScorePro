@@ -94,8 +94,8 @@ function OnlineGames(props: OnlineGamesProps) {
         throwsRemaining={throwsRemaining}
         setsToWin={props.setsToWin}
         legsForSet={props.legsForSet}
-        modeIn={props.modeIn}
-        modeOut={props.modeOut}
+        modeIn={props.selectedGamemode === "301" || props.selectedGamemode === "501" ? props.modeIn : undefined}
+        modeOut={props.selectedGamemode === "301" || props.selectedGamemode === "501" ? props.modeOut : undefined}
       />
       {(props.selectedGamemode === "301" || props.selectedGamemode === "501") && (
         <OnlineStandardGames {...gameProps} modeOut={props.modeOut} playerStats={playerStats as PlayerToPlayerStats} />
